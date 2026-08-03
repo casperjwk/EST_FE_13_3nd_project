@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router";
 
+import MainLayout from "./components/common/MainLayout";
 import HomePage from "./pages/home/HomePage";
 import RecipeListPage from "./pages/recipe/RecipeListPage";
 import RecipeDetailPage from "./pages/recipe/RecipeDetailPage";
