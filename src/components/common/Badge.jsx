@@ -1,4 +1,4 @@
-import "./common.css";
+import styles from "./common.module.css";
 
 const BADGE_TYPES = {
   safe: {
@@ -22,9 +22,12 @@ function Badge({ type = "safe", className = "" }) {
 
   return (
     <span
-      className={`common-badge common-badge--${type} d-inline-flex align-items-center text-button-s ${className}`.trim()}
+      className={`${styles["common-badge"]} ${styles[`common-badge--${type}`]} d-inline-flex align-items-center text-button-s ${className}`.trim()}
     >
-      <span className="material-symbols-outlined common-badge__icon" aria-hidden="true">
+      <span
+        className={`material-symbols-outlined ${styles["common-badge__icon"]}`}
+        aria-hidden="true"
+      >
         {badge.icon}
       </span>
       {badge.label}

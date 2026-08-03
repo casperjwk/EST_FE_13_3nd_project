@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import Badge from "../../components/common/Badge";
-import "./RecipeDetailPage.css";
+import styles from "./RecipeDetailPage.module.css";
+
+function cn(...classNames) {
+  return classNames
+    .filter(Boolean)
+    .flatMap(className => className.split(" "))
+    .filter(Boolean)
+    .map(className => styles[className] ?? className)
+    .join(" ");
+}
 
 const ingredients = [
   { name: "김치", amount: "1컵 (150g)" },
@@ -93,7 +102,7 @@ function Icon({ name, size = 18 }) {
   };
 
   return (
-    <svg className="recipe-icon" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <svg className={cn("recipe-icon")} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
       {paths[name]}
     </svg>
   );
@@ -102,33 +111,33 @@ function Icon({ name, size = 18 }) {
 function Header() {
   return (
     <>
-      <header className="recipe-header">
-        <div className="recipe-header__inner">
-          <a className="recipe-logo" href="/" aria-label="한끼랩 홈">
+      <header className={cn("recipe-header")}>
+        <div className={cn("recipe-header__inner")}>
+          <a className={cn("recipe-logo")} href="/" aria-label="한끼랩 홈">
             <span>한끼</span>랩
           </a>
-          <nav className="recipe-nav" aria-label="주요 메뉴">
+          <nav className={cn("recipe-nav")} aria-label="주요 메뉴">
             <a href="/">홈</a>
             <a href="/recipes">레시피</a>
             <a href="/mypage">마이페이지</a>
           </nav>
-          <div className="recipe-auth">
+          <div className={cn("recipe-auth")}>
             <a href="/login">로그인</a>
-            <a className="recipe-auth__join" href="/signup">
+            <a className={cn("recipe-auth__join")} href="/signup">
               회원가입
             </a>
           </div>
         </div>
       </header>
-      <div className="condition-bar">
-        <div className="condition-bar__inner">
+      <div className={cn("condition-bar")}>
+        <div className={cn("condition-bar__inner")}>
           <div>
             <strong>현재 적용 조건 :</strong>
-            <span className="condition-tag condition-tag--warning">
+            <span className={cn("condition-tag condition-tag--warning")}>
               <Icon name="alert" size={13} />
               돼지고기 제외
             </span>
-            <span className="condition-tag">
+            <span className={cn("condition-tag")}>
               <Icon name="check" size={13} />
               페스코
             </span>
@@ -155,7 +164,7 @@ function IngredientPanel({ isComplete }) {
     : ingredients;
 
   return (
-    <aside className="ingredient-card">
+    <aside className={cn("ingredient-card")}>
       <h2>
         <Icon name="book" size={16} /> 재료
       </h2>
@@ -163,9 +172,9 @@ function IngredientPanel({ isComplete }) {
         {displayedIngredients.map(ingredient => (
           <li
             key={ingredient.name}
-            className={ingredient.warning ? "ingredient ingredient--warning" : "ingredient"}
+            className={cn(ingredient.warning ? "ingredient ingredient--warning" : "ingredient")}
           >
-            <div className="ingredient__row">
+            <div className={cn("ingredient__row")}>
               <div>
                 {ingredient.original && (
                   <del>
@@ -176,7 +185,9 @@ function IngredientPanel({ isComplete }) {
                 <span>{ingredient.amount}</span>
               </div>
               <Badge
-                type={ingredient.warning ? "danger" : ingredient.replacement ? "replacement" : "safe"}
+                type={
+                  ingredient.warning ? "danger" : ingredient.replacement ? "replacement" : "safe"
+                }
               />
             </div>
             {ingredient.warning && (
@@ -186,12 +197,12 @@ function IngredientPanel({ isComplete }) {
               </p>
             )}
             {ingredient.replacement && (
-              <p className="replacement-copy">↻ {ingredient.replacement}</p>
+              <p className={cn("replacement-copy")}>↻ {ingredient.replacement}</p>
             )}
           </li>
         ))}
       </ul>
-      <div className="ingredient-note">
+      <div className={cn("ingredient-note")}>
         <Icon name="alert" size={15} />
         <p>
           <strong>실제 제품의 성분표를 반드시 확인하세요.</strong>
@@ -207,7 +218,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
   if (analysisState === "analyzing") {
     const completedCount = Math.min(Math.floor(progress / 25), analysisSteps.length);
     return (
-      <section className="analysis-card" aria-live="polite">
+      <section className={cn("analysis-card")} aria-live="polite">
         <h2>
           <Icon name="shield" size={25} />
           AI 성분 스크리닝 중
@@ -216,43 +227,43 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
           {analysisSteps.map((step, index) => (
             <li
               key={step}
-              className={
+              className={cn(
                 index < completedCount
                   ? "is-complete"
                   : index === completedCount
                     ? "is-current"
-                    : ""
-              }
+                    : "",
+              )}
             >
               <span>{index < completedCount ? "✓" : index === completedCount ? "◆" : ""}</span>
               {step}
             </li>
           ))}
         </ul>
-        <div className="analysis-progress">
+        <div className={cn("analysis-progress")}>
           <div style={{ width: `${progress}%` }} />
         </div>
-        <strong className="analysis-percent">{progress}%</strong>
+        <strong className={cn("analysis-percent")}>{progress}%</strong>
       </section>
     );
   }
 
   if (analysisState === "complete") {
     return (
-      <section className="complete-card">
-        <div className="complete-card__title">
+      <section className={cn("complete-card")}>
+        <div className={cn("complete-card__title")}>
           <Icon name="shield" size={25} />
           <div>
             <h2>내 조건에 맞게 안전하게 변경되었어요</h2>
             <p>1개의 재료가 대체되었으며 조리 과정도 함께 안내드려요.</p>
           </div>
         </div>
-        <div className="complete-card__actions">
-          <button className="primary-button primary-button--soft" type="button" onClick={onCompare}>
+        <div className={cn("complete-card__actions")}>
+          <button className={cn("primary-button primary-button--soft")} type="button" onClick={onCompare}>
             <Icon name="shield" size={15} />
             기존 레시피와 비교하기
           </button>
-          <button className="secondary-button" type="button">
+          <button className={cn("secondary-button")} type="button">
             <Icon name="info" size={14} />더 알아보기
           </button>
         </div>
@@ -261,24 +272,24 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
   }
 
   return (
-    <section className="mismatch-card">
-      <div className="mismatch-card__title">
+    <section className={cn("mismatch-card")}>
+      <div className={cn("mismatch-card__title")}>
         <Icon name="alert" size={25} />
         <div>
           <h2>1개 재료가 내 조건과 맞지 않아요</h2>
           <p>알레르기 · 비건 식단에 주의가 필요한 재료가 있어요</p>
         </div>
       </div>
-      <span className="danger-chip">
+      <span className={cn("danger-chip")}>
         <Icon name="alert" size={12} />
         돼지고기 앞다리살 - 돼지고기 알레르기 + 페스코 미적합
       </span>
-      <div className="mismatch-card__actions">
-        <button className="primary-button" type="button" onClick={onStart}>
+      <div className={cn("mismatch-card__actions")}>
+        <button className={cn("primary-button")} type="button" onClick={onStart}>
           <Icon name="shield" size={15} />
           AI 맞춤 레시피 만들기
         </button>
-        <button className="secondary-button" type="button">
+        <button className={cn("secondary-button")} type="button">
           <Icon name="info" size={14} />더 알아보기
         </button>
       </div>
@@ -348,12 +359,12 @@ function RecipeDetailPage() {
   const closeSimpleRecipe = () => setIsSimpleRecipeOpen(false);
 
   return (
-    <div className="recipe-page">
+    <div className={cn("recipe-page")}>
       <Header />
-      <main className="recipe-detail">
-        <div className="recipe-detail__grid">
-          <div className="recipe-detail__main">
-            <div className="recipe-photo" role="img" aria-label="김치비지찌개 완성 사진" />
+      <main className={cn("recipe-detail")}>
+        <div className={cn("recipe-detail__grid")}>
+          <div className={cn("recipe-detail__main")}>
+            <div className={cn("recipe-photo")} role="img" aria-label="김치비지찌개 완성 사진" />
 
             <AnalysisPanel
               analysisState={analysisState}
@@ -362,7 +373,7 @@ function RecipeDetailPage() {
               onCompare={showOriginalRecipe}
             />
 
-            <div className="safety-notice">
+            <div className={cn("safety-notice")}>
               <Icon name="alert" size={16} />
               <strong>실제 제품의 성분표를 반드시 확인하세요.</strong>
               <span>
@@ -371,10 +382,10 @@ function RecipeDetailPage() {
               </span>
             </div>
 
-            <section className="steps-card p-4">
-              <div className="section-heading mb-3">
+            <section className={cn("steps-card p-4")}>
+              <div className={cn("section-heading mb-3")}>
                 <h2>조리 순서</h2>
-                <button className="px-4 py-1" type="button" onClick={openSimpleRecipe}>
+                <button className={cn("px-4 py-1")} type="button" onClick={openSimpleRecipe}>
                   간단 레시피 보기
                 </button>
               </div>
@@ -382,15 +393,13 @@ function RecipeDetailPage() {
                 {displayedSteps.map((step, index) => (
                   <li
                     key={step}
-                    className={`${isComplete && index < 2 ? "step--replaced " : ""}column-gap-3 py-3`}
+                    className={cn(isComplete && index < 2 ? "step--replaced" : "", "column-gap-3 py-3")}
                   >
                     <span>{index + 1}</span>
                     <div>
-                      <p>
-                        {step}
-                      </p>
+                      <p>{step}</p>
                       {isComplete && index < 2 && (
-                        <small className="column-gap-3 mt-2 px-3 py-2">
+                        <small className={cn("column-gap-3 mt-2 px-3 py-2")}>
                           <b>↻ 대체됨</b>
                           {index === 0
                             ? "느타리버섯은 물에 오래 씻으면 수분을 많이 흡수할 수 있으므로 가볍게 닦아 사용하세요."
@@ -403,23 +412,23 @@ function RecipeDetailPage() {
               </ol>
             </section>
 
-            <section className="question-card">
+            <section className={cn("question-card")}>
               <h2>
                 <Icon name="chat" size={22} />
                 AI에게 질문하기
               </h2>
-              <p className="question-card__description">
+              <p className={cn("question-card__description")}>
                 이 레시피에 대해 궁금한 점을 자유롭게 물어보세요.
               </p>
-              <div className="question-chips">
+              <div className={cn("question-chips")}>
                 {suggestedQuestions.map(question => (
                   <button type="button" key={question}>
                     {question}
                   </button>
                 ))}
               </div>
-              <form className="question-form">
-                <label className="hidden" htmlFor="recipe-question">
+              <form className={cn("question-form")}>
+                <label className={cn("hidden")} htmlFor="recipe-question">
                   레시피 질문
                 </label>
                 <input
@@ -430,11 +439,11 @@ function RecipeDetailPage() {
                   <Icon name="send" size={21} />
                 </button>
               </form>
-              <div className="chat-messages">
-                <p className="chat-message chat-message--mine">
+              <div className={cn("chat-messages")}>
+                <p className={cn("chat-message chat-message--mine")}>
                   콩비지 대신 두부를 사용해도 될까요?
                 </p>
-                <p className="chat-message">
+                <p className={cn("chat-message")}>
                   네, 으깬 두부를 사용해도 좋아요. 물의 양을 조금 줄이면 비슷한 농도로 만들 수
                   있어요.
                 </p>
@@ -442,11 +451,11 @@ function RecipeDetailPage() {
             </section>
           </div>
 
-          <div className="recipe-detail__side">
-            <section className="recipe-summary">
+          <div className={cn("recipe-detail__side")}>
+            <section className={cn("recipe-summary")}>
               <h1>김치비지찌개</h1>
               <p>고소한 콩비지와 잘 익은 김치가 어우러진 든든한 찌개예요.</p>
-              <div className="recipe-summary__meta">
+              <div className={cn("recipe-summary__meta")}>
                 <span>
                   <Icon name="user" size={16} />
                   2인분
@@ -455,7 +464,7 @@ function RecipeDetailPage() {
                   <Icon name="clock" size={16} />
                   20분
                 </span>
-                <span className="safe-badge">쉬움</span>
+                <span className={cn("safe-badge")}>쉬움</span>
                 <span>
                   <Icon name="heart" size={16} />
                   10
@@ -465,11 +474,11 @@ function RecipeDetailPage() {
                 </button>
               </div>
             </section>
-            <section className="view-mode">
+            <section className={cn("view-mode")}>
               <p>레시피 보기 모드</p>
               <div>
                 <button
-                  className={!isComplete ? "is-active" : ""}
+                  className={cn(!isComplete ? "is-active" : "")}
                   type="button"
                   onClick={showOriginalRecipe}
                 >
@@ -477,7 +486,7 @@ function RecipeDetailPage() {
                   기존 레시피
                 </button>
                 <button
-                  className={isComplete ? "is-active" : ""}
+                  className={cn(isComplete ? "is-active" : "")}
                   type="button"
                   onClick={() => {
                     if (!isComplete) startAnalysis();
@@ -494,25 +503,27 @@ function RecipeDetailPage() {
       </main>
       {isSimpleRecipeOpen && (
         <div
-          className="simple-recipe-backdrop p-3"
+          className={cn("simple-recipe-backdrop p-3")}
           role="presentation"
           onMouseDown={event => {
             if (event.target === event.currentTarget) closeSimpleRecipe();
           }}
         >
           <section
-            className="simple-recipe-modal p-4 p-md-5"
+            className={cn("simple-recipe-modal p-4 p-md-5")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="simple-recipe-title"
           >
-            <header className="simple-recipe-modal__header d-flex align-items-start justify-content-between pb-4">
+            <header className={cn("simple-recipe-modal__header d-flex align-items-start justify-content-between pb-4")}>
               <div>
-                <h2 id="simple-recipe-title" className="mb-2">김치비지찌개</h2>
-                <p className="m-0">간단 레시피 · {displayedSteps.length}단계</p>
+                <h2 id="simple-recipe-title" className={cn("mb-2")}>
+                  김치비지찌개
+                </h2>
+                <p className={cn("m-0")}>간단 레시피 · {displayedSteps.length}단계</p>
               </div>
               <button
-                className="simple-recipe-modal__close d-grid align-items-center justify-content-center"
+                className={cn("simple-recipe-modal__close d-grid align-items-center justify-content-center")}
                 type="button"
                 aria-label="간단 레시피 닫기"
                 onClick={closeSimpleRecipe}
@@ -520,29 +531,35 @@ function RecipeDetailPage() {
                 ×
               </button>
             </header>
-            <div className="simple-recipe-modal__divider" />
-            <article className="simple-recipe-step-card d-flex flex-column justify-content-between p-4 p-md-5 my-4">
+            <div className={cn("simple-recipe-modal__divider")} />
+            <article className={cn("simple-recipe-step-card d-flex flex-column justify-content-between p-4 p-md-5 my-4")}>
               <strong>STEP {simpleRecipeStep + 1}</strong>
-              <p className="my-auto py-4">{displayedSteps[simpleRecipeStep]}</p>
-              <div className="simple-recipe-tags d-flex flex-wrap gap-2">
-                {simpleRecipeTags.map(tag => <span className="px-2 py-1" key={tag}>{tag}</span>)}
+              <p className={cn("my-auto py-4")}>{displayedSteps[simpleRecipeStep]}</p>
+              <div className={cn("simple-recipe-tags d-flex flex-wrap gap-2")}>
+                {simpleRecipeTags.map(tag => (
+                  <span className={cn("px-2 py-1")} key={tag}>
+                    {tag}
+                  </span>
+                ))}
               </div>
             </article>
             <nav
-              className="simple-recipe-controls d-flex align-items-center justify-content-between"
+              className={cn("simple-recipe-controls d-flex align-items-center justify-content-between")}
               aria-label="간단 레시피 단계 이동"
             >
               <button
-                className="simple-recipe-nav-button px-4 py-2"
+                className={cn("simple-recipe-nav-button px-4 py-2")}
                 type="button"
                 disabled={simpleRecipeStep === 0}
                 onClick={() => setSimpleRecipeStep(step => step - 1)}
               >
                 이전
               </button>
-              <strong>{simpleRecipeStep + 1} / {displayedSteps.length}</strong>
+              <strong>
+                {simpleRecipeStep + 1} / {displayedSteps.length}
+              </strong>
               <button
-                className="simple-recipe-nav-button px-4 py-2"
+                className={cn("simple-recipe-nav-button px-4 py-2")}
                 type="button"
                 disabled={simpleRecipeStep === displayedSteps.length - 1}
                 onClick={() => setSimpleRecipeStep(step => step + 1)}
@@ -553,15 +570,15 @@ function RecipeDetailPage() {
           </section>
         </div>
       )}
-      <footer className="recipe-footer">
-        <div className="recipe-footer__inner">
+      <footer className={cn("recipe-footer")}>
+        <div className={cn("recipe-footer__inner")}>
           <div>
-            <a className="recipe-logo recipe-logo--footer" href="/">
+            <a className={cn("recipe-logo recipe-logo--footer")} href="/">
               <span>한끼</span>랩
             </a>
             <p>알레르기와 비건 식단을 고려한 맞춤 레시피를 추천해드려요</p>
           </div>
-          <div className="recipe-footer__links">
+          <div className={cn("recipe-footer__links")}>
             <div>
               <strong>서비스</strong>
               <a href="/recipes">레시피목록</a>
