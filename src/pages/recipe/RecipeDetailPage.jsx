@@ -127,6 +127,9 @@ function Header() {
               회원가입
             </a>
           </div>
+          <button className={cn("recipe-menu-button")} type="button" aria-label="메뉴 열기">
+            <span className="material-symbols-outlined" aria-hidden="true">menu</span>
+          </button>
         </div>
       </header>
       <div className={cn("condition-bar")}>
@@ -382,7 +385,7 @@ function RecipeDetailPage() {
               </span>
             </div>
 
-            <section className={cn("steps-card p-4")}>
+            <section className={cn("steps-card p-3 p-xl-4")}>
               <div className={cn("section-heading mb-3")}>
                 <h2>조리 순서</h2>
                 <button className={cn("px-4 py-1")} type="button" onClick={openSimpleRecipe}>
@@ -503,19 +506,19 @@ function RecipeDetailPage() {
       </main>
       {isSimpleRecipeOpen && (
         <div
-          className={cn("simple-recipe-backdrop p-3")}
+          className={cn("simple-recipe-backdrop")}
           role="presentation"
           onMouseDown={event => {
             if (event.target === event.currentTarget) closeSimpleRecipe();
           }}
         >
           <section
-            className={cn("simple-recipe-modal p-4 p-md-5")}
+            className={cn("simple-recipe-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="simple-recipe-title"
           >
-            <header className={cn("simple-recipe-modal__header d-flex align-items-start justify-content-between pb-4")}>
+            <header className={cn("simple-recipe-modal__header d-flex align-items-start justify-content-between pb-3")}>
               <div>
                 <h2 id="simple-recipe-title" className={cn("mb-2")}>
                   김치비지찌개
@@ -532,7 +535,7 @@ function RecipeDetailPage() {
               </button>
             </header>
             <div className={cn("simple-recipe-modal__divider")} />
-            <article className={cn("simple-recipe-step-card d-flex flex-column justify-content-between p-4 p-md-5 my-4")}>
+            <article className={cn("simple-recipe-step-card d-flex flex-column justify-content-between my-3")}>
               <strong>STEP {simpleRecipeStep + 1}</strong>
               <p className={cn("my-auto py-4")}>{displayedSteps[simpleRecipeStep]}</p>
               <div className={cn("simple-recipe-tags d-flex flex-wrap gap-2")}>
