@@ -1,5 +1,6 @@
 @import url("normalize.css");
 @import url("reset.css");
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 
 :root {
   /* Color styles */
