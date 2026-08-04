@@ -1,6 +1,6 @@
 .filterPanel {
   width: 100%;
-  padding: 16px 20px;
+  padding: 20px 20px;
   background: var(--white-2);
 }
 
@@ -34,10 +34,11 @@
   padding: 0 16px;
   border: 1px solid var(--gray-1);
   border-radius: 999px;
-  background: #fff;
-  color: #555;
+  background: var(--white-1);
+  color: var(--gray-3);
   font-size: 12px;
   cursor: pointer;
+  
 }
 
 .warning {
@@ -62,8 +63,8 @@
   margin-top: 12px;
 }
 
-.resetChip,
-.selectedChip {
+.resetChip
+{
   height: 24px;
   padding: 0 12px;
   border-radius: 999px;
@@ -77,13 +78,12 @@
   cursor: pointer;
 }
 
-.selectedChip {
-  border: 1px solid #ddd;
-  background: #fff;
-  cursor: pointer;
-}
-
 .veganSelected {
   border-color: #6a9f58;
   color: #4f8740;
 } 
+
+.sort{
+  display: flex;
+  gap: 10px;
+}

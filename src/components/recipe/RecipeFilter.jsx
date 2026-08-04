@@ -46,7 +46,7 @@ function FilterPanel(){
       }else if ( current ==="warning"){
         next = "exclude"
       }else {
-        next = " none";
+        next = "none";
       }
       return{
         ...prev,
@@ -76,8 +76,15 @@ function FilterPanel(){
     ([,state]) => state !=="none"
   );
 
-  return (
+  return ( 
     <div className={styles.filterPanel}>
+      <div className={styles.sort}>
+        <span
+        className="material-icons">
+          sort
+          </span>
+          <p>필터</p>
+      </div>
       <div className={styles.filterBox}>
         <section className={styles.filterSection}>
           <div className={styles.sectionTitle}>
