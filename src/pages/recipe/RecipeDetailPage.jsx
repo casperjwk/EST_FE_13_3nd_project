@@ -82,7 +82,18 @@ const allergyOptions = [
   "잣",
 ];
 
-const veganOptions = ["비건", "락토", "오보", "락토 오보", "페스코", "폴로", "플렉시테리언"];
+const veganOptions = ["일반", "플렉시테리언", "폴로", "페스코", "락토 오보", "오보", "락토", "비건"];
+
+const veganDescriptions = {
+  일반: "제한 없음",
+  비건: "동물성 식품 제외",
+  락토: "유제품 허용",
+  오보: "달걀 허용",
+  "락토 오보": "유제품·달걀 허용",
+  페스코: "생선·해산물까지 허용",
+  폴로: "닭고기까지 허용",
+  플렉시테리언: "주로 채식, 가끔 육류 허용",
+};
 
 function Icon({ name, size = 18 }) {
   const materialIconNames = {
@@ -683,19 +694,32 @@ function RecipeDetailPage() {
           >
             <div className={cn("condition-modal__header")}>
               <div>
-                <h2 id="condition-modal-title">조건 수정</h2>
+                <h2 id="condition-modal-title">현재 조건 수정</h2>
                 <p>알레르기와 비건 정보를 선택해 맞춤 레시피를 확인하세요.</p>
               </div>
-              <button
-                className={cn("condition-modal__close")}
-                type="button"
-                aria-label="조건 수정 닫기"
-                onClick={() => setIsConditionModalOpen(false)}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  close
-                </span>
-              </button>
+              <div className={cn("condition-modal__header-actions")}>
+                <button
+                  className={cn("condition-modal__close")}
+                  type="button"
+                  aria-label="조건 수정 닫기"
+                  onClick={() => setIsConditionModalOpen(false)}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    close
+                  </span>
+                  <span className={cn("condition-modal__action-label")}>취소</span>
+                </button>
+                <button
+                  className={cn("condition-modal__header-apply")}
+                  type="button"
+                  onClick={applyConditions}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    save
+                  </span>
+                  적용
+                </button>
+              </div>
             </div>
 
             <div className={cn("condition-modal__body")}>
@@ -703,7 +727,7 @@ function RecipeDetailPage() {
                 <div className={cn("condition-option-section__title")}>
                   <div>
                     <h3>알레르기 정보</h3>
-                    <p>피해야 하는 식재료를 모두 선택해주세요.</p>
+                    <p>해당하는 알레르기를 모두 선택해주세요. 레시피 검색 시 자동으로 적용됩니다.</p>
                   </div>
                   <span>중복 선택 가능</span>
                 </div>
@@ -733,7 +757,7 @@ function RecipeDetailPage() {
                 <div className={cn("condition-option-section__title")}>
                   <div>
                     <h3>비건 유형</h3>
-                    <p>현재 실천하고 있는 식단 유형 하나를 선택해주세요.</p>
+                    <p>비건 유형은 알레르기와 별개 기준입니다. 가장 가까운 식단 유형을 선택하세요.</p>
                   </div>
                   <span>단일 선택</span>
                 </div>
@@ -753,7 +777,10 @@ function RecipeDetailPage() {
                         onClick={() => setDraftVeganType(veganType)}
                       >
                         {isSelected && <Icon name="check" size={14} />}
-                        {veganType}
+                        <span className={cn("condition-option-button__copy")}>
+                          <strong>{veganType}</strong>
+                          <small>{veganDescriptions[veganType]}</small>
+                        </span>
                       </button>
                     );
                   })}
