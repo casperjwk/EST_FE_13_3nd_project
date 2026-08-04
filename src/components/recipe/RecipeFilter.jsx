@@ -88,7 +88,8 @@ function FilterPanel(){
       <div className={styles.filterBox}>
         <section className={styles.filterSection}>
           <div className={styles.sectionTitle}>
-            <span>알레르기 분류</span>
+            <p className={`${styles.sectionTitleP} text-l`}>알레르기 분류</p>
+            <span className={`${styles.sectionSpan} text-xs`}>빨강색은 분류에서 배제 주황색은 분류에서 포함입니다</span>
           </div>
           <div className={styles.chipList}>
             {allergyItems.map((item)=>{
@@ -98,7 +99,7 @@ function FilterPanel(){
                 <button
                   key={item}
                   type="button"
-                  className={`${styles.chip} ${styles.allergyChip} ${styles[state]}`}
+                  className={`${styles.chip} ${styles.allergyChip} ${styles[state]} text-button-s`}
                   onClick={() => handleAllergyClick(item)}
                 >
                   {item}
@@ -110,7 +111,7 @@ function FilterPanel(){
 
         <section className={styles.filterSection}>
           <div className={styles.sectionTitle}>
-            <span>비건 분류</span>
+            <span className={styles.sectionTitleP}>비건 분류</span>
           </div>
 
           <div className={styles.chipList}>
@@ -122,7 +123,7 @@ function FilterPanel(){
                   type="button"
                   className={`${styles.chip} ${styles.veganChip} ${
                     selected ? styles.selected : ""
-                  }`}
+                  } text-button-s`}
                   onClick={()=> handleVeganClick(item)}
                 >
                   {item}
@@ -137,7 +138,7 @@ function FilterPanel(){
         {selectedAllergies.length > 0 && (
           <button
             type="button"
-            className={styles.resetChip}
+            className={`${styles.resetChip} text-button-s`}
             onClick={resetAllFilters}
           >
             x 전체삭제
@@ -148,7 +149,7 @@ function FilterPanel(){
         <button
           key={item}
           type="button"
-          className={`${styles.chip} ${styles.allergyChip} ${styles[state]}`}
+          className={`${styles.chip} ${styles.allergyChip} ${styles[state]} text-button-s`}
           onClick={() => removeAllergyFilter(item)}
         >
           {item}
