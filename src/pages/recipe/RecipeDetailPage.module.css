@@ -1334,13 +1334,6 @@
   font-weight: 600;
 }
 
-.simple-recipe-tags span {
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  border-radius: 18px;
-  background: white;
-}
-
 .simple-recipe-controls > strong {
   color: #000;
   font-size: 20px;
@@ -2240,10 +2233,6 @@
 
   .simple-recipe-step-card > p {
     font-size: 34px;
-  }
-
-  .simple-recipe-tags span {
-    font-size: 16px;
   }
 
   .simple-recipe-controls > strong {

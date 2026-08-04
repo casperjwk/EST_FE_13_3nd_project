@@ -52,14 +52,6 @@ const suggestedQuestions = [
   "보관 방법이 궁금해요",
 ];
 
-const simpleRecipeTags = [
-  "김치 1컵 (150g)",
-  "양파 1/4개 (70g)",
-  "대파 1/2대 (70g)",
-  "청양고추 1개 (10g)",
-  "느타리버섯 200g",
-];
-
 const allergyOptions = [
   "난류",
   "우유",
@@ -859,13 +851,6 @@ function RecipeDetailPage() {
             >
               <strong>STEP {simpleRecipeStep + 1}</strong>
               <p className={cn("my-auto py-4")}>{displayedSteps[simpleRecipeStep]}</p>
-              <div className={cn("simple-recipe-tags d-flex flex-wrap gap-2")}>
-                {simpleRecipeTags.map(tag => (
-                  <span className={cn("px-2 py-1 text-m")} key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
             </article>
             <nav
               className={cn(
