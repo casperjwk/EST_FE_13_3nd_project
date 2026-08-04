@@ -60,6 +60,30 @@ const simpleRecipeTags = [
   "느타리버섯 200g",
 ];
 
+const allergyOptions = [
+  "난류",
+  "우유",
+  "메밀",
+  "땅콩",
+  "대두",
+  "밀",
+  "고등어",
+  "게",
+  "새우",
+  "돼지고기",
+  "복숭아",
+  "토마토",
+  "아황산류",
+  "호두",
+  "닭고기",
+  "쇠고기",
+  "오징어",
+  "조개류",
+  "잣",
+];
+
+const veganOptions = ["비건", "락토", "오보", "락토 오보", "페스코", "폴로", "플렉시테리언"];
+
 function Icon({ name, size = 18 }) {
   const paths = {
     user: (
@@ -108,7 +132,7 @@ function Icon({ name, size = 18 }) {
   );
 }
 
-function Header() {
+function Header({ allergies, veganType, onOpenConditions }) {
   return (
     <>
       <header className={cn("recipe-header")}>
@@ -136,16 +160,20 @@ function Header() {
         <div className={cn("condition-bar__inner")}>
           <div>
             <strong>현재 적용 조건 :</strong>
-            <span className={cn("condition-tag condition-tag--warning")}>
-              <Icon name="alert" size={13} />
-              돼지고기 제외
-            </span>
-            <span className={cn("condition-tag")}>
-              <Icon name="check" size={13} />
-              페스코
-            </span>
+            {allergies.map(allergy => (
+              <span className={cn("condition-tag condition-tag--warning")} key={allergy}>
+                <Icon name="alert" size={13} />
+                {allergy} 제외
+              </span>
+            ))}
+            {veganType && (
+              <span className={cn("condition-tag")}>
+                <Icon name="check" size={13} />
+                {veganType}
+              </span>
+            )}
           </div>
-          <button type="button">조건 수정</button>
+          <button type="button" onClick={onOpenConditions}>조건 수정</button>
         </div>
       </div>
     </>
@@ -305,6 +333,11 @@ function RecipeDetailPage() {
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [isSimpleRecipeOpen, setIsSimpleRecipeOpen] = useState(false);
   const [simpleRecipeStep, setSimpleRecipeStep] = useState(0);
+  const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
+  const [appliedAllergies, setAppliedAllergies] = useState(["돼지고기"]);
+  const [appliedVeganType, setAppliedVeganType] = useState("페스코");
+  const [draftAllergies, setDraftAllergies] = useState(["돼지고기"]);
+  const [draftVeganType, setDraftVeganType] = useState("페스코");
   const isComplete = analysisState === "complete";
   const adaptedSteps = [
     "김치는 3cm 두께로 큼직하게 썰고, 양파는 2cm 두께로 굵게 채 썰어주세요. 대파와 청양고추는 1cm 간격으로 송송 썰고, 느타리버섯은 먹기 좋게 찢어주세요.",
@@ -344,6 +377,20 @@ function RecipeDetailPage() {
     };
   }, [isSimpleRecipeOpen]);
 
+  useEffect(() => {
+    if (!isConditionModalOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = event => {
+      if (event.key === "Escape") setIsConditionModalOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isConditionModalOpen]);
+
   const startAnalysis = () => {
     setAnalysisProgress(0);
     setAnalysisState("analyzing");
@@ -361,9 +408,33 @@ function RecipeDetailPage() {
 
   const closeSimpleRecipe = () => setIsSimpleRecipeOpen(false);
 
+  const openConditionModal = () => {
+    setDraftAllergies(appliedAllergies);
+    setDraftVeganType(appliedVeganType);
+    setIsConditionModalOpen(true);
+  };
+
+  const toggleAllergy = allergy => {
+    setDraftAllergies(current =>
+      current.includes(allergy)
+        ? current.filter(item => item !== allergy)
+        : [...current, allergy],
+    );
+  };
+
+  const applyConditions = () => {
+    setAppliedAllergies(draftAllergies);
+    setAppliedVeganType(draftVeganType);
+    setIsConditionModalOpen(false);
+  };
+
   return (
     <div className={cn("recipe-page")}>
-      <Header />
+      <Header
+        allergies={appliedAllergies}
+        veganType={appliedVeganType}
+        onOpenConditions={openConditionModal}
+      />
       <main className={cn("recipe-detail")}>
         <div className={cn("recipe-detail__grid")}>
           <div className={cn("recipe-detail__main")}>
@@ -504,6 +575,117 @@ function RecipeDetailPage() {
           </div>
         </div>
       </main>
+      {isConditionModalOpen && (
+        <div
+          className={cn("condition-modal-backdrop")}
+          role="presentation"
+          onMouseDown={event => {
+            if (event.target === event.currentTarget) setIsConditionModalOpen(false);
+          }}
+        >
+          <section
+            className={cn("condition-modal")}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="condition-modal-title"
+          >
+            <header className={cn("condition-modal__header")}>
+              <div>
+                <h2 id="condition-modal-title">조건 수정</h2>
+                <p>알레르기와 비건 정보를 선택해 맞춤 레시피를 확인하세요.</p>
+              </div>
+              <button
+                className={cn("condition-modal__close")}
+                type="button"
+                aria-label="조건 수정 닫기"
+                onClick={() => setIsConditionModalOpen(false)}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </header>
+
+            <div className={cn("condition-modal__body")}>
+              <section className={cn("condition-option-section")}>
+                <div className={cn("condition-option-section__title")}>
+                  <div>
+                    <h3>알레르기 정보</h3>
+                    <p>피해야 하는 식재료를 모두 선택해주세요.</p>
+                  </div>
+                  <span>중복 선택 가능</span>
+                </div>
+                <div className={cn("condition-option-grid condition-option-grid--allergy")}>
+                  {allergyOptions.map(allergy => {
+                    const isSelected = draftAllergies.includes(allergy);
+                    return (
+                      <button
+                        className={cn(
+                          "condition-option-button condition-option-button--allergy",
+                          isSelected ? "is-selected" : "",
+                        )}
+                        type="button"
+                        aria-pressed={isSelected}
+                        key={allergy}
+                        onClick={() => toggleAllergy(allergy)}
+                      >
+                        {isSelected && <Icon name="check" size={14} />}
+                        {allergy}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className={cn("condition-option-section")}>
+                <div className={cn("condition-option-section__title")}>
+                  <div>
+                    <h3>비건 유형</h3>
+                    <p>현재 실천하고 있는 식단 유형 하나를 선택해주세요.</p>
+                  </div>
+                  <span>단일 선택</span>
+                </div>
+                <div className={cn("condition-option-grid condition-option-grid--vegan")}>
+                  {veganOptions.map(veganType => {
+                    const isSelected = draftVeganType === veganType;
+                    return (
+                      <button
+                        className={cn(
+                          "condition-option-button condition-option-button--vegan",
+                          isSelected ? "is-selected" : "",
+                        )}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        key={veganType}
+                        onClick={() => setDraftVeganType(veganType)}
+                      >
+                        {isSelected && <Icon name="check" size={14} />}
+                        {veganType}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
+
+            <footer className={cn("condition-modal__footer")}>
+              <button
+                className={cn("condition-modal__reset")}
+                type="button"
+                onClick={() => {
+                  setDraftAllergies([]);
+                  setDraftVeganType("");
+                }}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">refresh</span>
+                선택 초기화
+              </button>
+              <button className={cn("condition-modal__apply")} type="button" onClick={applyConditions}>
+                조건 적용하기
+              </button>
+            </footer>
+          </section>
+        </div>
+      )}
       {isSimpleRecipeOpen && (
         <div
           className={cn("simple-recipe-backdrop")}
