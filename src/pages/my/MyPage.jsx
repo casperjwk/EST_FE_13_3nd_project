@@ -21,7 +21,7 @@ function MyPage() {
   return (
     <div className={styles.myPage}>
       <div className={`container ${styles.myPageInner}`}>
-        <h2 className={`text-title-m ${styles.myPageTitle}`}>
+        <h2 className={styles.myPageTitle}>
           <span className="material-icons" aria-hidden="true">
             face
           </span>
@@ -30,17 +30,10 @@ function MyPage() {
 
         <section className={styles.profileCard}>
           <div className={styles.profileCardLeft}>
-            <label className={styles.profileCardAvatar}>
-              {photoUrl ? (
-                <img src={photoUrl} alt="프로필 사진" />
-              ) : (
-                <span
-                  className={`material-icons ${styles.profileCardAvatarIcon}`}
-                  aria-hidden="true"
-                >
-                  person
-                </span>
-              )}
+            <label
+              className={`${styles.profileCardAvatar} ${photoUrl ? "" : styles.profileCardAvatarEmpty}`}
+            >
+              {photoUrl && <img src={photoUrl} alt="프로필 사진" />}
               <span
                 className={`material-icons ${styles.profileCardAvatarEdit}`}
                 aria-hidden="true"
@@ -55,11 +48,13 @@ function MyPage() {
               />
             </label>
 
-            <div>
-              <p className={`text-title-s ${styles.profileCardName}`}>{user.name}</p>
+            <div className={styles.profileCardText}>
+              <p className={styles.profileCardName}>{user.name}</p>
               <p className={`text-s ${styles.profileCardEmail}`}>{user.email}</p>
             </div>
           </div>
+
+          <div className={styles.profileCardDivider} />
 
           <div className={styles.profileCardRight}>
             <div className={styles.profileCardFavoriteStat}>

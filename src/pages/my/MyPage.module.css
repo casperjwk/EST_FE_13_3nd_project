@@ -1,5 +1,6 @@
 :global(.container).myPageInner {
   max-width: 370px;
+  padding: 0;
 }
 @media (min-width: 768px) {
   :global(.container).myPageInner {
@@ -21,36 +22,67 @@
 .myPageTitle {
   display: flex;
   align-items: center;
-  gap: 5px;
-  margin: 0 0 40px;
+  gap: 3px;
+  margin: 0 0 30px;
   color: var(--black-1);
+  font-size: var(--title-s);
+  line-height: 130%;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .myPageTitle {
+    gap: 5px;
+    margin-bottom: 40px;
+    font-size: var(--title-m);
+  }
 }
 
 .myPageTitle :global(.material-icons) {
-  font-size: 32px;
+  font-size: 30px;
+}
+@media (min-width: 768px) {
+  .myPageTitle :global(.material-icons) {
+    font-size: 32px;
+  }
 }
 
 .profileCard {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  width: 370px;
+  height: 308px;
+  margin: 0 auto;
   padding: 40px 30px;
   border: 1px solid var(--gray-1);
   border-radius: 12px;
   background: var(--white-1);
 }
+@media (min-width: 768px) {
+  .profileCard {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    gap: 16px;
+  }
+}
 
 .profileCardLeft {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 20px;
 }
 
+.profileCardText {
+  text-align: left;
+}
+
 .profileCardAvatar {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--secondary);
@@ -61,6 +93,12 @@
   overflow: hidden;
   cursor: pointer;
 }
+@media (min-width: 768px) {
+  .profileCardAvatar {
+    width: 100px;
+    height: 100px;
+  }
+}
 
 .profileCardAvatar img {
   width: 100%;
@@ -68,34 +106,61 @@
   object-fit: cover;
 }
 
-.profileCardAvatarIcon {
-  font-size: 48px;
-  color: var(--white-1);
-}
-
 .profileCardAvatarEdit {
   position: absolute;
-  right: -2px;
-  bottom: -2px;
-  width: 22px;
-  height: 22px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--primary);
+  background: rgba(1, 1, 1, 0.3);
   color: var(--white-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  border: 2px solid var(--white-1);
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.profileCardAvatar:hover .profileCardAvatarEdit {
+  opacity: 1;
+}
+
+.profileCardAvatarEmpty .profileCardAvatarEdit {
+  opacity: 1;
 }
 
 .profileCardName {
-  margin: 0 0 4px;
+  font-size: var(--subtitle-l);
+  color: var(--black-1);
+  line-height: 140%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .profileCardName {
+    font-size: var(--title-s);
+    line-height: 130%;
+    font-weight: 700;
+  }
 }
 
 .profileCardEmail {
   margin: 0;
   color: var(--gray-3);
+}
+
+.profileCardDivider {
+  width: 300px;
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid var(--gray-1);
+}
+@media (min-width: 768px) {
+  .profileCardDivider {
+    display: none;
+  }
 }
 
 .profileCardRight {
@@ -112,7 +177,6 @@
 }
 
 .profileCardFavoriteCount {
-  margin: 0;
   color: var(--primary);
 }
 
@@ -123,11 +187,31 @@
 .profileCardFavoriteBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 6px 14px;
+  width: 290px;
+  height: 34px;
+  padding: 5px 10px;
+  box-sizing: border-box;
   border: 1px solid var(--primary);
   border-radius: 999px;
   color: var(--primary);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+@media (min-width: 768px) {
+  .profileCardFavoriteBtn {
+    width: auto;
+    height: auto;
+  }
+}
+
+.profileCardFavoriteBtn:hover {
+  border-color: transparent;
+  background: var(--primary);
+  color: var(--white-1);
 }
 
 .profileCardFavoriteBtn :global(.material-icons) {
