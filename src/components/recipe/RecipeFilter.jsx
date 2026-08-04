@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./recipeFilter.module.css";
 
 const allergyItems = [
   "우유",
@@ -76,13 +77,13 @@ function FilterPanel(){
   );
 
   return (
-    <div className="filter-panel">
-      <div className="filter-box">
-        <section className="filter-section">
-          <div className="section-title">
+    <div className={styles.filterPanel}>
+      <div className={styles.filterBox}>
+        <section className={styles.filterSection}>
+          <div className={styles.sectionTitle}>
             <span>알레르기 분류</span>
           </div>
-          <div className="chip-list">
+          <div className={styles.chipList}>
             {allergyItems.map((item)=>{
               const state = allergyFilters[item] || "none";
 
@@ -90,7 +91,7 @@ function FilterPanel(){
                 <button
                   key={item}
                   type="button"
-                  className={`chip allergy-chip ${state}`}
+                  className={`${styles.chip} ${styles.allergyChip} ${styles[state]}`}
                   onClick={() => handleAllergyClick(item)}
                 >
                   {item}
@@ -100,19 +101,21 @@ function FilterPanel(){
           </div>
         </section>
 
-        <section className="filter-section">
-          <div className="section-title">
+        <section className={styles.filterSection}>
+          <div className={styles.sectionTitle}>
             <span>비건 분류</span>
           </div>
 
-          <div className="chip-list">
+          <div className={styles.chipList}>
             {veganItems.map((item)=>{
               const selected = veganFilters === item;
               return(
                 <button
                   key={item}
                   type="button"
-                  className={`chip vegan-chip ${selected ? "selected": ""}`}
+                  className={`${styles.chip} ${styles.veganChip} ${
+                    selected ? styles.selected : ""
+                  }`}
                   onClick={()=> handleVeganClick(item)}
                 >
                   {item}
@@ -123,11 +126,11 @@ function FilterPanel(){
         </section>
       </div>
 
-      <div className="selected-filter-list">
+      <div className={styles.selectedFilterList}>
         {selectedAllergies.length > 0 && (
           <button
             type="button"
-            className="reset-chip"
+            className={styles.resetChip}
             onClick={resetAllFilters}
           >
             x 전체삭제
@@ -138,7 +141,7 @@ function FilterPanel(){
         <button
           key={item}
           type="button"
-          className={`selected-chip allergy-selected ${state}`}
+          className={`${styles.chip} ${styles.allergyChip} ${styles[state]}`}
           onClick={() => removeAllergyFilter(item)}
         >
           {item}
