@@ -1,4 +1,4 @@
-const { useState } = require("react");
+import { useState } from "react";
 
 const allergyItems = [
   "우유",
@@ -55,12 +55,20 @@ function FilterPanel(){
   };
 
   const handleVeganClick = (item) => {
-    setVeganFilter(item);
+    setVeganFilters(item);
   }
 
   const resetAllFilters = () => {
     setAllergyFilters({});
     setVeganFilters("일반");
+  };
+
+  const removeAllergyFilter = (item) => {
+    setAllergyFilters((prev) => {
+      const next = { ...prev };
+      delete next[item];
+      return next;
+    });
   };
 
   const selectedAllergies = Object.entries(allergyFilters).filter(
@@ -95,13 +103,50 @@ function FilterPanel(){
         <section className="filter-section">
           <div className="section-title">
             <span>비건 분류</span>
-            
+          </div>
+
+          <div className="chip-list">
+            {veganItems.map((item)=>{
+              const selected = veganFilters === item;
+              return(
+                <button
+                  key={item}
+                  type="button"
+                  className={`chip vegan-chip ${selected ? "selected": ""}`}
+                  onClick={()=> handleVeganClick(item)}
+                >
+                  {item}
+                </button>
+              );
+            })}
           </div>
         </section>
       </div>
+
+      <div className="selected-filter-list">
+        {selectedAllergies.length > 0 && (
+          <button
+            type="button"
+            className="reset-chip"
+            onClick={resetAllFilters}
+          >
+            x 전체삭제
+          </button>
+        )}
+
+        {selectedAllergies.map(([item, state]) => (
+        <button
+          key={item}
+          type="button"
+          className={`selected-chip allergy-selected ${state}`}
+          onClick={() => removeAllergyFilter(item)}
+        >
+          {item}
+        </button>
+        ))}
+      </div>
     </div>
   )
-
-
-
 }
+
+export default FilterPanel;
