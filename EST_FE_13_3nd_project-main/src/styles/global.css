@@ -1,0 +1,175 @@
+@import url("normalize.css");
+@import url("reset.css");
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+
+:root {
+  /* Color styles */
+  --primary: rgba(106, 143, 91, 1);
+  --secondary: rgba(168, 198, 134, 1);
+  --danger: rgba(192, 57, 43, 1);
+  --warning: rgba(233, 103, 43, 1);
+  --tag: rgba(217, 164, 65, 1);
+  --black-1: rgba(0, 0, 0, 1);
+  --black-2: rgba(67, 67, 67, 1);
+  --white-1: rgba(255, 255, 255, 1);
+  --white-2: rgba(248, 247, 242, 1);
+  --gray-1: rgba(217, 217, 217, 1);
+  --gray-2: rgba(182, 182, 182, 1);
+  --gray-3: rgba(124, 124, 124, 1);
+
+  /* Layout */
+  --base-font: 12px;
+
+  /* Text-size styles */
+  --heading-l: 56px;
+  --heading-m: 48px;
+  --heading-s: 40px;
+  --title-l: 36px;
+  --title-m: 32px;
+  --title-s: 30px;
+  --subtitle-l: 28px;
+  --subtitle-m: 24px;
+  --subtitle-s: 20px;
+  --large: 18px;
+  --medium: 16px;
+  --small: 14px;
+  --xsmall: 12px;
+}
+
+/* 타이포그래피 */
+
+.text-heading-l {
+  font-size: var(--heading-l);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-heading-s {
+  font-size: var(--heading-m);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-heading-l {
+  font-size: var(--heading-s);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-title-l {
+  font-size: var(--title-l);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-title-m {
+  font-size: var(--title-m);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-title-s {
+  font-size: var(--title-s);
+  line-height: 130%;
+  font-weight: 700;
+}
+.text-subtitle-l {
+  font-size: var(--subtitle-l);
+  line-height: 140%;
+  font-weight: 600;
+}
+.text-subtitle-m {
+  font-size: var(--subtitle-m);
+  line-height: 140%;
+  font-weight: 600;
+}
+.text-subtitle-s {
+  font-size: var(--subtitle-s);
+  line-height: 140%;
+  font-weight: 600;
+}
+.text-button-l {
+  font-size: var(--large);
+  line-height: 150%;
+  font-weight: 600;
+}
+.text-button-m {
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 600;
+}
+.text-button-s {
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 600;
+}
+.text-button-xs {
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 600;
+}
+.text-l {
+  font-size: var(--large);
+  line-height: 150%;
+  font-weight: 400;
+}
+.text-m {
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 400;
+}
+.text-s {
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+.text-xs {
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Pretendard", sans-serif;
+  -webkit-font-smoothing: antialiased; /* 글꼴 외곽선 정밀도 향상 */
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--black-1);
+  overscroll-behavior-y: none;
+}
+
+/* 컨테이너 */
+.container {
+  width: 100%;
+  max-width: 402px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 1272px) {
+  .container {
+    max-width: 1272px;
+    margin: 0 auto;
+  }
+}
+
+/* 버튼 */
+a {
+  cursor: pointer;
+}
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+.hidden {
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
