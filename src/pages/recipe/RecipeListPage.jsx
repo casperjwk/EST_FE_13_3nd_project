@@ -1,3 +1,4 @@
+import RecipeCard from "../../components/recipe/RecipeCard";
 import FilterPanel from "../../components/recipe/RecipeFilter";
 
 function RecipeListPage() {
@@ -7,6 +8,15 @@ function RecipeListPage() {
       <FilterPanel/>
       <div></div>
       
+      <RecipeCard
+        category="쉬움"
+        name="음식"
+        description="음식설명음식설명음식설명음식설명음식설명음식설명음식설명"
+        time="15"
+        serves="1"
+        likes="22"
+        contry="한식"
+      />
     </div>
   );
 }
