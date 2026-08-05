@@ -14,6 +14,7 @@ import SignupPage from "./pages/auth/SignupPage";
 
 import AdminPage from "./pages/admin/AdminPage";
 import NotFoundPage from "./pages/notfound/NotFoundPage";
+import RecipeCreatePage from "./pages/admin/RecipeCreatePage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="/create" element={<RecipeCreatePage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
