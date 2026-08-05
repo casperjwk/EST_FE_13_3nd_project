@@ -1,0 +1,123 @@
+import { supabase } from "../lib/supabase";
+
+const RECIPE_IMAGE_BUCKET = "recipe-images";
+
+export async function getFoodCategories() {
+  const { data, error } = await supabase.from("food_categories").select("id, name").order("name");
+
+  if (error) {
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+async function uploadRecipeImage(file) {
+  if (!file) return { imageUrl: null, imagePath: null };
+
+  const extension = file.name.split(".").pop()?.toLowerCase() || "image";
+  const imagePath = `recipes/${crypto.randomUUID()}.${extension}`;
+  const { error } = await supabase.storage.from(RECIPE_IMAGE_BUCKET).upload(imagePath, file, {
+    cacheControl: "3600",
+    contentType: file.type,
+    upsert: false,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  const { data } = supabase.storage.from(RECIPE_IMAGE_BUCKET).getPublicUrl(imagePath);
+  return { imageUrl: data.publicUrl, imagePath };
+}
+
+async function findOrCreateIngredient({ name, category_id: categoryId }) {
+  let query = supabase.from("ingredients").select("id").eq("name", name).limit(1);
+  query = categoryId ? query.eq("category_id", categoryId) : query.is("category_id", null);
+
+  const { data: existingIngredients, error: findError } = await query;
+  if (findError) throw findError;
+  if (existingIngredients?.[0]) return existingIngredients[0].id;
+
+  const { data, error } = await supabase
+    .from("ingredients")
+    .insert({ name, category_id: categoryId })
+    .select("id")
+    .single();
+
+  if (error) throw error;
+  return data.id;
+}
+
+export async function createRecipe(recipe, imageFile = null) {
+  const { imageUrl, imagePath } = await uploadRecipeImage(imageFile);
+  const { ingredients = [], cooking_steps: cookingSteps = {}, ...recipeFields } = recipe;
+  const recipeToInsert = { ...recipeFields, image_url: imageUrl };
+  const { data: createdRecipe, error: recipeError } = await supabase
+    .from("recipes")
+    .insert(recipeToInsert)
+    .select()
+    .single();
+
+  if (recipeError) {
+    if (imagePath) {
+      await supabase.storage.from(RECIPE_IMAGE_BUCKET).remove([imagePath]);
+    }
+    throw recipeError;
+  }
+
+  try {
+    const ingredientIdCache = new Map();
+    const recipeIngredients = [];
+
+    for (const [index, ingredient] of ingredients.entries()) {
+      const cacheKey = `${ingredient.name}::${ingredient.category_id ?? ""}`;
+      let ingredientId = ingredientIdCache.get(cacheKey);
+
+      if (!ingredientId) {
+        ingredientId = await findOrCreateIngredient(ingredient);
+        ingredientIdCache.set(cacheKey, ingredientId);
+      }
+
+      recipeIngredients.push({
+        recipe_id: createdRecipe.id,
+        ingredient_id: ingredientId,
+        amount: ingredient.amount,
+        sort_order: index + 1,
+      });
+    }
+
+    if (recipeIngredients.length > 0) {
+      const { error } = await supabase.from("recipe_ingredients").insert(recipeIngredients);
+      if (error) throw error;
+    }
+
+    const recipeSteps = [
+      ...(cookingSteps.detail ?? []).map(step => ({
+        recipe_id: createdRecipe.id,
+        step_number: step.step,
+        description: step.description,
+        step_type: "detail",
+      })),
+      ...(cookingSteps.simple ?? []).map(step => ({
+        recipe_id: createdRecipe.id,
+        step_number: step.step,
+        description: step.description,
+        step_type: "brief",
+      })),
+    ];
+
+    if (recipeSteps.length > 0) {
+      const { error } = await supabase.from("recipe_steps").insert(recipeSteps);
+      if (error) throw error;
+    }
+
+    return createdRecipe;
+  } catch (error) {
+    await supabase.from("recipes").delete().eq("id", createdRecipe.id);
+    if (imagePath) {
+      await supabase.storage.from(RECIPE_IMAGE_BUCKET).remove([imagePath]);
+    }
+    throw error;
+  }
+}

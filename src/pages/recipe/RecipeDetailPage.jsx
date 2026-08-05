@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Badge from "../../components/common/Badge";
+import { supabase } from "../../lib/supabase";
 import styles from "./RecipeDetailPage.module.css";
 
 function cn(...classNames) {
@@ -10,33 +12,6 @@ function cn(...classNames) {
     .map(className => styles[className] ?? className)
     .join(" ");
 }
-
-const ingredients = [
-  { name: "김치", amount: "1컵 (150g)" },
-  {
-    name: "돼지고기 앞다리살",
-    amount: "3/5컵 (100g)",
-    warning: "돼지고기 알레르기 위험 + 페스코 미적합",
-  },
-  { name: "콩비지", amount: "1봉 (300g)" },
-  { name: "식용유", amount: "2스푼 (20g)" },
-  { name: "양파", amount: "1/4개 (70g)" },
-  { name: "대파", amount: "1/2대 (50g)" },
-  { name: "청양고추", amount: "1개 (10g)" },
-  { name: "연두진", amount: "1스푼 (10g)" },
-  { name: "연두링(멸치디포리)", amount: "1개 (4g)" },
-  { name: "다진 마늘", amount: "1스푼 (10g)" },
-  { name: "물", amount: "2컵 (400ml)" },
-  { name: "김치국물", amount: "5스푼 (50g)" },
-];
-
-const steps = [
-  "김치는 3cm 두께로 큼직하게 썰어주고, 양파는 2cm 두께로 굵게 채 썰어주세요. 대파와 청양고추는 1cm 간격으로 송송 썰어주세요.",
-  "중불로 예열한 냄비에 식용유를 두르고, 돼지고기를 넣어 2분 동안 노릇노릇하게 볶아 주세요.",
-  "같은 냄비에 썰어둔 김치를 넣고 2분 동안 중불에서 볶아 주세요. 그다음 양념재료(연두진, 연두링, 다진 마늘, 김치국물, 물)를 모두 넣고 센불에서 한소끔 끓인 후, 끓어오르면 중불로 줄여 2분 더 끓여주세요.",
-  "약불로 줄인 후, 콩비지를 넣어 1분 동안 저어가며 끓여주세요.",
-  "중불로 올려, 손질한 양파, 대파, 청양고추를 넣고 3분 정도 더 끓여주면 완성!",
-];
 
 const analysisSteps = [
   "내 알레르기 정보를 확인하고 있어요",
@@ -144,7 +119,7 @@ function Condition({ allergies, veganType, onOpenConditions }) {
   );
 }
 
-function IngredientPanel({ isComplete }) {
+function IngredientPanel({ isComplete, ingredients }) {
   const displayedIngredients = isComplete
     ? ingredients.map(ingredient =>
         ingredient.warning
@@ -166,7 +141,7 @@ function IngredientPanel({ isComplete }) {
       <ul>
         {displayedIngredients.map(ingredient => (
           <li
-            key={ingredient.name}
+            key={ingredient.id ?? ingredient.name}
             className={cn(ingredient.warning ? "ingredient ingredient--warning" : "ingredient")}
           >
             <div className={cn("ingredient__row")}>
@@ -257,7 +232,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
         </div>
         <div className={cn("complete-card__actions")}>
           <button
-            className={cn("primary-button primary-button--soft text-button-xs")}
+            className={cn("primary-button primary-button--soft text-button-s")}
             type="button"
             onClick={onCompare}
           >
@@ -265,7 +240,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
             기존 레시피와 비교하기
           </button>
           <button
-            className={cn("secondary-button text-button-xs")}
+            className={cn("secondary-button text-button-s")}
             type="button"
             onClick={onMoreInfo}
           >
@@ -309,6 +284,10 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
 }
 
 function RecipeDetailPage() {
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
+  const [isRecipeLoading, setIsRecipeLoading] = useState(true);
+  const [recipeError, setRecipeError] = useState("");
   const [analysisState, setAnalysisState] = useState("before");
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [isSimpleRecipeOpen, setIsSimpleRecipeOpen] = useState(false);
@@ -321,14 +300,98 @@ function RecipeDetailPage() {
   const [draftVeganType, setDraftVeganType] = useState("페스코");
   const [isFavorite, setIsFavorite] = useState(false);
   const isComplete = analysisState === "complete";
-  const adaptedSteps = [
-    "김치는 3cm 두께로 큼직하게 썰고, 양파는 2cm 두께로 굵게 채 썰어주세요. 대파와 청양고추는 1cm 간격으로 송송 썰고, 느타리버섯은 먹기 좋게 찢어주세요.",
-    "중불로 예열한 냄비에 식용유를 두르고, 느타리버섯을 넣어 2~3분 동안 볶아주세요. 버섯의 수분이 어느 정도 날아가고 살짝 노릇해질 때까지 볶아주세요.",
-    steps[2],
-    steps[3],
-    steps[4],
-  ];
+  const ingredients = (recipe?.recipe_ingredients ?? [])
+    .slice()
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map(item => ({
+      id: item.ingredients.id,
+      name: item.ingredients.name,
+      amount: item.amount,
+      categoryId: item.ingredients.category_id,
+      warning:
+        item.ingredients.category_id === "pork"
+          ? "돼지고기 알레르기 위험 + 페스코 미적합"
+          : undefined,
+    }));
+  const steps = (recipe?.recipe_steps ?? [])
+    .filter(step => step.step_type === "detail")
+    .sort((a, b) => a.step_number - b.step_number)
+    .map(step => step.description);
+  const briefSteps = (recipe?.recipe_steps ?? [])
+    .filter(step => step.step_type === "brief")
+    .sort((a, b) => a.step_number - b.step_number)
+    .map(step => step.description);
+  const adaptedSteps = steps.map((step, index) => {
+    if (index === 0) {
+      return "김치는 3cm 두께로 큼직하게 썰고, 양파는 2cm 두께로 굵게 채 썰어주세요. 대파와 청양고추는 1cm 간격으로 송송 썰고, 느타리버섯은 먹기 좋게 찢어주세요.";
+    }
+    if (index === 1) {
+      return "중불로 예열한 냄비에 식용유를 두르고, 느타리버섯을 넣어 2~3분 동안 볶아주세요. 버섯의 수분이 어느 정도 날아가고 살짝 노릇해질 때까지 볶아주세요.";
+    }
+    return step;
+  });
   const displayedSteps = isComplete ? adaptedSteps : steps;
+  const simpleModalSteps = isComplete ? adaptedSteps : briefSteps.length > 0 ? briefSteps : steps;
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadRecipe() {
+      if (!id) {
+        setRecipeError("레시피 ID가 없습니다.");
+        setIsRecipeLoading(false);
+        return;
+      }
+
+      setIsRecipeLoading(true);
+      setRecipeError("");
+      const { data, error } = await supabase
+        .from("recipes")
+        .select(`
+          id,
+          title,
+          description,
+          image_url,
+          servings,
+          cooking_time,
+          difficulty,
+          recipe_ingredients (
+            amount,
+            sort_order,
+            ingredients (
+              id,
+              name,
+              category_id
+            )
+          ),
+          recipe_steps (
+            step_number,
+            description,
+            step_type
+          )
+        `)
+        .eq("id", id)
+        .maybeSingle();
+
+      if (!isActive) return;
+      if (error) {
+        console.error("[HankkiLab] Recipe detail error:", error);
+        setRecipeError("레시피를 불러오지 못했습니다.");
+      } else if (!data) {
+        setRecipeError("존재하지 않는 레시피입니다.");
+      } else {
+        setRecipe(data);
+        setAnalysisState("before");
+        setSimpleRecipeStep(0);
+      }
+      setIsRecipeLoading(false);
+    }
+
+    loadRecipe();
+    return () => {
+      isActive = false;
+    };
+  }, [id]);
 
   useEffect(() => {
     if (analysisState !== "analyzing") return undefined;
@@ -422,6 +485,20 @@ function RecipeDetailPage() {
     setIsConditionModalOpen(false);
   };
 
+  if (isRecipeLoading) {
+    return <div className={cn("recipe-page p-4 text-s")}>레시피를 불러오는 중입니다.</div>;
+  }
+
+  if (recipeError) {
+    return <div className={cn("recipe-page p-4 text-s")}>{recipeError}</div>;
+  }
+
+  const difficultyLabel = {
+    easy: "쉬움",
+    normal: "보통",
+    hard: "어려움",
+  }[recipe.difficulty] ?? recipe.difficulty;
+
   return (
     <div className={cn("recipe-page")}>
       <Condition
@@ -432,7 +509,12 @@ function RecipeDetailPage() {
       <main className={cn("recipe-detail")}>
         <div className={cn("recipe-detail__grid")}>
           <div className={cn("recipe-detail__main")}>
-            <div className={cn("recipe-photo")} role="img" aria-label="김치비지찌개 완성 사진" />
+            <div
+              className={cn("recipe-photo")}
+              role="img"
+              aria-label={`${recipe.title} 완성 사진`}
+              style={recipe.image_url ? { backgroundImage: `url("${recipe.image_url}")` } : undefined}
+            />
 
             <AnalysisPanel
               analysisState={analysisState}
@@ -528,18 +610,18 @@ function RecipeDetailPage() {
 
           <div className={cn("recipe-detail__side")}>
             <section className={cn("recipe-summary")}>
-              <h1>김치비지찌개</h1>
-              <p className="text-s">고소한 콩비지와 잘 익은 김치가 어우러진 든든한 찌개예요.</p>
+              <h1>{recipe.title}</h1>
+              <p className="text-s">{recipe.description}</p>
               <div className={cn("recipe-summary__meta")}>
                 <span>
                   <Icon name="user" size={16} />
-                  2인분
+                  {recipe.servings}인분
                 </span>
                 <span>
                   <Icon name="clock" size={16} />
-                  20분
+                  {recipe.cooking_time}분
                 </span>
-                <span className={cn("safe-badge")}>쉬움</span>
+                <span className={cn("safe-badge")}>{difficultyLabel}</span>
                 <span className={cn("favorite-count")}>
                   <Icon name="heart" size={16} />
                   10
@@ -578,7 +660,7 @@ function RecipeDetailPage() {
                 </button>
               </div>
             </section>
-            <IngredientPanel isComplete={isComplete} />
+            <IngredientPanel isComplete={isComplete} ingredients={ingredients} />
           </div>
         </div>
       </main>
@@ -840,9 +922,9 @@ function RecipeDetailPage() {
             >
               <div>
                 <h2 id="simple-recipe-title" className={cn("mb-2 text-title-m")}>
-                  김치비지찌개
+                  {recipe.title}
                 </h2>
-                <p className={cn("m-0")}>간단 레시피 · {displayedSteps.length}단계</p>
+                <p className={cn("m-0")}>간단 레시피 · {simpleModalSteps.length}단계</p>
               </div>
               <button
                 className={cn(
@@ -864,7 +946,7 @@ function RecipeDetailPage() {
               )}
             >
               <strong>STEP {simpleRecipeStep + 1}</strong>
-              <p className={cn("my-auto py-4")}>{displayedSteps[simpleRecipeStep]}</p>
+              <p className={cn("my-auto py-4")}>{simpleModalSteps[simpleRecipeStep]}</p>
             </article>
             <nav
               className={cn(
@@ -881,12 +963,12 @@ function RecipeDetailPage() {
                 이전
               </button>
               <strong>
-                {simpleRecipeStep + 1} / {displayedSteps.length}
+                {simpleRecipeStep + 1} / {simpleModalSteps.length}
               </strong>
               <button
                 className={cn("simple-recipe-nav-button px-4 py-2 text-button-m")}
                 type="button"
-                disabled={simpleRecipeStep === displayedSteps.length - 1}
+                disabled={simpleRecipeStep === simpleModalSteps.length - 1}
                 onClick={() => setSimpleRecipeStep(step => step + 1)}
               >
                 다음
