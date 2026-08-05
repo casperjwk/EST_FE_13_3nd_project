@@ -46,6 +46,7 @@
   }
 }
 
+/* 프로필 */
 .profileCard {
   display: flex;
   flex-direction: column;
@@ -149,6 +150,9 @@
 .profileCardEmail {
   margin: 0;
   color: var(--gray-3);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
 }
 
 .profileCardDivider {
@@ -178,10 +182,16 @@
 
 .profileCardFavoriteCount {
   color: var(--primary);
+  font-size: var(--subtitle-m);
+  line-height: 140%;
+  font-weight: 600;
 }
 
 .profileCardFavoriteLabel {
   color: var(--gray-3);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
 }
 
 .profileCardFavoriteBtn {
@@ -196,6 +206,9 @@
   border: 1px solid var(--primary);
   border-radius: 999px;
   color: var(--primary);
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 600;
   transition:
     background-color 0.15s ease,
     color 0.15s ease,
@@ -217,3 +230,234 @@
 .profileCardFavoriteBtn :global(.material-icons) {
   font-size: 16px;
 }
+
+/* 식단정보 (조회상태) */
+
+/* 식단정보 (수정상태) */
+.dietCard {
+  margin-top: 20px;
+  padding: 40px 30px;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  background: var(--white-1);
+}
+
+.dietCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.dietCardTitle {
+  font-size: var(--subtitle-s);
+  line-height: 140%;
+  font-weight: 600;
+  color: var(--black-1);
+}
+
+.dietEditActions {
+  display: flex;
+  gap: 10px;
+}
+
+.dietCancelBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid var(--gray-1);
+  border-radius: 999px;
+  color: var(--gray-3);
+}
+
+.dietCancelBtn:hover {
+  border-color: var(--gray-3);
+  color: var(--black-2);
+}
+
+.dietSaveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--white-1);
+}
+
+.dietSaveBtn:hover {
+  border-color: transparent;
+  background: var(--primary);
+  color: var(--white-1);
+}
+
+.dietCancelBtn :global(.material-icons),
+.dietSaveBtn :global(.material-icons) {
+  font-size: 16px;
+}
+
+.dietRow + .dietRow {
+  margin-top: 40px;
+}
+.dietLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 0;
+  color: var(--black-2);
+  font-size: var(--large);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+.dietDescription {
+  margin-bottom: 20px;
+  color: var(--gray-3);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+/* 식단정보 (수정상태) - 알레르기 정보 */
+.dietLabelIconWarning {
+  font-size: 18px;
+  color: var(--tag);
+}
+
+.allergyDescription {
+  margin-bottom: 10px;
+}
+
+.allergyChipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.allergyChip {
+  padding: 5px 10px;
+  border: 1px solid var(--gray-1);
+  border-radius: 999px;
+  color: var(--gray-3);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.allergyChipSelected {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.allergyChipCustom,
+.allergyChipCustomInput {
+  width: 104px;
+  box-sizing: border-box;
+}
+
+.allergyChipCustomInput,
+.allergyChipCustomInput:hover {
+  border-color: var(--black-1);
+  color: var(--black-1);
+  outline: none;
+}
+
+.dietNoticeText {
+  color: var(--tag);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+/* 식단정보 (수정상태) - 비건 유형 */
+.dietLabelIconEco {
+  font-size: 18px;
+  color: var(--secondary);
+}
+
+.veganCardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.veganCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 310px;
+  height: 92px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.veganCard:has(.veganCardRadio:checked) {
+  border-color: var(--primary);
+}
+
+.veganCardRadio {
+  accent-color: var(--primary);
+}
+
+.veganCardText {
+  display: flex;
+  flex-direction: column;
+}
+
+.veganCardLabel {
+  color: var(--black-1);
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+.veganCardDesc {
+  color: var(--gray-3);
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+/* 식단정보 (수정상태) - 현재 적용 중인 조건 */
+.appliedCard {
+  margin-top: 20px;
+  padding: 40px 30px;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  background: var(--white-1);
+}
+
+.appliedTitle {
+  font-size: var(--subtitle-s);
+  line-height: 140%;
+  font-weight: 600;
+  color: var(--black-1);
+  margin-bottom: 8px;
+}
+
+.dietChipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dietChipPrimary {
+  padding: 4px 10px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  color: var(--primary);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+/* 최근 본 레시피 */
