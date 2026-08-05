@@ -257,7 +257,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
         </div>
         <div className={cn("complete-card__actions")}>
           <button
-            className={cn("primary-button primary-button--soft text-button-xs")}
+            className={cn("primary-button primary-button--soft text-button-s")}
             type="button"
             onClick={onCompare}
           >
@@ -265,7 +265,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
             기존 레시피와 비교하기
           </button>
           <button
-            className={cn("secondary-button text-button-xs")}
+            className={cn("secondary-button text-button-s")}
             type="button"
             onClick={onMoreInfo}
           >
