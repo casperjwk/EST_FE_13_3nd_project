@@ -36,13 +36,31 @@ const allergyOptions = [
 
 const veganTypes = [
   { id: "general", label: "일반", desc: "제한 없음" },
-  { id: "flexitarian", label: "플렉시테리언", desc: "주로 채식, 가끔 육류 허용" },
+  {
+    id: "flexitarian",
+    label: "플렉시테리언",
+    desc: "주로 채식, 가끔 육류 허용",
+    descBreak: ["주로 채식, ", "가끔 육류 허용"],
+    descBreakFrom: "tablet",
+  },
   { id: "pollo", label: "플로", desc: "닭고기까지 허용" },
-  { id: "pesco", label: "페스코", desc: "생선·해산물까지 허용" },
+  {
+    id: "pesco",
+    label: "페스코",
+    desc: "생선·해산물까지 허용",
+    descBreak: ["생선·해산물까지 ", "허용"],
+    descBreakFrom: "desktop",
+  },
   { id: "lacto-ovo", label: "락토-오보", desc: "유제품·달걀 허용" },
   { id: "lacto", label: "락토", desc: "유제품만 허용" },
   { id: "ovo", label: "오보", desc: "달걀만 허용" },
-  { id: "vegan", label: "비건", desc: "동물성 식품 안전 제외" },
+  {
+    id: "vegan",
+    label: "비건",
+    desc: "동물성 식품 안전 제외",
+    descBreak: ["동물성 식품 ", "안전 제외"],
+    descBreakFrom: "desktop",
+  },
 ];
 
 function MyPage() {
@@ -50,6 +68,7 @@ function MyPage() {
   const [selectedAllergies, setSelectedAllergies] = useState(dietDraft.allergies);
   const [customAllergyOpen, setCustomAllergyOpen] = useState(false);
   const [customAllergyValue, setCustomAllergyValue] = useState("");
+  const [selectedVeganType, setSelectedVeganType] = useState(dietDraft.veganType);
 
   const handlePhotoChange = event => {
     const file = event.target.files[0];
@@ -62,6 +81,10 @@ function MyPage() {
       prev.includes(allergy) ? prev.filter(item => item !== allergy) : [...prev, allergy],
     );
   };
+
+  const excludedAllergies = customAllergyValue.trim()
+    ? [...selectedAllergies, customAllergyValue.trim()]
+    : selectedAllergies;
 
   return (
     <div className={styles.myPage}>
@@ -150,7 +173,7 @@ function MyPage() {
                         if (!customAllergyValue.trim()) setCustomAllergyOpen(false);
                       }}
                       placeholder="직접 입력"
-                      maxLength={7}
+                      maxLength={8}
                       className={`${styles.allergyChip} ${styles.allergyChipCustomInput}`}
                     />
                   ) : (
@@ -199,11 +222,28 @@ function MyPage() {
                     type="radio"
                     name="veganType"
                     className={styles.veganCardRadio}
-                    defaultChecked={type.label === dietDraft.veganType}
+                    checked={type.label === selectedVeganType}
+                    onChange={() => setSelectedVeganType(type.label)}
                   />
                   <span className={styles.veganCardText}>
                     <span className={styles.veganCardLabel}>{type.label}</span>
-                    <span className={styles.veganCardDesc}>{type.desc}</span>
+                    <span className={styles.veganCardDesc}>
+                      {type.descBreak ? (
+                        <>
+                          {type.descBreak[0]}
+                          <br
+                            className={
+                              type.descBreakFrom === "desktop"
+                                ? styles.veganCardBreakDesktop
+                                : styles.veganCardBreak
+                            }
+                          />
+                          {type.descBreak[1]}
+                        </>
+                      ) : (
+                        type.desc
+                      )}
+                    </span>
                   </span>
                 </label>
               ))}
@@ -215,7 +255,12 @@ function MyPage() {
           <h3 className={styles.appliedTitle}>현재 적용 중인 조건</h3>
           <p className={styles.dietDescription}>레시피 검색 시 자동으로 적용되는 조건이에요.</p>
           <div className={styles.dietChipList}>
-            <span className={styles.dietChipPrimary}>{dietDraft.veganType}</span>
+            {excludedAllergies.map(allergy => (
+              <span key={allergy} className={styles.dietChipDanger}>
+                {allergy} 제외
+              </span>
+            ))}
+            <span className={styles.dietChipPrimary}>{selectedVeganType}</span>
           </div>
         </section>
       </div>

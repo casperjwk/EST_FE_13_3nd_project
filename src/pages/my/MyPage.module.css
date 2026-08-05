@@ -248,12 +248,24 @@
   justify-content: space-between;
   margin-bottom: 40px;
 }
+@media (min-width: 768px) {
+  .dietCardHeader {
+    margin-bottom: 60px;
+  }
+}
 
 .dietCardTitle {
   font-size: var(--subtitle-s);
   line-height: 140%;
   font-weight: 600;
   color: var(--black-1);
+}
+@media (min-width: 768px) {
+  .dietCardTitle {
+    font-size: var(--title-s);
+    line-height: 130%;
+    font-weight: 700;
+  }
 }
 
 .dietEditActions {
@@ -269,6 +281,9 @@
   border: 1px solid var(--gray-1);
   border-radius: 999px;
   color: var(--gray-3);
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 600;
 }
 
 .dietCancelBtn:hover {
@@ -285,6 +300,9 @@
   border-radius: 999px;
   background: var(--secondary);
   color: var(--white-1);
+  font-size: var(--medium);
+  line-height: 150%;
+  font-weight: 600;
 }
 
 .dietSaveBtn:hover {
@@ -311,6 +329,13 @@
   line-height: 150%;
   font-weight: 400;
 }
+@media (min-width: 768px) {
+  .dietLabel {
+    font-size: var(--subtitle-s);
+    line-height: 140%;
+    font-weight: 600;
+  }
+}
 
 .dietDescription {
   margin-bottom: 20px;
@@ -325,9 +350,10 @@
   font-size: 18px;
   color: var(--tag);
 }
-
-.allergyDescription {
-  margin-bottom: 10px;
+@media (min-width: 768px) {
+  .dietLabelIconWarning {
+    font-size: 20px;
+  }
 }
 
 .allergyChipGrid {
@@ -342,9 +368,9 @@
   border: 1px solid var(--gray-1);
   border-radius: 999px;
   color: var(--gray-3);
-  font-size: var(--xsmall);
+  font-size: var(--small);
   line-height: 150%;
-  font-weight: 400;
+  font-weight: 600;
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -357,12 +383,12 @@
 
 .allergyChipCustom,
 .allergyChipCustomInput {
-  width: 104px;
+  width: 136px;
+  white-space: nowrap;
   box-sizing: border-box;
 }
 
-.allergyChipCustomInput,
-.allergyChipCustomInput:hover {
+.allergyChipCustomInput {
   border-color: var(--black-1);
   color: var(--black-1);
   outline: none;
@@ -386,6 +412,19 @@
   flex-direction: column;
   gap: 20px;
 }
+@media (min-width: 768px) {
+  .veganCardGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    column-gap: 24px;
+    row-gap: 20px;
+  }
+}
+@media (min-width: 1272px) {
+  .veganCardGrid {
+    grid-template-columns: repeat(4, 177px);
+  }
+}
 
 .veganCard {
   display: flex;
@@ -398,6 +437,16 @@
   border: 1px solid var(--gray-1);
   border-radius: 12px;
   cursor: pointer;
+}
+@media (min-width: 768px) {
+  .veganCard {
+    width: 200px;
+  }
+}
+@media (min-width: 1272px) {
+  .veganCard {
+    width: 177px;
+  }
 }
 
 .veganCard:has(.veganCardRadio:checked) {
@@ -427,6 +476,24 @@
   font-weight: 400;
 }
 
+.veganCardBreak {
+  display: none;
+}
+@media (min-width: 768px) {
+  .veganCardBreak {
+    display: block;
+  }
+}
+
+.veganCardBreakDesktop {
+  display: none;
+}
+@media (min-width: 1272px) {
+  .veganCardBreakDesktop {
+    display: block;
+  }
+}
+
 /* 식단정보 (수정상태) - 현재 적용 중인 조건 */
 .appliedCard {
   margin-top: 20px;
@@ -437,27 +504,43 @@
 }
 
 .appliedTitle {
-  font-size: var(--subtitle-s);
-  line-height: 140%;
-  font-weight: 600;
-  color: var(--black-1);
-  margin-bottom: 8px;
+  font-size: var(--large);
+  line-height: 150%;
+  font-weight: 400;
+  color: var(--black-2);
+}
+@media (min-width: 768px) {
+  .appliedTitle {
+    font-size: var(--subtitle-s);
+    line-height: 140%;
+    font-weight: 600;
+  }
 }
 
 .dietChipList {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .dietChipPrimary {
-  padding: 4px 10px;
+  padding: 5px 10px;
   border: 1px solid var(--primary);
   border-radius: 999px;
   color: var(--primary);
-  font-size: var(--xsmall);
+  font-size: var(--small);
   line-height: 150%;
-  font-weight: 400;
+  font-weight: 600;
+}
+
+.dietChipDanger {
+  padding: 5px 10px;
+  border: 1px solid var(--danger);
+  border-radius: 999px;
+  color: var(--danger);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 600;
 }
 
 /* 최근 본 레시피 */
