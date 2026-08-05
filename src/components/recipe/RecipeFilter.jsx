@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./recipeFilter.module.css";
 
 const allergyItems = [
   "우유",
@@ -45,7 +46,7 @@ function FilterPanel(){
       }else if ( current ==="warning"){
         next = "exclude"
       }else {
-        next = " none";
+        next = "none";
       }
       return{
         ...prev,
@@ -75,14 +76,22 @@ function FilterPanel(){
     ([,state]) => state !=="none"
   );
 
-  return (
-    <div className="filter-panel">
-      <div className="filter-box">
-        <section className="filter-section">
-          <div className="section-title">
-            <span>알레르기 분류</span>
+  return ( 
+    <div className={styles.filterPanel}>
+      <div className={styles.sort}>
+        <span
+        className="material-icons">
+          sort
+          </span>
+          <p>필터</p>
+      </div>
+      <div className={styles.filterBox}>
+        <section className={styles.filterSection}>
+          <div className={styles.sectionTitle}>
+            <p className={`${styles.sectionTitleP} text-l`}>알레르기 분류</p>
+            <span className={`${styles.sectionSpan} text-xs`}>빨강색은 분류에서 배제 주황색은 분류에서 포함입니다</span>
           </div>
-          <div className="chip-list">
+          <div className={styles.chipList}>
             {allergyItems.map((item)=>{
               const state = allergyFilters[item] || "none";
 
@@ -90,7 +99,7 @@ function FilterPanel(){
                 <button
                   key={item}
                   type="button"
-                  className={`chip allergy-chip ${state}`}
+                  className={`${styles.chip} ${styles.allergyChip} ${styles[state]} text-button-s`}
                   onClick={() => handleAllergyClick(item)}
                 >
                   {item}
@@ -100,19 +109,21 @@ function FilterPanel(){
           </div>
         </section>
 
-        <section className="filter-section">
-          <div className="section-title">
-            <span>비건 분류</span>
+        <section className={styles.filterSection}>
+          <div className={styles.sectionTitle}>
+            <span className={styles.sectionTitleP}>비건 분류</span>
           </div>
 
-          <div className="chip-list">
+          <div className={styles.chipList}>
             {veganItems.map((item)=>{
               const selected = veganFilters === item;
               return(
                 <button
                   key={item}
                   type="button"
-                  className={`chip vegan-chip ${selected ? "selected": ""}`}
+                  className={`${styles.chip} ${styles.veganChip} ${
+                    selected ? styles.selected : ""
+                  } text-button-s`}
                   onClick={()=> handleVeganClick(item)}
                 >
                   {item}
@@ -123,11 +134,11 @@ function FilterPanel(){
         </section>
       </div>
 
-      <div className="selected-filter-list">
+      <div className={styles.selectedFilterList}>
         {selectedAllergies.length > 0 && (
           <button
             type="button"
-            className="reset-chip"
+            className={`${styles.resetChip} text-button-s`}
             onClick={resetAllFilters}
           >
             x 전체삭제
@@ -138,7 +149,7 @@ function FilterPanel(){
         <button
           key={item}
           type="button"
-          className={`selected-chip allergy-selected ${state}`}
+          className={`${styles.chip} ${styles.allergyChip} ${styles[state]} text-button-s`}
           onClick={() => removeAllergyFilter(item)}
         >
           {item}

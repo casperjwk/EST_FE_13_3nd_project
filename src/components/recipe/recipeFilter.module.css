@@ -1,0 +1,96 @@
+.filterPanel {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--white-2);
+}
+
+.filterBox {
+  border: 1px solid var(--black-2);
+  border-radius: 10px;
+  background: var(--white-1);
+  padding: 16px;
+}
+
+.filterSection {
+  padding: 10px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sectionTitleP{
+  color: var(--secondary);
+}
+.sectionSpan{
+  color: var(--gray-3);
+}
+
+.chipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 25px;
+}
+
+.chip {
+  min-width: 58px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--gray-1);
+  border-radius: 999px;
+  background: var(--white-1);
+  color: var(--gray-3);
+  cursor: pointer;
+  text-align: center;
+}
+
+.warning {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.exclude {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.selected {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.selectedFilterList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.resetChip
+{
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.resetChip {
+  border: 1px solid var(--gray-3);
+  background: #fff;
+  color: var(--gray-3);
+  cursor: pointer;
+}
+
+.veganSelected {
+  border-color: var(--primary);
+  color: var(--primary);
+} 
+
+.sort{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
