@@ -52,100 +52,89 @@ const suggestedQuestions = [
   "보관 방법이 궁금해요",
 ];
 
-const simpleRecipeTags = [
-  "김치 1컵 (150g)",
-  "양파 1/4개 (70g)",
-  "대파 1/2대 (70g)",
-  "청양고추 1개 (10g)",
-  "느타리버섯 200g",
+const allergyOptions = [
+  "난류",
+  "우유",
+  "메밀",
+  "땅콩",
+  "대두",
+  "밀",
+  "고등어",
+  "게",
+  "새우",
+  "돼지고기",
+  "복숭아",
+  "토마토",
+  "아황산류",
+  "호두",
+  "닭고기",
+  "쇠고기",
+  "오징어",
+  "조개류",
+  "잣",
 ];
 
+const veganOptions = ["일반", "플렉시테리언", "폴로", "페스코", "락토 오보", "오보", "락토", "비건"];
+
+const veganDescriptions = {
+  일반: "제한 없음",
+  비건: "동물성 식품 제외",
+  락토: "유제품 허용",
+  오보: "달걀 허용",
+  "락토 오보": "유제품·달걀 허용",
+  페스코: "생선·해산물까지 허용",
+  폴로: "닭고기까지 허용",
+  플렉시테리언: "주로 채식, 가끔 육류 허용",
+};
+
 function Icon({ name, size = 18 }) {
-  const paths = {
-    user: (
-      <>
-        <circle cx="12" cy="8" r="3" />
-        <path d="M5.5 19c.8-3.5 3-5 6.5-5s5.7 1.5 6.5 5" />
-      </>
-    ),
-    clock: (
-      <>
-        <circle cx="12" cy="12" r="8" />
-        <path d="M12 7v5l3 2" />
-      </>
-    ),
-    heart: (
-      <path d="M20 8.7C20 14 12 19 12 19S4 14 4 8.7A4.2 4.2 0 0 1 12 6a4.2 4.2 0 0 1 8 2.7Z" />
-    ),
-    alert: (
-      <>
-        <path d="M12 3 2.8 20h18.4L12 3Z" />
-        <path d="M12 9v5m0 3h.01" />
-      </>
-    ),
-    check: <path d="m5 12 4 4L19 6" />,
-    book: (
-      <>
-        <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H20v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z" />
-        <path d="M4 18.5A3.5 3.5 0 0 1 7.5 15H20" />
-      </>
-    ),
-    shield: <path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Zm-3 9 2 2 4-5" />,
-    chat: <path d="M4 4h16v12H8l-4 4V4Z" />,
-    info: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 11v5m0-8h.01" />
-      </>
-    ),
-    send: <path d="m3 11 18-8-7 18-3-7-8-3Zm8 3 5-6" />,
+  const materialIconNames = {
+    user: "person",
+    clock: "schedule",
+    heart: "favorite",
+    alert: "warning_amber",
+    check: "check",
+    book: "menu_book",
+    shield: "verified_user",
+    chat: "chat_bubble_outline",
+    info: "info",
+    send: "send",
   };
 
   return (
-    <svg className={cn("recipe-icon")} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-      {paths[name]}
-    </svg>
+    <span
+      className={`material-symbols-outlined ${cn("recipe-icon")}`}
+      style={{ fontSize: `${size}px` }}
+      aria-hidden="true"
+    >
+      {materialIconNames[name]}
+    </span>
   );
 }
 
-function Header() {
+function Condition({ allergies, veganType, onOpenConditions }) {
   return (
     <>
-      <header className={cn("recipe-header")}>
-        <div className={cn("recipe-header__inner")}>
-          <a className={cn("recipe-logo")} href="/" aria-label="한끼랩 홈">
-            <span>한끼</span>랩
-          </a>
-          <nav className={cn("recipe-nav")} aria-label="주요 메뉴">
-            <a href="/">홈</a>
-            <a href="/recipes">레시피</a>
-            <a href="/mypage">마이페이지</a>
-          </nav>
-          <div className={cn("recipe-auth")}>
-            <a href="/login">로그인</a>
-            <a className={cn("recipe-auth__join")} href="/signup">
-              회원가입
-            </a>
-          </div>
-          <button className={cn("recipe-menu-button")} type="button" aria-label="메뉴 열기">
-            <span className="material-symbols-outlined" aria-hidden="true">menu</span>
-          </button>
-        </div>
-      </header>
       <div className={cn("condition-bar")}>
         <div className={cn("condition-bar__inner")}>
           <div>
             <strong>현재 적용 조건 :</strong>
-            <span className={cn("condition-tag condition-tag--warning")}>
-              <Icon name="alert" size={13} />
-              돼지고기 제외
-            </span>
-            <span className={cn("condition-tag")}>
-              <Icon name="check" size={13} />
-              페스코
-            </span>
+            {allergies.map(allergy => (
+              <span className={cn("condition-tag condition-tag--warning")} key={allergy}>
+                <Icon name="alert" size={13} />
+                {allergy} 제외
+              </span>
+            ))}
+            {veganType && (
+              <span className={cn("condition-tag")}>
+                <Icon name="check" size={13} />
+                {veganType}
+              </span>
+            )}
           </div>
-          <button type="button">조건 수정</button>
+          <button type="button" onClick={onOpenConditions}>
+            조건 수정
+          </button>
         </div>
       </div>
     </>
@@ -217,7 +206,7 @@ function IngredientPanel({ isComplete }) {
   );
 }
 
-function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
+function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo }) {
   if (analysisState === "analyzing") {
     const completedCount = Math.min(Math.floor(progress / 25), analysisSteps.length);
     return (
@@ -262,11 +251,15 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
           </div>
         </div>
         <div className={cn("complete-card__actions")}>
-          <button className={cn("primary-button primary-button--soft")} type="button" onClick={onCompare}>
+          <button
+            className={cn("primary-button primary-button--soft")}
+            type="button"
+            onClick={onCompare}
+          >
             <Icon name="shield" size={15} />
             기존 레시피와 비교하기
           </button>
-          <button className={cn("secondary-button")} type="button">
+          <button className={cn("secondary-button")} type="button" onClick={onMoreInfo}>
             <Icon name="info" size={14} />더 알아보기
           </button>
         </div>
@@ -277,7 +270,9 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
   return (
     <section className={cn("mismatch-card")}>
       <div className={cn("mismatch-card__title")}>
-        <Icon name="alert" size={25} />
+        <span className={cn("mismatch-card__warning-icon")}>
+          <Icon name="alert" size={25} />
+        </span>
         <div>
           <h2>1개 재료가 내 조건과 맞지 않아요</h2>
           <p>알레르기 · 비건 식단에 주의가 필요한 재료가 있어요</p>
@@ -292,7 +287,7 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare }) {
           <Icon name="shield" size={15} />
           AI 맞춤 레시피 만들기
         </button>
-        <button className={cn("secondary-button")} type="button">
+        <button className={cn("secondary-button")} type="button" onClick={onMoreInfo}>
           <Icon name="info" size={14} />더 알아보기
         </button>
       </div>
@@ -305,6 +300,13 @@ function RecipeDetailPage() {
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [isSimpleRecipeOpen, setIsSimpleRecipeOpen] = useState(false);
   const [simpleRecipeStep, setSimpleRecipeStep] = useState(0);
+  const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
+  const [isMoreInfoOpen, setIsMoreInfoOpen] = useState(false);
+  const [appliedAllergies, setAppliedAllergies] = useState(["돼지고기"]);
+  const [appliedVeganType, setAppliedVeganType] = useState("페스코");
+  const [draftAllergies, setDraftAllergies] = useState(["돼지고기"]);
+  const [draftVeganType, setDraftVeganType] = useState("페스코");
+  const [isFavorite, setIsFavorite] = useState(false);
   const isComplete = analysisState === "complete";
   const adaptedSteps = [
     "김치는 3cm 두께로 큼직하게 썰고, 양파는 2cm 두께로 굵게 채 썰어주세요. 대파와 청양고추는 1cm 간격으로 송송 썰고, 느타리버섯은 먹기 좋게 찢어주세요.",
@@ -344,6 +346,34 @@ function RecipeDetailPage() {
     };
   }, [isSimpleRecipeOpen]);
 
+  useEffect(() => {
+    if (!isConditionModalOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = event => {
+      if (event.key === "Escape") setIsConditionModalOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isConditionModalOpen]);
+
+  useEffect(() => {
+    if (!isMoreInfoOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = event => {
+      if (event.key === "Escape") setIsMoreInfoOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMoreInfoOpen]);
+
   const startAnalysis = () => {
     setAnalysisProgress(0);
     setAnalysisState("analyzing");
@@ -361,9 +391,31 @@ function RecipeDetailPage() {
 
   const closeSimpleRecipe = () => setIsSimpleRecipeOpen(false);
 
+  const openConditionModal = () => {
+    setDraftAllergies(appliedAllergies);
+    setDraftVeganType(appliedVeganType);
+    setIsConditionModalOpen(true);
+  };
+
+  const toggleAllergy = allergy => {
+    setDraftAllergies(current =>
+      current.includes(allergy) ? current.filter(item => item !== allergy) : [...current, allergy],
+    );
+  };
+
+  const applyConditions = () => {
+    setAppliedAllergies(draftAllergies);
+    setAppliedVeganType(draftVeganType);
+    setIsConditionModalOpen(false);
+  };
+
   return (
     <div className={cn("recipe-page")}>
-      <Header />
+      <Condition
+        allergies={appliedAllergies}
+        veganType={appliedVeganType}
+        onOpenConditions={openConditionModal}
+      />
       <main className={cn("recipe-detail")}>
         <div className={cn("recipe-detail__grid")}>
           <div className={cn("recipe-detail__main")}>
@@ -374,12 +426,15 @@ function RecipeDetailPage() {
               progress={analysisProgress}
               onStart={startAnalysis}
               onCompare={showOriginalRecipe}
+              onMoreInfo={() => setIsMoreInfoOpen(true)}
             />
 
             <div className={cn("safety-notice")}>
-              <Icon name="alert" size={16} />
-              <strong>실제 제품의 성분표를 반드시 확인하세요.</strong>
-              <span>
+              <div className={cn("safety-notice__heading")}>
+                <Icon name="alert" size={18} />
+                <strong className="text-button-s">실제 제품의 성분표를 반드시 확인하세요.</strong>
+              </div>
+              <span className="text-xs">
                 AI 추천은 참고용이며, 개인의 알레르기 반응은 다를 수 있습니다. 심각한 알레르기가
                 있다면 의사와 상담하세요.
               </span>
@@ -388,7 +443,7 @@ function RecipeDetailPage() {
             <section className={cn("steps-card p-3 p-xl-4")}>
               <div className={cn("section-heading mb-3")}>
                 <h2>조리 순서</h2>
-                <button className={cn("px-4 py-1")} type="button" onClick={openSimpleRecipe}>
+                <button className={cn("simple-recipe-button")} type="button" onClick={openSimpleRecipe}>
                   간단 레시피 보기
                 </button>
               </div>
@@ -396,7 +451,10 @@ function RecipeDetailPage() {
                 {displayedSteps.map((step, index) => (
                   <li
                     key={step}
-                    className={cn(isComplete && index < 2 ? "step--replaced" : "", "column-gap-3 py-3")}
+                    className={cn(
+                      isComplete && index < 2 ? "step--replaced" : "",
+                      "column-gap-3 py-3",
+                    )}
                   >
                     <span>{index + 1}</span>
                     <div>
@@ -468,12 +526,18 @@ function RecipeDetailPage() {
                   20분
                 </span>
                 <span className={cn("safe-badge")}>쉬움</span>
-                <span>
+                <span className={cn("favorite-count")}>
                   <Icon name="heart" size={16} />
                   10
                 </span>
-                <button type="button" aria-label="즐겨찾기">
-                  <Icon name="heart" size={22} />
+                <button
+                  className={cn("favorite-button", isFavorite ? "favorite-button--active" : "")}
+                  type="button"
+                  aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+                  aria-pressed={isFavorite}
+                  onClick={() => setIsFavorite(current => !current)}
+                >
+                  <Icon name="heart" size={14} />
                 </button>
               </div>
             </section>
@@ -504,6 +568,243 @@ function RecipeDetailPage() {
           </div>
         </div>
       </main>
+      {isMoreInfoOpen && (
+        <div
+          className={cn("more-info-backdrop")}
+          role="presentation"
+          onMouseDown={event => {
+            if (event.target === event.currentTarget) setIsMoreInfoOpen(false);
+          }}
+        >
+          <section
+            className={cn("more-info-modal")}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="more-info-title"
+          >
+            <div className={cn("more-info-modal__header")}>
+              <h2 id="more-info-title" className="text-subtitle-s">
+                이 레시피,
+                <br className={cn("more-info-title-break")} /> 어떻게 바꿀 수 있을까?
+              </h2>
+              <button
+                className={cn("more-info-modal__close")}
+                type="button"
+                aria-label="더 알아보기 닫기"
+                onClick={() => setIsMoreInfoOpen(false)}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  close
+                </span>
+              </button>
+            </div>
+
+            <section className={cn("more-info-section more-info-section--replacement")}>
+              <h3 className="text-button-m">
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  expand_circle_down
+                </span>
+                분류 기준에 맞는 대체재
+              </h3>
+              <div className={cn("more-info-card")}>
+                <div className={cn("more-info-replacement")}>
+                  <div className={cn("more-info-original text-xs")}>
+                    <del>돼지고기 앞다리살</del>
+                    <del>3/5컵 (100g)</del>
+                  </div>
+                  <span className={cn("more-info-status more-info-status--safe text-button-xs")}>
+                    <Icon name="check" size={12} />
+                    대체가능
+                  </span>
+                  <div className={cn("more-info-new-ingredient text-button-s")}>
+                    <strong>느타리버섯</strong>
+                    <span className="text-xs">200g</span>
+                  </div>
+                </div>
+                <p className={cn("more-info-reason text-button-xs")}>
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    refresh
+                  </span>
+                  돼지고기 알레르기 + 비건 대체
+                </p>
+              </div>
+            </section>
+
+            <section className={cn("more-info-section more-info-section--check")}>
+              <h3 className="text-button-m">
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  do_not_disturb_on
+                </span>
+                성분표를 직접 확인해 주세요
+              </h3>
+              <div className={cn("more-info-card")}>
+                <div className={cn("more-info-check-list text-xs")}>
+                  <div>
+                    <strong>김치</strong>
+                    <span>1컵 (150g)</span>
+                    <em>확인필요</em>
+                  </div>
+                  <div>
+                    <strong>김치국물</strong>
+                    <span>5스푼 (50g)</span>
+                    <em>확인필요</em>
+                  </div>
+                </div>
+                <ul className={cn("more-info-notes text-xs")}>
+                  <li>
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                      forward
+                    </span>
+                    돼지고기 추출물, 돈골 육수, 육수 조미료 확인 필요
+                  </li>
+                  <li>
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                      forward
+                    </span>
+                    페스코 조건에는 적합할 수 있으나, 돼지고기 및 육류 유래 성분 포함 여부를 확인해
+                    주세요.
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </section>
+        </div>
+      )}
+      {isConditionModalOpen && (
+        <div
+          className={cn("condition-modal-backdrop")}
+          role="presentation"
+          onMouseDown={event => {
+            if (event.target === event.currentTarget) setIsConditionModalOpen(false);
+          }}
+        >
+          <section
+            className={cn("condition-modal")}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="condition-modal-title"
+          >
+            <div className={cn("condition-modal__header")}>
+              <div>
+                <h2 id="condition-modal-title">현재 조건 수정</h2>
+                <p>알레르기와 비건 정보를 선택해 맞춤 레시피를 확인하세요.</p>
+              </div>
+              <div className={cn("condition-modal__header-actions")}>
+                <button
+                  className={cn("condition-modal__close")}
+                  type="button"
+                  aria-label="조건 수정 닫기"
+                  onClick={() => setIsConditionModalOpen(false)}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    close
+                  </span>
+                  <span className={cn("condition-modal__action-label")}>취소</span>
+                </button>
+                <button
+                  className={cn("condition-modal__header-apply")}
+                  type="button"
+                  onClick={applyConditions}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    save
+                  </span>
+                  적용
+                </button>
+              </div>
+            </div>
+
+            <div className={cn("condition-modal__body")}>
+              <section className={cn("condition-option-section")}>
+                <div className={cn("condition-option-section__title")}>
+                  <div>
+                    <h3>알레르기 정보</h3>
+                    <p>해당하는 알레르기를 모두 선택해주세요. 레시피 검색 시 자동으로 적용됩니다.</p>
+                  </div>
+                  <span>중복 선택 가능</span>
+                </div>
+                <div className={cn("condition-option-grid condition-option-grid--allergy")}>
+                  {allergyOptions.map(allergy => {
+                    const isSelected = draftAllergies.includes(allergy);
+                    return (
+                      <button
+                        className={cn(
+                          "condition-option-button condition-option-button--allergy",
+                          isSelected ? "is-selected" : "",
+                        )}
+                        type="button"
+                        aria-pressed={isSelected}
+                        key={allergy}
+                        onClick={() => toggleAllergy(allergy)}
+                      >
+                        {isSelected && <Icon name="check" size={14} />}
+                        {allergy}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className={cn("condition-option-section")}>
+                <div className={cn("condition-option-section__title")}>
+                  <div>
+                    <h3>비건 유형</h3>
+                    <p>비건 유형은 알레르기와 별개 기준입니다. 가장 가까운 식단 유형을 선택하세요.</p>
+                  </div>
+                  <span>단일 선택</span>
+                </div>
+                <div className={cn("condition-option-grid condition-option-grid--vegan")}>
+                  {veganOptions.map(veganType => {
+                    const isSelected = draftVeganType === veganType;
+                    return (
+                      <button
+                        className={cn(
+                          "condition-option-button condition-option-button--vegan",
+                          isSelected ? "is-selected" : "",
+                        )}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        key={veganType}
+                        onClick={() => setDraftVeganType(veganType)}
+                      >
+                        {isSelected && <Icon name="check" size={14} />}
+                        <span className={cn("condition-option-button__copy")}>
+                          <strong>{veganType}</strong>
+                          <small>{veganDescriptions[veganType]}</small>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
+
+            <div className={cn("condition-modal__footer")}>
+              <button
+                className={cn("condition-modal__reset text-button-xs")}
+                type="button"
+                onClick={() => {
+                  setDraftAllergies([]);
+                  setDraftVeganType("");
+                }}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  refresh
+                </span>
+                선택 초기화
+              </button>
+              <button
+                className={cn("condition-modal__apply text-button-xs")}
+                type="button"
+                onClick={applyConditions}
+              >
+                조건 적용하기
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
       {isSimpleRecipeOpen && (
         <div
           className={cn("simple-recipe-backdrop")}
@@ -518,40 +819,47 @@ function RecipeDetailPage() {
             aria-modal="true"
             aria-labelledby="simple-recipe-title"
           >
-            <header className={cn("simple-recipe-modal__header d-flex align-items-start justify-content-between pb-3")}>
+            <div
+              className={cn(
+                "simple-recipe-modal__header d-flex align-items-start justify-content-between pb-3",
+              )}
+            >
               <div>
-                <h2 id="simple-recipe-title" className={cn("mb-2")}>
+                <h2 id="simple-recipe-title" className={cn("mb-2 text-title-m")}>
                   김치비지찌개
                 </h2>
                 <p className={cn("m-0")}>간단 레시피 · {displayedSteps.length}단계</p>
               </div>
               <button
-                className={cn("simple-recipe-modal__close d-grid align-items-center justify-content-center")}
+                className={cn(
+                  "simple-recipe-modal__close d-grid align-items-center justify-content-center",
+                )}
                 type="button"
                 aria-label="간단 레시피 닫기"
                 onClick={closeSimpleRecipe}
               >
-                ×
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  close
+                </span>
               </button>
-            </header>
+            </div>
             <div className={cn("simple-recipe-modal__divider")} />
-            <article className={cn("simple-recipe-step-card d-flex flex-column justify-content-between my-3")}>
+            <article
+              className={cn(
+                "simple-recipe-step-card d-flex flex-column justify-content-between my-3",
+              )}
+            >
               <strong>STEP {simpleRecipeStep + 1}</strong>
               <p className={cn("my-auto py-4")}>{displayedSteps[simpleRecipeStep]}</p>
-              <div className={cn("simple-recipe-tags d-flex flex-wrap gap-2")}>
-                {simpleRecipeTags.map(tag => (
-                  <span className={cn("px-2 py-1")} key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
             </article>
             <nav
-              className={cn("simple-recipe-controls d-flex align-items-center justify-content-between")}
+              className={cn(
+                "simple-recipe-controls d-flex align-items-center justify-content-between",
+              )}
               aria-label="간단 레시피 단계 이동"
             >
               <button
-                className={cn("simple-recipe-nav-button px-4 py-2")}
+                className={cn("simple-recipe-nav-button px-4 py-2 text-button-m")}
                 type="button"
                 disabled={simpleRecipeStep === 0}
                 onClick={() => setSimpleRecipeStep(step => step - 1)}
@@ -562,7 +870,7 @@ function RecipeDetailPage() {
                 {simpleRecipeStep + 1} / {displayedSteps.length}
               </strong>
               <button
-                className={cn("simple-recipe-nav-button px-4 py-2")}
+                className={cn("simple-recipe-nav-button px-4 py-2 text-button-m")}
                 type="button"
                 disabled={simpleRecipeStep === displayedSteps.length - 1}
                 onClick={() => setSimpleRecipeStep(step => step + 1)}
@@ -573,31 +881,6 @@ function RecipeDetailPage() {
           </section>
         </div>
       )}
-      <footer className={cn("recipe-footer")}>
-        <div className={cn("recipe-footer__inner")}>
-          <div>
-            <a className={cn("recipe-logo recipe-logo--footer")} href="/">
-              <span>한끼</span>랩
-            </a>
-            <p>알레르기와 비건 식단을 고려한 맞춤 레시피를 추천해드려요</p>
-          </div>
-          <div className={cn("recipe-footer__links")}>
-            <div>
-              <strong>서비스</strong>
-              <a href="/recipes">레시피목록</a>
-              <a href="/recipes">알레르기레시피</a>
-              <a href="/recipes">비건레시피</a>
-            </div>
-            <div>
-              <strong>고객지원</strong>
-              <a href="/">이용약관</a>
-              <a href="/">개인정보처리방침</a>
-              <a href="/">문의하기</a>
-            </div>
-          </div>
-          <small>© 2026 한끼랩. 한끼연구소(7조) 제작.</small>
-        </div>
-      </footer>
     </div>
   );
 }

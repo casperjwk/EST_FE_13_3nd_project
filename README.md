@@ -101,55 +101,53 @@ hankkilab/
 │  │  │  ├─ Header.jsx            # 상단 헤더 / 메뉴
 │  │  │  ├─ Footer.jsx            # 하단 푸터
 │  │  │  ├─ Button.jsx            # 공통 버튼
-│  │  │  └─ Badge.jsx             # 적합·주의·대체 필요 등의 상태 태그
+│  │  │  ├─ Badge.jsx             # 적합·주의·대체 필요 등의 상태 태그
+│  │  │  ├─ MainLayout.jsx        # Header·페이지·Footer 공통 레이아웃
+│  │  │  └─ common.module.css     # 공통 컴포넌트 CSS Module
 │  │  │
 │  │  ├─ recipe/                  # 레시피 관련 공통 컴포넌트
 │  │  │  ├─ RecipeCard.jsx        # 레시피 목록/추천 등에 사용하는 카드
 │  │  │  ├─ RecipeFilter.jsx      # 알레르기·비건 유형 필터
 │  │  │  ├─ IngredientList.jsx    # 재료 목록 출력
-│  │  │  └─ RecipeSteps.jsx       # 조리 순서 출력
+│  │  │  ├─ RecipeSteps.jsx       # 조리 순서 출력
+│  │  │  └─ recipe.module.css     # 레시피 컴포넌트 스타일
 │  │  │
 │  │  └─ user/                    # 사용자 식단 정보 관련 컴포넌트
-│  │     ├─ AllergyTag.jsx         # 알레르기 조건 표시
-│  │     └─ VeganTag.jsx           # 비건 유형 표시
+│  │     ├─ AllergyTag.jsx        # 알레르기 조건 표시
+│  │     ├─ VeganTag.jsx          # 비건 유형 표시
+│  │     └─ user.module.css       # 사용자 컴포넌트 스타일
 │  │
 │  ├─ pages/                      # 실제 페이지 단위 화면
 │  │
 │  │  ├─ home/
 │  │  │  ├─ HomePage.jsx          # 메인 페이지
-│  │  │  │                        # 검색, 인기 레시피, 추천 레시피 등
 │  │  │  └─ HomePage.css
 │  │  │
 │  │  ├─ recipe/
 │  │  │  ├─ RecipeListPage.jsx    # 레시피 목록 페이지
-│  │  │  │                        # 검색 및 알레르기·비건 필터 적용
 │  │  │  ├─ RecipeListPage.css
-│  │  │  │
 │  │  │  ├─ RecipeDetailPage.jsx  # 레시피 상세 페이지
-│  │  │  │                        # 재료 분석, 조리 순서, AI 기능
 │  │  │  └─ RecipeDetailPage.css
 │  │  │
 │  │  ├─ my/
 │  │  │  ├─ MyPage.jsx            # 마이페이지
-│  │  │  │                        # 내 알레르기·비건 정보 확인 및 수정
 │  │  │  ├─ MyPage.css
-│  │  │  │
 │  │  │  ├─ FavoritePage.jsx      # 즐겨찾기 페이지
-│  │  │  │                        # 사용자가 저장한 레시피 목록
 │  │  │  └─ FavoritePage.css
 │  │  │
 │  │  ├─ auth/
 │  │  │  ├─ LoginPage.jsx         # 로그인 페이지
 │  │  │  ├─ LoginPage.css
-│  │  │  │
 │  │  │  ├─ SignupPage.jsx        # 회원가입 페이지
-│  │  │  │                        # 기본 정보 + 알레르기·비건 정보 등록
 │  │  │  └─ SignupPage.css
 │  │  │
-│  │  └─ admin/
-│  │     ├─ AdminPage.jsx         # 관리자 페이지
-│  │     │                        # 회원 정보, 이용 현황, 관리 기능
-│  │     └─ AdminPage.css
+│  │  ├─ admin/
+│  │  │  ├─ AdminPage.jsx         # 관리자 페이지
+│  │  │  └─  AdminPage.css
+│  │  │
+│  │  └─ notfound/
+│  │     ├─ NotFoundPage.jsx      # 404 페이지
+│  │     └─ NotFoundPage.module.css
 │  │
 │  ├─ lib/
 │  │  └─ supabase.js              # Supabase 프로젝트 연결 설정
@@ -171,7 +169,6 @@ hankkilab/
 │  ├─ styles/
 │  │  ├─ reset.css                # 브라우저 기본 스타일 초기화
 │  │  ├─ normalize.css            # 브라우저 간 기본 스타일 차이 보정
-│  │  ├─ variables.css            # 컬러, 폰트, 간격 등 공통 변수
 │  │  └─ global.css               # 사이트 전체 공통 스타일
 │  │
 │  ├─ App.jsx                     # 페이지 라우팅 설정
