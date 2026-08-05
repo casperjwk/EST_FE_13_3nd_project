@@ -13,6 +13,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 
 import AdminPage from "./pages/admin/AdminPage";
+import NotFoundPage from "./pages/notfound/NotFoundPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
