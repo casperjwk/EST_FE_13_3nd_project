@@ -118,21 +118,24 @@ function Condition({ allergies, veganType, onOpenConditions }) {
       <div className={cn("condition-bar")}>
         <div className={cn("condition-bar__inner")}>
           <div>
-            <strong>현재 적용 조건 :</strong>
+            <strong className="text-button-xs">현재 적용 조건 :</strong>
             {allergies.map(allergy => (
-              <span className={cn("condition-tag condition-tag--warning")} key={allergy}>
+              <span
+                className={cn("condition-tag condition-tag--warning text-button-xs")}
+                key={allergy}
+              >
                 <Icon name="alert" size={13} />
                 {allergy} 제외
               </span>
             ))}
             {veganType && (
-              <span className={cn("condition-tag")}>
+              <span className={cn("condition-tag text-button-xs")}>
                 <Icon name="check" size={13} />
                 {veganType}
               </span>
             )}
           </div>
-          <button type="button" onClick={onOpenConditions}>
+          <button className="text-xs" type="button" onClick={onOpenConditions}>
             조건 수정
           </button>
         </div>
@@ -169,12 +172,12 @@ function IngredientPanel({ isComplete }) {
             <div className={cn("ingredient__row")}>
               <div>
                 {ingredient.original && (
-                  <del>
+                  <del className="text-xs">
                     {ingredient.original.name} <small>{ingredient.original.amount}</small>
                   </del>
                 )}
-                <strong>{ingredient.name}</strong>
-                <span>{ingredient.amount}</span>
+                <strong className="text-button-m">{ingredient.name}</strong>
+                <span className="text-s">{ingredient.amount}</span>
               </div>
               <Badge
                 type={
@@ -183,21 +186,21 @@ function IngredientPanel({ isComplete }) {
               />
             </div>
             {ingredient.warning && (
-              <p>
+              <p className="text-button-xs">
                 <Icon name="alert" size={12} />
                 {ingredient.warning}
               </p>
             )}
             {ingredient.replacement && (
-              <p className={cn("replacement-copy")}>↻ {ingredient.replacement}</p>
+              <p className={cn("replacement-copy text-button-xs")}>↻ {ingredient.replacement}</p>
             )}
           </li>
         ))}
       </ul>
       <div className={cn("ingredient-note")}>
         <Icon name="alert" size={15} />
-        <p>
-          <strong>실제 제품의 성분표를 반드시 확인하세요.</strong>
+        <p className="text-xs">
+          <strong className="text-button-xs">실제 제품의 성분표를 반드시 확인하세요.</strong>
           <br />
           제품마다 숨겨진 성분이 다를 수 있습니다.
         </p>
@@ -227,7 +230,9 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
                     : "",
               )}
             >
-              <span>{index < completedCount ? "✓" : index === completedCount ? "◆" : ""}</span>
+              <span className="text-xs">
+                {index < completedCount ? "✓" : index === completedCount ? "◆" : ""}
+              </span>
               {step}
             </li>
           ))}
@@ -247,19 +252,23 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
           <Icon name="shield" size={25} />
           <div>
             <h2>내 조건에 맞게 안전하게 변경되었어요</h2>
-            <p>1개의 재료가 대체되었으며 조리 과정도 함께 안내드려요.</p>
+            <p className="text-xs">1개의 재료가 대체되었으며 조리 과정도 함께 안내드려요.</p>
           </div>
         </div>
         <div className={cn("complete-card__actions")}>
           <button
-            className={cn("primary-button primary-button--soft")}
+            className={cn("primary-button primary-button--soft text-button-xs")}
             type="button"
             onClick={onCompare}
           >
             <Icon name="shield" size={15} />
             기존 레시피와 비교하기
           </button>
-          <button className={cn("secondary-button")} type="button" onClick={onMoreInfo}>
+          <button
+            className={cn("secondary-button text-button-xs")}
+            type="button"
+            onClick={onMoreInfo}
+          >
             <Icon name="info" size={14} />더 알아보기
           </button>
         </div>
@@ -275,19 +284,23 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
         </span>
         <div>
           <h2>1개 재료가 내 조건과 맞지 않아요</h2>
-          <p>알레르기 · 비건 식단에 주의가 필요한 재료가 있어요</p>
+          <p className="text-xs">알레르기 · 비건 식단에 주의가 필요한 재료가 있어요</p>
         </div>
       </div>
-      <span className={cn("danger-chip")}>
+      <span className={cn("danger-chip text-button-xs")}>
         <Icon name="alert" size={12} />
         돼지고기 앞다리살 - 돼지고기 알레르기 + 페스코 미적합
       </span>
       <div className={cn("mismatch-card__actions")}>
-        <button className={cn("primary-button")} type="button" onClick={onStart}>
+        <button className={cn("primary-button text-button-s")} type="button" onClick={onStart}>
           <Icon name="shield" size={15} />
           AI 맞춤 레시피 만들기
         </button>
-        <button className={cn("secondary-button")} type="button" onClick={onMoreInfo}>
+        <button
+          className={cn("secondary-button text-button-s")}
+          type="button"
+          onClick={onMoreInfo}
+        >
           <Icon name="info" size={14} />더 알아보기
         </button>
       </div>
@@ -458,10 +471,10 @@ function RecipeDetailPage() {
                   >
                     <span>{index + 1}</span>
                     <div>
-                      <p>{step}</p>
+                      <p className="text-xs">{step}</p>
                       {isComplete && index < 2 && (
-                        <small className={cn("column-gap-3 mt-2 px-3 py-2")}>
-                          <b>↻ 대체됨</b>
+                        <small className={cn("column-gap-3 mt-2 px-3 py-2 text-xs")}>
+                          <b className="text-button-xs">↻ 대체됨</b>
                           {index === 0
                             ? "느타리버섯은 물에 오래 씻으면 수분을 많이 흡수할 수 있으므로 가볍게 닦아 사용하세요."
                             : "느타리버섯을 살짝 노릇해질 때까지 볶으면 돼지고기 없이도 씹는 식감과 감칠맛을 더할 수 있습니다."}
@@ -478,12 +491,12 @@ function RecipeDetailPage() {
                 <Icon name="chat" size={22} />
                 AI에게 질문하기
               </h2>
-              <p className={cn("question-card__description")}>
+              <p className={cn("question-card__description text-xs")}>
                 이 레시피에 대해 궁금한 점을 자유롭게 물어보세요.
               </p>
               <div className={cn("question-chips")}>
                 {suggestedQuestions.map(question => (
-                  <button type="button" key={question}>
+                  <button className="text-xs" type="button" key={question}>
                     {question}
                   </button>
                 ))}
@@ -493,6 +506,7 @@ function RecipeDetailPage() {
                   레시피 질문
                 </label>
                 <input
+                  className="text-xs"
                   id="recipe-question"
                   placeholder="예 : 돼지고기 대신 사용할 수 있는 재료가 있나요?"
                 />
@@ -501,10 +515,10 @@ function RecipeDetailPage() {
                 </button>
               </form>
               <div className={cn("chat-messages")}>
-                <p className={cn("chat-message chat-message--mine")}>
+                <p className={cn("chat-message chat-message--mine text-xs")}>
                   콩비지 대신 두부를 사용해도 될까요?
                 </p>
-                <p className={cn("chat-message")}>
+                <p className={cn("chat-message text-xs")}>
                   네, 으깬 두부를 사용해도 좋아요. 물의 양을 조금 줄이면 비슷한 농도로 만들 수
                   있어요.
                 </p>
@@ -515,7 +529,7 @@ function RecipeDetailPage() {
           <div className={cn("recipe-detail__side")}>
             <section className={cn("recipe-summary")}>
               <h1>김치비지찌개</h1>
-              <p>고소한 콩비지와 잘 익은 김치가 어우러진 든든한 찌개예요.</p>
+              <p className="text-s">고소한 콩비지와 잘 익은 김치가 어우러진 든든한 찌개예요.</p>
               <div className={cn("recipe-summary__meta")}>
                 <span>
                   <Icon name="user" size={16} />
@@ -542,10 +556,10 @@ function RecipeDetailPage() {
               </div>
             </section>
             <section className={cn("view-mode")}>
-              <p>레시피 보기 모드</p>
+              <p className="text-xs">레시피 보기 모드</p>
               <div>
                 <button
-                  className={cn(!isComplete ? "is-active" : "")}
+                  className={cn("text-xs", !isComplete ? "is-active" : "")}
                   type="button"
                   onClick={showOriginalRecipe}
                 >
@@ -553,7 +567,7 @@ function RecipeDetailPage() {
                   기존 레시피
                 </button>
                 <button
-                  className={cn(isComplete ? "is-active" : "")}
+                  className={cn("text-xs", isComplete ? "is-active" : "")}
                   type="button"
                   onClick={() => {
                     if (!isComplete) startAnalysis();
