@@ -1,0 +1,228 @@
+/* ==========================================
+   1. PC 기본 스타일
+   ========================================== */
+.outerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--white-2);
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.cardContainer {
+  width: 900px;
+  max-width: 100%;
+  background-color: var(--white-1);
+  border-radius: 24px;
+  padding: 40px 48px;
+  border: 1px solid var(--gray-1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.btnSkip {
+  border: 1px solid var(--gray-1);
+  background-color: var(--white-2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--gray-3);
+  cursor: pointer;
+}
+
+.tipBox {
+  background-color: var(--white-2);
+  border: 1px solid var(--secondary);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  box-sizing: border-box;
+}
+
+.tipIconCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--white-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.sectionTitle {
+  color: var(--black-1);
+  margin: 0;
+}
+
+.sectionSub {
+  color: var(--gray-3);
+  margin: 0 0 16px 0;
+}
+
+.chipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chipUnselected {
+  border: 1px solid var(--gray-1);
+  background-color: var(--white-1);
+  color: var(--black-2);
+}
+
+.chipSelected {
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  color: var(--white-1);
+}
+
+.veganGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.veganCard {
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.veganCardUnselected {
+  border: 1px solid var(--gray-1);
+  background-color: var(--white-1);
+}
+
+.veganCardSelected {
+  border: 1px solid var(--primary);
+  background-color: var(--white-2);
+}
+
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--gray-1);
+  padding-top: 24px;
+  margin-top: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footerRightBtns {
+  display: flex;
+  gap: 12px;
+}
+
+.btnSecondary {
+  background-color: var(--gray-1);
+  color: var(--black-2);
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.btnPrimary {
+  background-color: var(--secondary);
+  color: var(--white-1);
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   2. 모바일 시안 (768px 이하)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  .outerWrapper {
+    padding: 24px 16px;
+    align-items: flex-start;
+    background-color: var(--white-1);
+  }
+
+  .cardContainer {
+    width: 100%;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+
+  .btnSkip {
+    display: none;
+  }
+
+  .veganGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .footerRow {
+    flex-direction: column-reverse;
+    border-top: none;
+    padding-top: 12px;
+    margin-top: 24px;
+    width: 100%;
+  }
+
+  .btnPrevPc {
+    display: none;
+  }
+
+  .footerRightBtns {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    border-radius: 12px;
+    box-sizing: border-box; /* 삐져나옴 완벽 방지 */
+  }
+}

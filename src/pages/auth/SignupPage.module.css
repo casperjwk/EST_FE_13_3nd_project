@@ -1,0 +1,79 @@
+/* src/pages/auth/SignupPage.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 32px 16px;
+  background-color: var(--white-2);
+  box-sizing: border-box;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 402px;
+  background-color: var(--white-1);
+  border-radius: 16px;
+  border: 1px solid var(--gray-1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: var(--subtitle-m);
+  line-height: 140%;
+  font-weight: 600;
+  color: var(--black-1);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+  color: var(--gray-3);
+}
+
+/* 프로그레스 바 (단계 표시) */
+.stepIndicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.stepDot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--gray-1);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.activeStep {
+  background-color: var(--primary);
+}
+
+/* 모바일 반응형 조절 */
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 24px 16px;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+  }
+
+  .container {
+    background-color: var(--white-1);
+  }
+}
