@@ -15,8 +15,20 @@
 
 .myPage {
   background: var(--white-2);
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .myPage {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+@media (min-width: 1272px) {
+  .myPage {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
 }
 
 .myPageTitle {
@@ -379,19 +391,6 @@
 .allergyChipSelected {
   border-color: var(--danger);
   color: var(--danger);
-}
-
-.allergyChipCustom,
-.allergyChipCustomInput {
-  width: 136px;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-.allergyChipCustomInput {
-  border-color: var(--black-1);
-  color: var(--black-1);
-  outline: none;
 }
 
 .dietNoticeText {

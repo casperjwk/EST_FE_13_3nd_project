@@ -1,0 +1,306 @@
+.favoritePage {
+  background: var(--white-2);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  :global(.container).favoritePageInner {
+    max-width: 708px;
+    padding: 0;
+  }
+  .favoritePage {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+@media (min-width: 1272px) {
+  :global(.container).favoritePageInner {
+    max-width: 1272px;
+  }
+  .favoritePage {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--black-1);
+  font-size: var(--title-s);
+  line-height: 130%;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--title-m);
+  }
+}
+
+.countBadge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--white-1);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0 0 30px;
+  color: var(--gray-3);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+@media (min-width: 768px) {
+  .subtitle {
+    margin: 0 0 40px;
+  }
+}
+
+/* AI 분석 요약 카드 */
+.summaryCard {
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.summaryTop {
+  background: #fafcf9;
+  border-radius: 12px 12px 0 0;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--gray-1);
+}
+@media (min-width: 768px) {
+  .summaryHeader {
+    padding: 20px 30px;
+  }
+}
+
+.summaryTitle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+@media (min-width: 768px) {
+  .summaryTitle {
+    gap: 5px;
+    font-size: var(--subtitle-s);
+    line-height: 140%;
+    font-weight: 600;
+  }
+}
+
+.summaryTitle :global(.material-icons) {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .summaryTitle :global(.material-icons) {
+    font-size: 20px;
+  }
+}
+
+.summaryTitleSparkle {
+  color: var(--primary);
+}
+
+.summaryTitleHighlight {
+  color: var(--primary);
+}
+
+.summaryTitleDivider {
+  color: var(--gray-3);
+}
+
+.summaryTitleMuted {
+  color: var(--gray-3);
+}
+
+.summaryStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  color: var(--primary);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .summaryStatusBadge {
+    gap: 5px;
+  }
+}
+
+.summaryStatusBadge :global(.material-icons) {
+  font-size: 12px;
+}
+
+.summaryStats {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.statItem {
+  flex: none;
+  width: 92.5px;
+  height: 93px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .statItem {
+    width: 177px;
+    height: 121px;
+  }
+}
+@media (min-width: 1272px) {
+  .statItem {
+    width: 318px;
+    height: 121px;
+  }
+}
+
+.statItem + .statItem {
+  border-left: 1px solid var(--gray-1);
+}
+
+.statNumber {
+  font-size: var(--subtitle-m);
+  line-height: 140%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .statNumber {
+    font-size: var(--title-s);
+    line-height: 130%;
+    font-weight: 700;
+  }
+}
+
+.statColorSafe {
+  color: var(--primary);
+}
+
+.statColorReplace {
+  color: var(--warning);
+}
+
+.statColorWarning {
+  color: var(--danger);
+}
+
+.statColorReplaced {
+  color: var(--primary);
+}
+
+.statLabel {
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+@media (min-width: 768px) {
+  .statLabel {
+    font-size: var(--medium);
+    line-height: 150%;
+    font-weight: 400;
+  }
+}
+
+.statDesc {
+  color: var(--gray-3);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+.appliedConditions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--white-1);
+  border-radius: 0 0 12px 12px;
+}
+@media (min-width: 768px) {
+  .appliedConditions {
+    padding: 20px 30px;
+  }
+}
+
+.appliedLabel {
+  flex-shrink: 0;
+  color: var(--gray-3);
+  font-size: var(--small);
+  line-height: 150%;
+  font-weight: 400;
+}
+@media (min-width: 768px) {
+  .appliedLabel {
+    font-size: var(--subtitle-s);
+    line-height: 140%;
+    font-weight: 600;
+  }
+}
+
+.conditionChipList {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+  gap: 5px;
+}
+@media (min-width: 768px) {
+  .appliedLabel {
+    gap: 10px;
+  }
+}
+
+.conditionChipDanger {
+  padding: 5px 10px;
+  border: 1px solid var(--danger);
+  border-radius: 999px;
+  color: var(--danger);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .conditionChipDanger {
+    font-size: var(--small);
+  }
+}
+
+.conditionChipPrimary {
+  padding: 5px 10px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  color: var(--primary);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .conditionChipPrimary {
+    font-size: var(--small);
+  }
+}
+
+/* 즐겨찾기 카드 */
