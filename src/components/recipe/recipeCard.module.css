@@ -4,13 +4,13 @@
   flex-direction: column;
   border-radius: 12px;
   border: 1px solid var(--gray-1);
+  overflow: hidden;
 }
 
 
 .cardImageArea{
   height: 180px;
   position: relative;
-  overflow: hidden;
 }
 
 .cardImage{
