@@ -71,7 +71,7 @@ gantt
 
 #### Frontend
 
-☑️ React
+☑️ React(vite)
 
 #### Tools
 
