@@ -206,7 +206,13 @@ function AnalysisPanel({ analysisState, progress, onStart, onCompare, onMoreInfo
               )}
             >
               <span className="text-xs">
-                {index < completedCount ? "✓" : index === completedCount ? "◆" : ""}
+                {index < completedCount ? (
+                  <Icon name="check" size={11} />
+                ) : index === completedCount ? (
+                  "◆"
+                ) : (
+                  ""
+                )}
               </span>
               {step}
             </li>
