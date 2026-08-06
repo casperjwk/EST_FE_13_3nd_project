@@ -12,14 +12,32 @@ export async function getFoodCategories() {
   return data ?? [];
 }
 
+async function convertToJpeg(file) {
+  const image = await createImageBitmap(file);
+  const canvas = document.createElement("canvas");
+  canvas.width = image.width;
+  canvas.height = image.height;
+  canvas.getContext("2d").drawImage(image, 0, 0);
+  image.close();
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      blob => (blob ? resolve(blob) : reject(new Error("이미지를 JPG로 변환하지 못했습니다."))),
+      "image/jpeg",
+      0.9,
+    );
+  });
+}
+
 async function uploadRecipeImage(file) {
   if (!file) return { imageUrl: null, imagePath: null };
 
-  const extension = file.name.split(".").pop()?.toLowerCase() || "image";
-  const imagePath = `recipes/${crypto.randomUUID()}.${extension}`;
-  const { error } = await supabase.storage.from(RECIPE_IMAGE_BUCKET).upload(imagePath, file, {
+  const jpegFile = await convertToJpeg(file);
+  const randomFileName = crypto.randomUUID().slice(0, 8);
+  const imagePath = `recipes/${randomFileName}.jpg`;
+  const { error } = await supabase.storage.from(RECIPE_IMAGE_BUCKET).upload(imagePath, jpegFile, {
     cacheControl: "3600",
-    contentType: file.type,
+    contentType: "image/jpeg",
     upsert: false,
   });
 

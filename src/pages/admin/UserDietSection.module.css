@@ -1,0 +1,311 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 상단 헤더 */
+.header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: var(--subtitle-m);
+  line-height: 140%;
+  font-weight: 700;
+  color: var(--black-1);
+  margin: 0 0 6px 0;
+}
+
+.subtitle {
+  font-size: var(--small);
+  line-height: 150%;
+  color: var(--gray-3);
+  margin: 0;
+}
+
+/* 상단 5개 요약 카드 (대시보드 공통) */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.statCard {
+  background-color: var(--white-1);
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.statLabel {
+  font-size: var(--xsmall);
+  color: var(--gray-3);
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.statValueWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statValue {
+  font-size: var(--large);
+  font-weight: 700;
+  color: var(--black-1);
+}
+
+.statIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  background-color: var(--white-2);
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-1);
+}
+
+/* 회원 식단 정보 메인 카드 */
+.contentCard {
+  background-color: var(--white-1);
+  border: 1px solid var(--gray-1);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-sizing: border-box;
+}
+
+.cardTitle {
+  font-size: var(--subtitle-s);
+  font-weight: 700;
+  color: var(--black-1);
+  margin: 0;
+}
+
+/* 1. 회원 프로필 정보 박스 */
+.userProfileBox {
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-1);
+}
+
+.userInfoGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--white-2);
+  border: 1px solid var(--gray-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-3);
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userNameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userName {
+  font-size: var(--medium);
+  font-weight: 700;
+  color: var(--black-1);
+}
+
+.statusBadge {
+  font-size: var(--xsmall);
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: var(--secondary);
+  color: var(--white-1);
+  font-weight: 600;
+}
+
+.userEmail,
+.userJoinDate {
+  font-size: var(--xsmall);
+  color: var(--gray-3);
+  margin: 0;
+}
+
+.favoriteAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.favoriteCount {
+  font-size: var(--large);
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favoriteBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  background-color: var(--white-1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: var(--xsmall);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favoriteBtn:hover {
+  background-color: var(--white-2);
+}
+
+/* 2. 섹션 공통 아이콘 헤더 */
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: var(--small);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.dangerTitle {
+  color: var(--danger);
+}
+
+.primaryTitle {
+  color: var(--primary);
+}
+
+.itemCount {
+  font-size: var(--xsmall);
+  color: var(--gray-3);
+}
+
+/* 태그 모음 */
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dangerTag {
+  background-color: rgba(192, 57, 43, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(192, 57, 43, 0.2);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: var(--xsmall);
+  font-weight: 600;
+}
+
+.veganBox {
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--white-2);
+}
+
+.veganIconBox {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+}
+
+.veganNameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.veganName {
+  font-size: var(--small);
+  font-weight: 700;
+  color: var(--black-1);
+}
+
+.veganBadge {
+  font-size: var(--xsmall);
+  background-color: var(--primary);
+  color: var(--white-1);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.veganDesc {
+  font-size: var(--xsmall);
+  color: var(--gray-3);
+  margin: 0;
+}
+
+/* 적용 조건 태그 */
+.appliedTag {
+  background-color: var(--white-2);
+  border: 1px solid var(--gray-1);
+  color: var(--black-2);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: var(--xsmall);
+  font-weight: 500;
+}
+
+.appliedTag.dangerNotice {
+  color: var(--danger);
+  border-color: rgba(192, 57, 43, 0.3);
+}
+
+.appliedTag.primaryNotice {
+  color: var(--primary);
+  border-color: rgba(106, 143, 91, 0.3);
+}
