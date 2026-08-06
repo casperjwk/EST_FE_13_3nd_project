@@ -1,6 +1,4 @@
-
-
-
+import styles from "./recipeCard.module.css";
 
 
 /*
@@ -28,48 +26,45 @@ function RecipeCard({
 }){
   return(
     <div
-      className="cardBorder"
+      className={styles.cardBorder}
     >
       <div
-        className="cardImgaeArea"
+        className={styles.cardImageArea}
       >
-        <img src={imageUrl} alt={name} className="cardImage" />
-        <div>
-          <span className="cardCategory">{category}</span>
-          <button className="cardHeart material-icons" aria-label="좋아요">favorite</button>
-        </div>
-
+        <img src={imageUrl} alt={name} className={styles.cardImage} />
+        <span className={`${styles.cardCategory} text-xs`}>{category}</span>
+        <button className= {`${styles.cardHeart} material-symbols-outlined`} aria-label="좋아요">favorite</button>
       </div>
-      <div>
+      <div className={styles.cardTextArea}>
         <h4
-          className="cardTitle"
+          className={`${styles.cardTitle} text-subtitle-s`}
         >
           {name}
         </h4>
         <p
-          className="cardDescription"
+          className={`${styles.cardDescription} text-s`}
         >
           {description}
         </p>
 
         <div
-          className="cardInfoArea"
+          className={styles.cardInfoArea}
         >
-          <div>
-            <div>
-              <span className="cardTimer material-icons">timer</span>
-              <p>{time}분</p>
+          <div className={styles.cardInfo}>
+            <div className={styles.cardTPF}>
+              <span className={`${styles.cardTimer} material-icons`}>timer</span>
+              <p className="text-xs">{time}분</p>
             </div>
-             <div>
-              <span className="cardServes material-icons">person</span>
-              <p>{serves}인분</p>
+             <div className={styles.cardTPF}>
+              <span className={`${styles.cardPerson} material-icons`}>person</span>
+              <p className="text-xs">{serves}인분</p>
             </div>
-            <div>
-              <span className="cardLikes material-icons">favorite</span>
-              <p>{likes}</p>
+            <div className={styles.cardTPF}>
+              <span className={`${styles.cardFavorite} material-icons`}>favorite</span>
+              <p className="text-xs">{likes}</p>
             </div>
           </div>
-          <p className="cardContry">{contry}</p>
+          <p className={`${styles.cardContry} text-xs`}>{contry}</p>
         </div>
         
         

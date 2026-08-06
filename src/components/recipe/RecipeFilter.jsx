@@ -17,7 +17,6 @@ const allergyItems = [
   "소고기",
   "게",
   "조개류",
-  "기타",
 ];
 
 const veganItems = [
