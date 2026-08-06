@@ -29,23 +29,20 @@ function RecipeCard({
       className={styles.cardBorder}
     >
       <div
-        className={styles.cardImgaeArea}
+        className={styles.cardImageArea}
       >
         <img src={imageUrl} alt={name} className={styles.cardImage} />
-        <div>
-          <span className={styles.cardCategory}>{category}</span>
-          <button className= {`${styles.cardHeart} material-icons`} aria-label="좋아요">favorite</button>
-        </div>
-
+        <span className={`${styles.cardCategory} text-xs`}>{category}</span>
+        <button className= {`${styles.cardHeart} material-symbols-outlined`} aria-label="좋아요">favorite</button>
       </div>
-      <div>
+      <div className={styles.cardTextArea}>
         <h4
-          className={styles.cardTitle}
+          className={`${styles.cardTitle} text-subtitle-s`}
         >
           {name}
         </h4>
         <p
-          className={styles.cardDescription}
+          className={`${styles.cardDescription} text-s`}
         >
           {description}
         </p>
@@ -53,21 +50,21 @@ function RecipeCard({
         <div
           className={styles.cardInfoArea}
         >
-          <div>
-            <div>
+          <div className={styles.cardInfo}>
+            <div className={styles.cardTPF}>
               <span className={`${styles.cardTimer} material-icons`}>timer</span>
-              <p>{time}분</p>
+              <p className="text-xs">{time}분</p>
             </div>
-             <div>
-              <span className={`${styles.cardTimer} material-icons`}>person</span>
-              <p>{serves}인분</p>
+             <div className={styles.cardTPF}>
+              <span className={`${styles.cardPerson} material-icons`}>person</span>
+              <p className="text-xs">{serves}인분</p>
             </div>
-            <div>
-              <span className={`${styles.cardTimer} material-icons`}>favorite</span>
-              <p>{likes}</p>
+            <div className={styles.cardTPF}>
+              <span className={`${styles.cardFavorite} material-icons`}>favorite</span>
+              <p className="text-xs">{likes}</p>
             </div>
           </div>
-          <p className={styles.cardContry}>{contry}</p>
+          <p className={`${styles.cardContry} text-xs`}>{contry}</p>
         </div>
         
         
