@@ -71,7 +71,7 @@ gantt
 
 #### Frontend
 
-☑️ HTML/CSS/JavaScript
+☑️ React
 
 #### Tools
 
