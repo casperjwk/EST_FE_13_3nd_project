@@ -1667,6 +1667,12 @@
     gap: 18px;
   }
 
+  .recipe-detail__side {
+    position: sticky;
+    top: 20px;
+    align-self: start;
+  }
+
   .recipe-photo,
   .recipe-summary,
   .mismatch-card,
