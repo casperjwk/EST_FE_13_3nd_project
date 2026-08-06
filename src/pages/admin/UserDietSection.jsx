@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import React, { useState } from "react";
 import styles from "./UserDietSection.module.css";
 
@@ -140,7 +138,6 @@ const UserAvatarIcon = () => (
    UserDietSection 메인 컴포넌트
 ---------------------------------------------------- */
 const UserDietSection = () => {
-  // 상단 요약 카드 데이터 (대시보드 공통)
   const [stats] = useState({
     totalUsers: 1248,
     allergyRatio: 64.8,
@@ -149,11 +146,10 @@ const UserDietSection = () => {
     monthlyAiSearches: 3420,
   });
 
-  // 조회 중인 회원 식단 정보
   const [userInfo] = useState({
     name: "관리자",
     status: "정상 회원",
-    email: "han77ilab@naver.com",
+    email: "hon77lab@naver.com",
     joinDate: "2026-00-00",
     favoritesCount: 12,
     allergies: ["우유", "돼지고기"],
@@ -184,13 +180,11 @@ const UserDietSection = () => {
 
   return (
     <div className={styles.container}>
-      {/* 1. 상단 타이틀 */}
       <div className={styles.header}>
         <h1 className={styles.title}>회원 맞춤 식단 DB 관리자</h1>
         <p className={styles.subtitle}>등록된 회원의 알레르기 및 비건 조건 데이터를 조회하고 수정합니다.</p>
       </div>
 
-      {/* 2. 상단 요약 카드 5개 */}
       <div className={styles.statsGrid}>
         {statCards.map(item => (
           <div key={item.id} className={styles.statCard}>
@@ -203,11 +197,9 @@ const UserDietSection = () => {
         ))}
       </div>
 
-      {/* 3. 식단 정보 상세 카드 */}
       <div className={styles.contentCard}>
         <h2 className={styles.cardTitle}>식단 정보</h2>
 
-        {/* 프로필 요약 박스 */}
         <div className={styles.userProfileBox}>
           <div className={styles.userInfoGroup}>
             <div className={styles.userAvatar}>
@@ -232,7 +224,6 @@ const UserDietSection = () => {
           </div>
         </div>
 
-        {/* 보유 알레르기 */}
         <div className={styles.sectionBlock}>
           <div className={styles.sectionHeader}>
             <h3 className={`${styles.sectionTitle} ${styles.dangerTitle}`}>
@@ -250,7 +241,6 @@ const UserDietSection = () => {
           </div>
         </div>
 
-        {/* 지정 비건 유형 */}
         <div className={styles.sectionBlock}>
           <h3 className={`${styles.sectionTitle} ${styles.primaryTitle}`}>
             <LeafIcon />
@@ -270,7 +260,6 @@ const UserDietSection = () => {
           </div>
         </div>
 
-        {/* 현재 적용 중인 조건 */}
         <div className={styles.sectionBlock}>
           <h3 className={styles.sectionTitle}>현재 적용 중인 조건</h3>
           <div className={styles.tagList}>
@@ -292,4 +281,3 @@ const UserDietSection = () => {
 };
 
 export default UserDietSection;
->>>>>>> Stashed changes
