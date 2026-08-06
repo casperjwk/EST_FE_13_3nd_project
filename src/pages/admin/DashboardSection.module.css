@@ -28,7 +28,11 @@
   margin: 0;
 }
 
+<<<<<<< HEAD
+/* 상단 5개 요약 카드 */
+=======
 /* 상단 5개 요약 카드 카드 */
+>>>>>>> main
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

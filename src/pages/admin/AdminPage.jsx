@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardSection from "./DashboardSection";
+import UserDietSection from "./UserDietSection";
 import styles from "./AdminPage.module.css";
 
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> main
 /* ----------------------------------------------------
    사이드바 전용 단색 라인 SVG 아이콘 모음
 ---------------------------------------------------- */
@@ -41,6 +47,8 @@ const UserDietIcon = () => (
   </svg>
 );
 
+<<<<<<< HEAD
+=======
 const DatabaseIcon = () => (
   <svg
     width="18"
@@ -75,6 +83,7 @@ const RecipeCheckIcon = () => (
   </svg>
 );
 
+>>>>>>> main
 const SettingsIcon = () => (
   <svg
     width="18"
@@ -110,7 +119,13 @@ const UserAvatarIcon = () => (
 /* ----------------------------------------------------
    AdminPage 메인 컴포넌트
 ---------------------------------------------------- */
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+>>>>>>> main
 const AdminPage = () => {
+  const [activeTab, setActiveTab] = useState("dashboard");
+
   return (
     <div className={styles.outerWrapper}>
       {/* 1. 좌측 사이드바 */}
@@ -123,6 +138,11 @@ const AdminPage = () => {
           {/* GENERAL 카테고리 */}
           <div className={styles.category}>
             <span className={styles.categoryTitle}>GENERAL</span>
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+            <button className={`${styles.navItem} ${styles.active}`}>📊 대시보드</button>
+            <button className={styles.navItem}>👥 회원 식단 관리</button>
+=======
             <button className={`${styles.navItem} ${styles.active}`}>
               <DashboardIcon />
               <span>대시보드</span>
@@ -131,6 +151,7 @@ const AdminPage = () => {
               <UserDietIcon />
               <span>회원 식단 관리</span>
             </button>
+>>>>>>> main
           </div>
 
           {/* DATABASE 카테고리 */}
@@ -149,10 +170,42 @@ const AdminPage = () => {
           {/* SYSTEM 카테고리 */}
           <div className={styles.category}>
             <span className={styles.categoryTitle}>SYSTEM</span>
+<<<<<<< HEAD
+            <button className={styles.navItem}>⚙️ 시스템 설정</button>
+=======
+            <button
+              className={`${styles.navItem} ${activeTab === "dashboard" ? styles.active : ""}`}
+              onClick={() => setActiveTab("dashboard")}
+            >
+              <DashboardIcon />
+              <span>대시보드</span>
+            </button>
+            <button
+              className={`${styles.navItem} ${activeTab === "userDiet" ? styles.active : ""}`}
+              onClick={() => setActiveTab("userDiet")}
+            >
+              <UserDietIcon />
+              <span>회원 식단 관리</span>
+            </button>
+          </div>
+
+          {/* SYSTEM 카테고리 */}
+          <div className={styles.category}>
+            <span className={styles.categoryTitle}>SYSTEM</span>
+            <button
+              className={`${styles.navItem} ${activeTab === "settings" ? styles.active : ""}`}
+              onClick={() => setActiveTab("settings")}
+            >
+              <SettingsIcon />
+              <span>시스템 설정</span>
+            </button>
+>>>>>>> Stashed changes
+=======
             <button className={styles.navItem}>
               <SettingsIcon />
               <span>시스템 설정</span>
             </button>
+>>>>>>> main
           </div>
         </nav>
 
@@ -168,9 +221,16 @@ const AdminPage = () => {
         </div>
       </aside>
 
-      {/* 2. 우측 메인 대시보드 콘텐츠 */}
+      {/* 2. 우측 메인 콘텐츠 */}
       <main className={styles.mainContent}>
-        <DashboardSection />
+        {activeTab === "dashboard" && <DashboardSection />}
+        {activeTab === "userDiet" && <UserDietSection />}
+        {activeTab === "settings" && (
+          <div style={{ color: "var(--gray-3)", padding: "20px" }}>
+            <h2>⚙️ 시스템 설정</h2>
+            <p>서비스 기본 환경설정 페이지입니다.</p>
+          </div>
+        )}
       </main>
     </div>
   );
