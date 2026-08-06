@@ -1,6 +1,4 @@
-
-
-
+import styles from "./recipeCard.module.css";
 
 
 /*
@@ -28,48 +26,48 @@ function RecipeCard({
 }){
   return(
     <div
-      className="cardBorder"
+      className={styles.cardBorder}
     >
       <div
-        className="cardImgaeArea"
+        className={styles.cardImgaeArea}
       >
-        <img src={imageUrl} alt={name} className="cardImage" />
+        <img src={imageUrl} alt={name} className={styles.cardImage} />
         <div>
-          <span className="cardCategory">{category}</span>
-          <button className="cardHeart material-icons" aria-label="좋아요">favorite</button>
+          <span className={styles.cardCategory}>{category}</span>
+          <button className= {`${styles.cardHeart} material-icons`} aria-label="좋아요">favorite</button>
         </div>
 
       </div>
       <div>
         <h4
-          className="cardTitle"
+          className={styles.cardTitle}
         >
           {name}
         </h4>
         <p
-          className="cardDescription"
+          className={styles.cardDescription}
         >
           {description}
         </p>
 
         <div
-          className="cardInfoArea"
+          className={styles.cardInfoArea}
         >
           <div>
             <div>
-              <span className="cardTimer material-icons">timer</span>
+              <span className={`${styles.cardTimer} material-icons`}>timer</span>
               <p>{time}분</p>
             </div>
              <div>
-              <span className="cardServes material-icons">person</span>
+              <span className={`${styles.cardTimer} material-icons`}>person</span>
               <p>{serves}인분</p>
             </div>
             <div>
-              <span className="cardLikes material-icons">favorite</span>
+              <span className={`${styles.cardTimer} material-icons`}>favorite</span>
               <p>{likes}</p>
             </div>
           </div>
-          <p className="cardContry">{contry}</p>
+          <p className={styles.cardContry}>{contry}</p>
         </div>
         
         
