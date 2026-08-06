@@ -27,41 +27,6 @@ const suggestedQuestions = [
   "보관 방법이 궁금해요",
 ];
 
-const allergyOptions = [
-  "난류",
-  "우유",
-  "메밀",
-  "땅콩",
-  "대두",
-  "밀",
-  "고등어",
-  "게",
-  "새우",
-  "돼지고기",
-  "복숭아",
-  "토마토",
-  "아황산류",
-  "호두",
-  "닭고기",
-  "쇠고기",
-  "오징어",
-  "조개류",
-  "잣",
-];
-
-const veganOptions = ["일반", "플렉시테리언", "폴로", "페스코", "락토 오보", "오보", "락토", "비건"];
-
-const veganDescriptions = {
-  일반: "제한 없음",
-  비건: "동물성 식품 제외",
-  락토: "유제품 허용",
-  오보: "달걀 허용",
-  "락토 오보": "유제품·달걀 허용",
-  페스코: "생선·해산물까지 허용",
-  폴로: "닭고기까지 허용",
-  플렉시테리언: "주로 채식, 가끔 육류 허용",
-};
-
 function Icon({ name, size = 18 }) {
   const materialIconNames = {
     user: "person",
@@ -304,6 +269,9 @@ function RecipeDetailPage() {
   const [appliedVeganType, setAppliedVeganType] = useState("페스코");
   const [draftAllergies, setDraftAllergies] = useState(["돼지고기"]);
   const [draftVeganType, setDraftVeganType] = useState("페스코");
+  const [allergyOptions, setAllergyOptions] = useState([]);
+  const [veganOptions, setVeganOptions] = useState([]);
+  const [conditionOptionsError, setConditionOptionsError] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
   const isComplete = analysisState === "complete";
   const ingredients = (recipe?.recipe_ingredients ?? [])
@@ -398,6 +366,34 @@ function RecipeDetailPage() {
       isActive = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadConditionOptions() {
+      const [allergensResult, veganTypesResult] = await Promise.all([
+        supabase.from("allergens").select("id, name").order("name"),
+        supabase.from("vegan_types").select("id, name, description").order("name"),
+      ]);
+
+      if (!isActive) return;
+      const error = allergensResult.error ?? veganTypesResult.error;
+      if (error) {
+        console.error("[HankkiLab] Condition options error:", error);
+        setConditionOptionsError("조건 목록을 불러오지 못했습니다.");
+        return;
+      }
+
+      setAllergyOptions(allergensResult.data ?? []);
+      setVeganOptions(veganTypesResult.data ?? []);
+      setConditionOptionsError("");
+    }
+
+    loadConditionOptions();
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (analysisState !== "analyzing") return undefined;
@@ -826,8 +822,9 @@ function RecipeDetailPage() {
                   <span>중복 선택 가능</span>
                 </div>
                 <div className={cn("condition-option-grid condition-option-grid--allergy")}>
+                  {conditionOptionsError && <p>{conditionOptionsError}</p>}
                   {allergyOptions.map(allergy => {
-                    const isSelected = draftAllergies.includes(allergy);
+                    const isSelected = draftAllergies.includes(allergy.name);
                     return (
                       <button
                         className={cn(
@@ -836,11 +833,11 @@ function RecipeDetailPage() {
                         )}
                         type="button"
                         aria-pressed={isSelected}
-                        key={allergy}
-                        onClick={() => toggleAllergy(allergy)}
+                        key={allergy.id}
+                        onClick={() => toggleAllergy(allergy.name)}
                       >
                         {isSelected && <Icon name="check" size={14} />}
-                        {allergy}
+                        {allergy.name}
                       </button>
                     );
                   })}
@@ -857,7 +854,7 @@ function RecipeDetailPage() {
                 </div>
                 <div className={cn("condition-option-grid condition-option-grid--vegan")}>
                   {veganOptions.map(veganType => {
-                    const isSelected = draftVeganType === veganType;
+                    const isSelected = draftVeganType === veganType.name;
                     return (
                       <button
                         className={cn(
@@ -867,13 +864,13 @@ function RecipeDetailPage() {
                         type="button"
                         role="radio"
                         aria-checked={isSelected}
-                        key={veganType}
-                        onClick={() => setDraftVeganType(veganType)}
+                        key={veganType.id}
+                        onClick={() => setDraftVeganType(veganType.name)}
                       >
                         {isSelected && <Icon name="check" size={14} />}
                         <span className={cn("condition-option-button__copy")}>
-                          <strong>{veganType}</strong>
-                          <small>{veganDescriptions[veganType]}</small>
+                          <strong>{veganType.name}</strong>
+                          <small className="text-s">{veganType.description}</small>
                         </span>
                       </button>
                     );
