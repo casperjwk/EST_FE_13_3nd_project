@@ -1,0 +1,234 @@
+/* ==========================================
+   1. PC 기본 스타일
+   ========================================== */
+.outerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--white-2);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.splitCard {
+  width: 960px;
+  background-color: var(--white-1);
+  border-radius: 24px;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--gray-1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  min-height: 600px;
+}
+
+.leftBanner {
+  width: 420px;
+  background-color: var(--white-2);
+  padding: 52px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.bannerTitle {
+  color: var(--black-1);
+  margin: 0 0 20px 0;
+  line-height: 1.35;
+}
+
+.bannerSub {
+  color: var(--gray-3);
+  margin: 0 0 36px 0;
+  line-height: 1.6;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--white-1);
+  border: 1px solid var(--gray-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featureText {
+  color: var(--black-1);
+  font-weight: 500;
+}
+
+.rightForm {
+  flex: 1;
+  padding: 48px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.formTitle {
+  color: var(--black-1);
+  margin: 0 0 6px 0;
+}
+
+.formSubtitle {
+  color: var(--gray-3);
+  margin: 0 0 24px 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: var(--gray-3);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  background-color: var(--white-2);
+  color: var(--black-1);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+/* 입력 유효성 에러 스타일 추가 */
+.inputError {
+  border-color: #ff4d4f !important;
+  background-color: #fff2f0 !important;
+}
+
+.errorText {
+  color: #ff4d4f;
+  margin-top: 6px;
+  display: block;
+}
+
+.btnSecondary {
+  background-color: var(--gray-1);
+  color: var(--black-2);
+  padding: 0 16px;
+  border-radius: 12px;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--gray-3);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.loginLinkBox {
+  color: var(--gray-3);
+}
+
+.linkHighlight {
+  color: var(--black-1);
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.btnPrimary {
+  background-color: var(--gray-1);
+  color: var(--black-2);
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ==========================================
+   2. 모바일 시안 (768px 이하)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  .outerWrapper {
+    padding: 32px 20px;
+    align-items: flex-start;
+    background-color: var(--white-1);
+  }
+
+  .splitCard {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 0;
+    min-height: auto;
+    display: block;
+  }
+
+  .leftBanner {
+    display: none !important;
+  }
+
+  .rightForm {
+    padding: 0;
+    width: 100%;
+  }
+
+  .formTitle {
+    font-size: 22px;
+  }
+
+  .loginLinkBox {
+    display: none;
+  }
+
+  .actionRow {
+    margin-top: 28px;
+  }
+
+  .btnPrimary {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+  }
+}
