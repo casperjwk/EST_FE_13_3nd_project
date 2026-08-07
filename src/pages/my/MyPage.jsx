@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import "material-icons/iconfont/filled.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../styles/global.css";
+import { supabase } from "../../lib/supabase";
 import styles from "./MyPage.module.css";
 
 const user = {
@@ -16,24 +17,6 @@ const dietDraft = {
   allergies: [],
   veganType: "일반",
 };
-
-const allergyOptions = [
-  "우유",
-  "생선",
-  "달걀",
-  "복숭아",
-  "밀",
-  "토마토",
-  "대두",
-  "땅콩",
-  "돼지고기",
-  "견과류",
-  "닭고기",
-  "새우",
-  "소고기",
-  "게",
-  "조개류",
-];
 
 const veganTypes = [
   { id: "general", label: "일반", desc: "제한 없음" },
@@ -66,14 +49,14 @@ const veganTypes = [
 
 // 최근 본 레시피 목업 데이터 - 나중에 실제 조회 기록으로 교체
 const recentRecipes = [
-  { id: 1, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "한식" },
-  { id: 2, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "양식" },
-  { id: 3, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24, category: "일식" },
-  { id: 4, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "비건" },
-  { id: 5, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "샐러드" },
-  { id: 6, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24, category: "중식" },
-  { id: 7, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "한식" },
-  { id: 8, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "양식" },
+  { id: 1, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24 },
+  { id: 2, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24 },
+  { id: 3, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24 },
+  { id: 4, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24 },
+  { id: 5, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24 },
+  { id: 6, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24 },
+  { id: 7, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24 },
+  { id: 8, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24 },
 ];
 
 const difficultyStyles = {
@@ -84,9 +67,29 @@ const difficultyStyles = {
 
 function MyPage() {
   const [photoUrl, setPhotoUrl] = useState(null);
+  const [allergyOptions, setAllergyOptions] = useState([]);
   const [selectedAllergies, setSelectedAllergies] = useState(dietDraft.allergies);
   const [selectedVeganType, setSelectedVeganType] = useState(dietDraft.veganType);
   const [favoriteRecentIds, setFavoriteRecentIds] = useState(() => new Set());
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadAllergens() {
+      const { data, error } = await supabase.from("allergens").select("id, name");
+      if (!isActive) return;
+      if (error) {
+        console.error("[MyPage] allergens fetch error:", error);
+        return;
+      }
+      setAllergyOptions(data.map(allergen => allergen.name));
+    }
+
+    loadAllergens();
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   const toggleRecentFavorite = id => {
     setFavoriteRecentIds(prev => {
@@ -313,56 +316,59 @@ function MyPage() {
             </div>
           </div>
 
-          <div className={styles.recentScroll} ref={recentScrollRef} onScroll={updateRecentScrollState}>
+          <div
+            className={styles.recentScroll}
+            ref={recentScrollRef}
+            onScroll={updateRecentScrollState}
+          >
             {recentRecipes.map(recipe => {
               const isFavorite = favoriteRecentIds.has(recipe.id);
               return (
-              <div key={recipe.id} className={styles.recentCardItem}>
-                <div className={styles.recentImageWrap}>
-                  <img src="" alt={recipe.name} className={styles.recentImage} />
-                  <span
-                    className={`${styles.recentDifficulty} ${
-                      styles[difficultyStyles[recipe.difficulty]]
-                    }`}
-                  >
-                    {recipe.difficulty}
-                  </span>
-                  <button
-                    type="button"
-                    className={`${styles.recentFavoriteBtn} ${
-                      isFavorite ? styles.recentFavoriteBtnActive : ""
-                    }`}
-                    aria-label="즐겨찾기"
-                    onClick={() => toggleRecentFavorite(recipe.id)}
-                  >
-                    <i className={isFavorite ? "fa-solid fa-heart" : "fa-regular fa-heart"} />
-                  </button>
-                </div>
-                <div className={styles.recentInfo}>
-                  <p className={styles.recentName}>{recipe.name}</p>
-                  <div className={styles.recentMeta}>
-                    <span className={styles.recentMetaItem}>
-                      <span className="material-icons" aria-hidden="true">
-                        schedule
-                      </span>
-                      {recipe.time}분
+                <div key={recipe.id} className={styles.recentCardItem}>
+                  <div className={styles.recentImageWrap}>
+                    <img src="" alt={recipe.name} className={styles.recentImage} />
+                    <span
+                      className={`${styles.recentDifficulty} ${
+                        styles[difficultyStyles[recipe.difficulty]]
+                      }`}
+                    >
+                      {recipe.difficulty}
                     </span>
-                    <span className={styles.recentMetaItem}>
-                      <span className="material-icons" aria-hidden="true">
-                        person
+                    <button
+                      type="button"
+                      className={`${styles.recentFavoriteBtn} ${
+                        isFavorite ? styles.recentFavoriteBtnActive : ""
+                      }`}
+                      aria-label="즐겨찾기"
+                      onClick={() => toggleRecentFavorite(recipe.id)}
+                    >
+                      <i className={isFavorite ? "fa-solid fa-heart" : "fa-regular fa-heart"} />
+                    </button>
+                  </div>
+                  <div className={styles.recentInfo}>
+                    <p className={styles.recentName}>{recipe.name}</p>
+                    <div className={styles.recentMeta}>
+                      <span className={styles.recentMetaItem}>
+                        <span className="material-icons" aria-hidden="true">
+                          timer
+                        </span>
+                        {recipe.time}분
                       </span>
-                      {recipe.servings}인분
-                    </span>
-                    <span className={`${styles.recentMetaItem} ${styles.recentMetaItemLikes}`}>
-                      <span className="material-icons" aria-hidden="true">
-                        favorite
+                      <span className={styles.recentMetaItem}>
+                        <span className="material-icons" aria-hidden="true">
+                          person
+                        </span>
+                        {recipe.servings}인분
                       </span>
-                      {recipe.likes}
-                    </span>
-                    <span className={styles.recentCategory}>{recipe.category}</span>
+                      <span className={`${styles.recentMetaItem} ${styles.recentMetaItemLikes}`}>
+                        <span className="material-icons" aria-hidden="true">
+                          favorite
+                        </span>
+                        {recipe.likes}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
               );
             })}
           </div>
