@@ -47,9 +47,34 @@ const POPULAR_RECIPES = [
   { id: 7, imageUrl: '', difficulty: 'hard', name: '글루텐프리 두부 스테이크', description: '밀가루 없이 든든하게 즐기는 한 끼', time: 25, serves: 2, likes: 33 },
 ];
 
+const VEGAN_TABS = ['전체', '비건', '락토', '오보', '페스코'];
+const VEGAN_TABS_MORE = ['일반', '플렉시테리언', '폴로', '락토-오보'];
+
+const VEGAN_RECIPES = [
+  { id: 8, imageUrl: '', difficulty: 'easy', name: '두부 스크램블', description: '달걀 없이 즐기는 아침 식사', time: 15, serves: 1, likes: 29 },
+  { id: 9, imageUrl: '', difficulty: 'normal', name: '병아리콩 커리', description: '고소하고 든든한 비건 커리', time: 30, serves: 2, likes: 38 },
+  { id: 10, imageUrl: '', difficulty: 'easy', name: '아보카도 토스트', description: '간단하게 즐기는 비건 브런치', time: 10, serves: 1, likes: 51 },
+];
+
 function HomePage() {
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
+
+  const [favoriteIds, setFavoriteIds] = useState(FAVORITE_RECIPES.map((r) => r.id));
+  const displayedFavorites = FAVORITE_RECIPES.filter((r) => favoriteIds.includes(r.id));
+  const handleUnfavorite = (id) => {
+    setFavoriteIds((prev) => prev.filter((favId) => favId !== id));
+  };
+
+  const [activeVeganTab, setActiveVeganTab] = useState('전체');
+  const [showAllVeganTabs, setShowAllVeganTabs] = useState(false);
+  const [veganLoading, setVeganLoading] = useState(false);
+
+  const handleVeganTabClick = (tab) => {
+    setActiveVeganTab(tab);
+    setVeganLoading(true);
+    setTimeout(() => setVeganLoading(false), 600); // TODO: 실제 API 연동 시 교체
+  };
 
   return (
     <div className={styles['home-page']}>
@@ -166,7 +191,7 @@ function HomePage() {
             <Link to="/favorite" className={styles['home-favorites__more']}>더보기</Link>
           </div>
           <div className={styles['home-favorites__grid']}>
-            {FAVORITE_RECIPES.map((recipe) => (
+            {displayedFavorites.map((recipe) => (
               <FavoriteRecipeCard
                 key={recipe.id}
                 imageUrl={recipe.imageUrl}
@@ -180,6 +205,7 @@ function HomePage() {
                 safetyTitle={recipe.safetyTitle}
                 safetyDesc={recipe.safetyDesc}
                 onClick={() => navigate(`/recipes/${recipe.id}`)}
+                onFavoriteClick={() => handleUnfavorite(recipe.id)}
               />
             ))}
           </div>
@@ -204,6 +230,71 @@ function HomePage() {
               />
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className={styles['home-vegan']}>
+        <div className={`container ${styles['home-vegan__inner']}`}>
+          <div className={styles['home-vegan__header']}>
+            <h2 className={styles['home-vegan__title']}>비건 유형별 추천</h2>
+          </div>
+
+          <div className={styles['home-vegan__tabs']}>
+            {VEGAN_TABS.map((tab) => (
+              <button
+                key={tab}
+                className={`text-button-s ${styles['home-vegan__tab']} ${
+                  activeVeganTab === tab ? styles['home-vegan__tab--active'] : ''
+                }`}
+                onClick={() => handleVeganTabClick(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+            {showAllVeganTabs &&
+              VEGAN_TABS_MORE.map((tab) => (
+                <button
+                  key={tab}
+                  className={`text-button-s ${styles['home-vegan__tab']} ${
+                    activeVeganTab === tab ? styles['home-vegan__tab--active'] : ''
+                  }`}
+                  onClick={() => handleVeganTabClick(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            {!showAllVeganTabs && (
+              <button
+                className={`text-button-s ${styles['home-vegan__tab-more']}`}
+                onClick={() => setShowAllVeganTabs(true)}
+              >
+                더보기
+              </button>
+            )}
+          </div>
+
+          {veganLoading ? (
+            <div className={styles['home-vegan__loading']}>
+              <div className={styles['home-vegan__spinner']}></div>
+              <p className="text-s">맞춤 레시피를 불러오는 중이에요</p>
+            </div>
+          ) : (
+            <div className={styles['home-vegan__grid']}>
+              {VEGAN_RECIPES.map((recipe) => (
+                <RecipeCard
+                  key={recipe.id}
+                  imageUrl={recipe.imageUrl}
+                  difficulty={recipe.difficulty}
+                  name={recipe.name}
+                  description={recipe.description}
+                  time={recipe.time}
+                  serves={recipe.serves}
+                  likes={recipe.likes}
+                  onClick={() => navigate(`/recipes/${recipe.id}`)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
