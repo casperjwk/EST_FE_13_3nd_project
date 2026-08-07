@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import "material-icons/iconfont/filled.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../styles/global.css";
 import styles from "./MyPage.module.css";
 
@@ -63,10 +64,41 @@ const veganTypes = [
   },
 ];
 
+// 최근 본 레시피 목업 데이터 - 나중에 실제 조회 기록으로 교체
+const recentRecipes = [
+  { id: 1, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "한식" },
+  { id: 2, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "양식" },
+  { id: 3, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24, category: "일식" },
+  { id: 4, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "비건" },
+  { id: 5, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "샐러드" },
+  { id: 6, name: "음식 이름", difficulty: "어려움", time: 15, servings: 1, likes: 24, category: "중식" },
+  { id: 7, name: "음식 이름", difficulty: "쉬움", time: 15, servings: 1, likes: 24, category: "한식" },
+  { id: 8, name: "음식 이름", difficulty: "보통", time: 15, servings: 1, likes: 24, category: "양식" },
+];
+
+const difficultyStyles = {
+  쉬움: "recentDifficultyEasy",
+  보통: "recentDifficultyNormal",
+  어려움: "recentDifficultyHard",
+};
+
 function MyPage() {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [selectedAllergies, setSelectedAllergies] = useState(dietDraft.allergies);
   const [selectedVeganType, setSelectedVeganType] = useState(dietDraft.veganType);
+  const [favoriteRecentIds, setFavoriteRecentIds] = useState(() => new Set());
+
+  const toggleRecentFavorite = id => {
+    setFavoriteRecentIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
 
   const handlePhotoChange = event => {
     const file = event.target.files[0];
@@ -78,6 +110,27 @@ function MyPage() {
     setSelectedAllergies(prev =>
       prev.includes(allergy) ? prev.filter(item => item !== allergy) : [...prev, allergy],
     );
+  };
+
+  const recentScrollRef = useRef(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const updateRecentScrollState = () => {
+    const el = recentScrollRef.current;
+    if (!el) return;
+    setCanScrollPrev(el.scrollLeft > 0);
+    setCanScrollNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  };
+
+  useEffect(() => {
+    updateRecentScrollState();
+  }, []);
+
+  const scrollRecent = direction => {
+    const el = recentScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * 215, behavior: "smooth" });
   };
 
   return (
@@ -228,6 +281,90 @@ function MyPage() {
               </span>
             ))}
             <span className={styles.dietChipPrimary}>{selectedVeganType}</span>
+          </div>
+        </section>
+
+        <section className={styles.recentCard}>
+          <div className={styles.recentHeader}>
+            <h3 className={styles.recentTitle}>최근 본 레시피</h3>
+            <div className={styles.recentSlideBtns}>
+              <button
+                type="button"
+                className={styles.recentSlideBtn}
+                aria-label="이전 레시피"
+                disabled={!canScrollPrev}
+                onClick={() => scrollRecent(-1)}
+              >
+                <span className="material-icons" aria-hidden="true">
+                  chevron_left
+                </span>
+              </button>
+              <button
+                type="button"
+                className={styles.recentSlideBtn}
+                aria-label="다음 레시피"
+                disabled={!canScrollNext}
+                onClick={() => scrollRecent(1)}
+              >
+                <span className="material-icons" aria-hidden="true">
+                  chevron_right
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.recentScroll} ref={recentScrollRef} onScroll={updateRecentScrollState}>
+            {recentRecipes.map(recipe => {
+              const isFavorite = favoriteRecentIds.has(recipe.id);
+              return (
+              <div key={recipe.id} className={styles.recentCardItem}>
+                <div className={styles.recentImageWrap}>
+                  <img src="" alt={recipe.name} className={styles.recentImage} />
+                  <span
+                    className={`${styles.recentDifficulty} ${
+                      styles[difficultyStyles[recipe.difficulty]]
+                    }`}
+                  >
+                    {recipe.difficulty}
+                  </span>
+                  <button
+                    type="button"
+                    className={`${styles.recentFavoriteBtn} ${
+                      isFavorite ? styles.recentFavoriteBtnActive : ""
+                    }`}
+                    aria-label="즐겨찾기"
+                    onClick={() => toggleRecentFavorite(recipe.id)}
+                  >
+                    <i className={isFavorite ? "fa-solid fa-heart" : "fa-regular fa-heart"} />
+                  </button>
+                </div>
+                <div className={styles.recentInfo}>
+                  <p className={styles.recentName}>{recipe.name}</p>
+                  <div className={styles.recentMeta}>
+                    <span className={styles.recentMetaItem}>
+                      <span className="material-icons" aria-hidden="true">
+                        schedule
+                      </span>
+                      {recipe.time}분
+                    </span>
+                    <span className={styles.recentMetaItem}>
+                      <span className="material-icons" aria-hidden="true">
+                        person
+                      </span>
+                      {recipe.servings}인분
+                    </span>
+                    <span className={`${styles.recentMetaItem} ${styles.recentMetaItemLikes}`}>
+                      <span className="material-icons" aria-hidden="true">
+                        favorite
+                      </span>
+                      {recipe.likes}
+                    </span>
+                    <span className={styles.recentCategory}>{recipe.category}</span>
+                  </div>
+                </div>
+              </div>
+              );
+            })}
           </div>
         </section>
       </div>
