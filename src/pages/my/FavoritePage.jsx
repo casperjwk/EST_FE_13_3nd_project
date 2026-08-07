@@ -25,7 +25,7 @@ function FavoritePage() {
           즐겨찾기
           <span className={styles.countBadge}>{favoriteSummary.totalCount}개</span>
         </h2>
-        <p className={styles.subtitle}>저장한 레시피를 AI가 내 식단 조건에 맞게 분석했어요.</p>
+        <p className={styles.subtitle}>저장한 레시피를 내 식단 조건에 맞게 확인했어요.</p>
 
         <section className={styles.summaryCard}>
           <div className={styles.summaryTop}>
@@ -34,7 +34,7 @@ function FavoritePage() {
                 <span className={`material-icons ${styles.summaryTitleSparkle}`} aria-hidden="true">
                   auto_fix_high
                 </span>
-                <span className={styles.summaryTitleHighlight}>AI 분석 요약</span>
+                <span className={styles.summaryTitleHighlight}>식단 조건 요약</span>
                 <span className={`material-icons ${styles.summaryTitleDivider}`} aria-hidden="true">
                   horizontal_rule
                 </span>
@@ -46,7 +46,7 @@ function FavoritePage() {
                 <span className="material-icons" aria-hidden="true">
                   smart_toy
                 </span>
-                분석 완료
+                확인 완료
               </span>
             </div>
 

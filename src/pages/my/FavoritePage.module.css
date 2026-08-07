@@ -62,7 +62,7 @@
   }
 }
 
-/* AI 분석 요약 카드 */
+/* 즐겨찾기 n개 - 요약 카드 */
 .summaryCard {
   border: 1px solid var(--gray-1);
   border-radius: 12px;
@@ -303,4 +303,4 @@
   }
 }
 
-/* 즐겨찾기 카드 */
+/* 즐겨찾기 n개 - 즐겨찾기 카드 */
