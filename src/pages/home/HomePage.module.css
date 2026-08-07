@@ -157,7 +157,6 @@
   box-sizing: border-box;
 }
 
-/* 태블릿 */
 @media (min-width: 768px) and (max-width: 1271px) {
   :global(.container).home-hero__inner {
     padding: 40px;
@@ -174,7 +173,6 @@
   }
 }
 
-/* 모바일 */
 @media (max-width: 767px) {
   :global(.container).home-hero__inner {
     padding: 24px;
@@ -214,7 +212,6 @@
   }
 }
 
-/* Process Section */
 .home-process {
   width: 100%;
   border-bottom: 1px solid var(--gray-1);
@@ -294,7 +291,6 @@
   }
 }
 
-/* Favorites Section */
 .home-favorites {
   width: 100%;
   border-bottom: 1px solid var(--gray-1);
@@ -351,6 +347,53 @@
     padding: 24px;
   }
   .home-favorites__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-popular {
+  width: 100%;
+  border-bottom: 1px solid var(--gray-1);
+}
+
+:global(.container).home-popular__inner {
+  padding: 60px;
+}
+
+.home-popular__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.home-popular__title {
+  font-size: 28px;
+  line-height: 140%;
+  font-weight: 600;
+  color: var(--black-1);
+  margin: 0;
+}
+
+.home-popular__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (min-width: 768px) and (max-width: 1271px) {
+  :global(.container).home-popular__inner {
+    padding: 40px;
+  }
+  .home-popular__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  :global(.container).home-popular__inner {
+    padding: 24px;
+  }
+  .home-popular__grid {
     grid-template-columns: 1fr;
   }
 }

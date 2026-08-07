@@ -4,6 +4,7 @@ import hero1 from '../../assets/hero1.png';
 import hero2 from '../../assets/hero2.png';
 import hero3 from '../../assets/hero3.png';
 import RecipeCard from '../../components/recipe/RecipeCard';
+import FavoriteRecipeCard from './FavoriteRecipeCard';
 import styles from './HomePage.module.css';
 
 const SLIDES = [
@@ -34,9 +35,16 @@ const STEPS = [
 
 // TODO: 실제 데이터로 교체 (더미 데이터)
 const FAVORITE_RECIPES = [
-  { id: 1, imageUrl: '', difficulty: 'easy', name: '두부 김치찌개', description: '알레르기 걱정 없는 담백한 한 그릇', time: 20, serves: 2, likes: 34 },
-  { id: 2, imageUrl: '', difficulty: 'normal', name: '채소 비빔밥', description: '제철 채소로 만드는 든든한 한 끼', time: 25, serves: 1, likes: 21 },
-  { id: 3, imageUrl: '', difficulty: 'hard', name: '두유 크림 파스타', description: '유제품 없이 즐기는 크림 파스타', time: 30, serves: 2, likes: 45 },
+  { id: 1, imageUrl: '', difficulty: 'easy', name: '두부 김치찌개', description: '알레르기 걱정 없는 담백한 한 그릇', time: 20, serves: 2, likes: 34, safetyType: 'safe', safetyTitle: '안전', safetyDesc: '제한 재료 없음' },
+  { id: 2, imageUrl: '', difficulty: 'normal', name: '채소 비빔밥', description: '제철 채소로 만드는 든든한 한 끼', time: 25, serves: 1, likes: 21, safetyType: 'replacement', safetyTitle: 'AI 대체 제안', safetyDesc: '대체 재료로 안전하게 즐기세요' },
+  { id: 3, imageUrl: '', difficulty: 'hard', name: '두유 크림 파스타', description: '유제품 없이 즐기는 크림 파스타', time: 30, serves: 2, likes: 45, safetyType: 'safe', safetyTitle: '안전', safetyDesc: '제한 재료 없음' },
+];
+
+const POPULAR_RECIPES = [
+  { id: 4, imageUrl: '', difficulty: 'easy', name: '연어 포케볼', description: '신선한 채소와 연어로 만든 건강한 한 끼', time: 15, serves: 1, likes: 58 },
+  { id: 5, imageUrl: '', difficulty: 'normal', name: '버섯 크림 리소토', description: '유제품 대체재로 만든 고소한 리소토', time: 35, serves: 2, likes: 42 },
+  { id: 6, imageUrl: '', difficulty: 'easy', name: '견과류 없는 그래놀라볼', description: '땅콩 알레르기도 안심하고 즐기는 아침', time: 10, serves: 1, likes: 67 },
+  { id: 7, imageUrl: '', difficulty: 'hard', name: '글루텐프리 두부 스테이크', description: '밀가루 없이 든든하게 즐기는 한 끼', time: 25, serves: 2, likes: 33 },
 ];
 
 function HomePage() {
@@ -159,6 +167,30 @@ function HomePage() {
           </div>
           <div className={styles['home-favorites__grid']}>
             {FAVORITE_RECIPES.map((recipe) => (
+              <FavoriteRecipeCard
+                key={recipe.id}
+                imageUrl={recipe.imageUrl}
+                difficulty={recipe.difficulty}
+                name={recipe.name}
+                description={recipe.description}
+                time={recipe.time}
+                serves={recipe.serves}
+                likes={recipe.likes}
+                safetyType={recipe.safetyType}
+                safetyTitle={recipe.safetyTitle}
+                safetyDesc={recipe.safetyDesc}
+                onClick={() => navigate(`/recipes/${recipe.id}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles['home-popular']}>
+        <div className={`container ${styles['home-popular__inner']}`}>
+          <h2 className={styles['home-popular__title']}>인기 레시피</h2>
+          <div className={styles['home-popular__grid']}>
+            {POPULAR_RECIPES.map((recipe) => (
               <RecipeCard
                 key={recipe.id}
                 imageUrl={recipe.imageUrl}
