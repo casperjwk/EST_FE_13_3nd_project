@@ -24,6 +24,12 @@ const SLIDES = [
   },
 ];
 
+const STEPS = [
+  { icon: 'assignment', title: '알레르기·비건 정보 입력', desc: '내 조건을 한 번만 등록하면 끝' },
+  { icon: 'smart_toy', title: 'AI가 재료 분석', desc: '등록된 정보 기준 위험 재료 확인' },
+  { icon: 'restaurant', title: '맞춤 레시피 추천', desc: '대체재료까지 함께 제안받기' },
+];
+
 function HomePage() {
   const [current, setCurrent] = useState(0);
 
@@ -107,6 +113,31 @@ function HomePage() {
               <button className={`text-button-l ${styles['home-hero__cta-btn']}`}>맞춤 레시피 찾기</button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className={styles['home-process']}>
+        <div className={`container ${styles['home-process__inner']}`}>
+          {STEPS.map((step, index) => (
+            <div className={styles['home-process__step-wrap']} key={index}>
+              <div className={styles['home-process__step']}>
+                <div className={styles['home-process__icon-circle']}>
+                  <span className={`material-symbols-outlined ${styles['home-process__icon']}`}>
+                    {step.icon}
+                  </span>
+                </div>
+                <div className={styles['home-process__text']}>
+                  <p className={styles['home-process__title']}>{step.title}</p>
+                  <p className={styles['home-process__desc']}>{step.desc}</p>
+                </div>
+              </div>
+              {index < STEPS.length - 1 && (
+                <span className={`material-symbols-outlined ${styles['home-process__arrow']}`}>
+                  arrow_forward
+                </span>
+              )}
+            </div>
+          ))}
         </div>
       </section>
     </div>
