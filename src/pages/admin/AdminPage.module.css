@@ -142,3 +142,9 @@
   object-fit: contain;
   display: block;
 }
+
+.logoLink {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+}

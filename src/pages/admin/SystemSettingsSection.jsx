@@ -25,8 +25,17 @@ const SystemSettingsSection = () => {
 
   const options = ["3개 노출(기본)", "5개 노출(권장)", "10개 노출"];
 
+  // 설정 저장 클릭 시 경고 팝업 로직 추가
   const handleSave = () => {
-    alert("시스템 설정이 저장되었습니다.");
+    const isConfirmed = window.confirm(
+      "⚠️ [주의] 시스템 설정을 변경하면 서비스 전체 기능 및 회원 화면에 즉시 영향을 미칩니다.\n\n정말로 이대로 변경 사항을 저장하시겠습니까?",
+    );
+
+    // 사용자가 '취소'를 누른 경우 저장하지 않음
+    if (!isConfirmed) return;
+
+    // 사용자가 '확인'을 누른 경우에만 완료 메시지 표시
+    alert("시스템 설정이 성공적으로 저장되었습니다.");
   };
 
   return (
