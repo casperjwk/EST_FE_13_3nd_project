@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import "material-icons/iconfont/filled.css";
 import "../../styles/global.css";
 import styles from "./MyPage.module.css";
@@ -31,7 +32,6 @@ const allergyOptions = [
   "소고기",
   "게",
   "조개류",
-  "기타(직접입력)",
 ];
 
 const veganTypes = [
@@ -66,8 +66,6 @@ const veganTypes = [
 function MyPage() {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [selectedAllergies, setSelectedAllergies] = useState(dietDraft.allergies);
-  const [customAllergyOpen, setCustomAllergyOpen] = useState(false);
-  const [customAllergyValue, setCustomAllergyValue] = useState("");
   const [selectedVeganType, setSelectedVeganType] = useState(dietDraft.veganType);
 
   const handlePhotoChange = event => {
@@ -81,10 +79,6 @@ function MyPage() {
       prev.includes(allergy) ? prev.filter(item => item !== allergy) : [...prev, allergy],
     );
   };
-
-  const excludedAllergies = customAllergyValue.trim()
-    ? [...selectedAllergies, customAllergyValue.trim()]
-    : selectedAllergies;
 
   return (
     <div className={styles.myPage}>
@@ -121,12 +115,12 @@ function MyPage() {
               <p className={styles.profileCardFavoriteCount}>{user.favoriteCount}</p>
               <p className={styles.profileCardFavoriteLabel}>즐겨찾기</p>
             </div>
-            <button type="button" className={styles.profileCardFavoriteBtn}>
+            <Link to="/favorite" className={styles.profileCardFavoriteBtn}>
               <span className="material-icons" aria-hidden="true">
                 favorite_border
               </span>
               즐겨찾기 보기
-            </button>
+            </Link>
           </div>
         </section>
 
@@ -160,47 +154,20 @@ function MyPage() {
               해당하는 알레르기를 모두 선택해주세요. 레시피 검색 시 자동으로 적용됩니다.
             </p>
             <div className={styles.allergyChipGrid}>
-              {allergyOptions.map(allergy =>
-                allergy === "기타(직접입력)" ? (
-                  customAllergyOpen ? (
-                    <input
-                      key={allergy}
-                      type="text"
-                      autoFocus
-                      value={customAllergyValue}
-                      onChange={event => setCustomAllergyValue(event.target.value)}
-                      onBlur={() => {
-                        if (!customAllergyValue.trim()) setCustomAllergyOpen(false);
-                      }}
-                      placeholder="직접 입력"
-                      maxLength={8}
-                      className={`${styles.allergyChip} ${styles.allergyChipCustomInput}`}
-                    />
-                  ) : (
-                    <button
-                      key={allergy}
-                      type="button"
-                      onClick={() => setCustomAllergyOpen(true)}
-                      className={`${styles.allergyChip} ${styles.allergyChipCustom}`}
-                    >
-                      {allergy}
-                    </button>
-                  )
-                ) : (
-                  <button
-                    key={allergy}
-                    type="button"
-                    onClick={() => toggleAllergy(allergy)}
-                    className={`${styles.allergyChip} ${
-                      selectedAllergies.includes(allergy) ? styles.allergyChipSelected : ""
-                    }`}
-                  >
-                    {allergy}
-                  </button>
-                ),
-              )}
+              {allergyOptions.map(allergy => (
+                <button
+                  key={allergy}
+                  type="button"
+                  onClick={() => toggleAllergy(allergy)}
+                  className={`${styles.allergyChip} ${
+                    selectedAllergies.includes(allergy) ? styles.allergyChipSelected : ""
+                  }`}
+                >
+                  {allergy}
+                </button>
+              ))}
             </div>
-            {selectedAllergies.length === 0 && !customAllergyValue.trim() && (
+            {selectedAllergies.length === 0 && (
               <p className={styles.dietNoticeText}>선택한 알레르기가 없습니다.</p>
             )}
           </div>
@@ -255,7 +222,7 @@ function MyPage() {
           <h3 className={styles.appliedTitle}>현재 적용 중인 조건</h3>
           <p className={styles.dietDescription}>레시피 검색 시 자동으로 적용되는 조건이에요.</p>
           <div className={styles.dietChipList}>
-            {excludedAllergies.map(allergy => (
+            {selectedAllergies.map(allergy => (
               <span key={allergy} className={styles.dietChipDanger}>
                 {allergy} 제외
               </span>
