@@ -1,5 +1,6 @@
 import RecipeCard from "../../components/recipe/RecipeCard";
 import FilterPanel from "../../components/recipe/RecipeFilter";
+import image from "../../assets/exFoodImg.jpg";
 
 function RecipeListPage() {
   return (
@@ -9,6 +10,7 @@ function RecipeListPage() {
       <div></div>
       
       <RecipeCard
+        imageUrl={image}
         category="쉬움"
         name="음식"
         description="음식설명음식설명음식설명음식설명음식설명음식설명음식설명"
@@ -17,6 +19,8 @@ function RecipeListPage() {
         likes="22"
         contry="한식"
       />
+
+      
     </div>
   );
 }
