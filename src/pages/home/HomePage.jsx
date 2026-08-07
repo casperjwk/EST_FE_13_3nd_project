@@ -28,16 +28,23 @@ function HomePage() {
   const [current, setCurrent] = useState(0);
 
   return (
-    <div>
+    <div className={styles['home-page']}>
       <section className={styles['home-hero']}>
         <div className={`container ${styles['home-hero__inner']}`}>
           <div className={styles['home-hero__track-wrapper']}>
             <div
               className={styles['home-hero__track']}
-              style={{ transform: `translateX(-${current * 100}%)` }}
+              style={{
+                width: `${SLIDES.length * 100}%`,
+                transform: `translateX(-${(100 / SLIDES.length) * current}%)`,
+              }}
             >
               {SLIDES.map((slide, index) => (
-                <div className={styles['home-hero__slide']} key={index}>
+                <div
+                  className={styles['home-hero__slide']}
+                  key={index}
+                  style={{ width: `${100 / SLIDES.length}%` }}
+                >
                   <div className={styles['home-hero__text-block']}>
                     <h1 className={`text-title-l ${styles['home-hero__title']}`}>
                       {slide.title}
