@@ -543,3 +543,191 @@
 }
 
 /* 최근 본 레시피 */
+.recentCard {
+  margin-top: 20px;
+  padding: 40px 30px;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  background: var(--white-1);
+}
+
+.recentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.recentTitle {
+  color: var(--black-1);
+  font-size: var(--subtitle-s);
+  line-height: 140%;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .recentTitle {
+    font-size: var(--title-s);
+    line-height: 130%;
+    font-weight: 700;
+  }
+}
+
+.recentSlideBtns {
+  display: flex;
+  gap: 5px;
+}
+
+.recentSlideBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  color: var(--primary);
+}
+@media (min-width: 768px) {
+  .recentSlideBtn {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.recentSlideBtn:disabled {
+  border-color: var(--gray-2);
+  color: var(--gray-2);
+}
+
+.recentSlideBtn :global(.material-icons) {
+  font-size: 16px;
+}
+
+.recentScroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.recentScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.recentCardItem {
+  flex-shrink: 0;
+  width: 200px;
+  height: 231px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.recentImageWrap {
+  position: relative;
+  width: 200px;
+  height: 135px;
+  flex-shrink: 0;
+  background: var(--gray-1);
+}
+
+.recentImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recentDifficulty {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 5px 10px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  background: var(--white-1);
+  color: var(--primary);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 600;
+}
+
+.recentDifficultyEasy {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.recentDifficultyNormal {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.recentDifficultyHard {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.recentFavoriteBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--danger);
+  border-radius: 50%;
+  background: var(--white-1);
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.recentFavoriteBtnActive {
+  background: var(--danger);
+  color: var(--white-1);
+}
+
+.recentInfo {
+  width: 200px;
+  height: 95px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recentName {
+  color: var(--black-1);
+  font-size: var(--large);
+  line-height: 150%;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.recentMeta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--gray-3);
+  font-size: var(--xsmall);
+  line-height: 150%;
+  font-weight: 400;
+}
+
+.recentMetaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.recentMetaItem :global(.material-icons) {
+  font-size: 12px;
+}
+
+.recentMetaItemLikes {
+  color: var(--danger);
+}
+
