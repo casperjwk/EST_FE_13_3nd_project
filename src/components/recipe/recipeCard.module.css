@@ -1,10 +1,27 @@
 .cardBorder{
-  width: 408px;
+  max-width: 408px;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
   border: 1px solid var(--gray-1);
   overflow: hidden;
+  background-color: var(--white-1);
+}
+
+
+.easy {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.normal {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.hard {
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 
@@ -13,13 +30,18 @@
   position: relative;
 }
 
+.cardImageArea,
+.cardTextArea{
+  cursor: pointer;
+}
+
 .cardImage{
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.cardCategory{
+.cardDifficulty{
   display: flex;
   width: 40px;
   height: 30px;
@@ -79,6 +101,62 @@
   font-size:  12px;
 }
 
-.cardContry{
 
+
+.skeletonBox,
+.skeletonImage,
+.skeletonCircle {
+  background: linear-gradient(
+    90deg,
+    #eeeeee 25%,
+    #f6f6f6 37%,
+    #eeeeee 63%
+  );
+  background-size: 400% 100%;
+  animation: skeletonLoading 1.4s ease infinite;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 180px;
+}
+
+.skeletonBox {
+  border-radius: 6px;
+  color: var(--gray-1);
+}
+
+.skeletonCircle {
+  border-radius: 50%;
+  border: none;
+}
+
+.skeletonTitle {
+  width: 45%;
+  height: 22px;
+}
+
+.skeletonDescription {
+  width: 100%;
+  height: 14px;
+}
+
+.skeletonDescriptionShort {
+  width: 75%;
+  height: 14px;
+}
+
+.skeletonMeta {
+  width: 48px;
+  height: 16px;
+}
+
+@keyframes skeletonLoading {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
 }

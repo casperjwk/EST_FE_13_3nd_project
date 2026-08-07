@@ -1,0 +1,10 @@
+.main{
+  background-color: var(--white-2);
+}
+
+
+.recipeCardArea{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+}

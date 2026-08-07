@@ -16,14 +16,28 @@ import styles from "./recipeCard.module.css";
 */
 function RecipeCard({
   imageUrl,
-  category,
+  difficulty,
   name,
   description,
   time,
   serves,
   likes,
-  contry,
+  onClick,
 }){
+
+  const difficultyClassName = {
+    easy: styles.easy,
+    normal: styles.normal,
+    hard: styles.hard,
+  }[difficulty];
+
+
+  const difficultyLabel = {
+  easy: "쉬움",
+  normal: "보통",
+  hard: "어려움",
+  }[difficulty];
+
   return(
     <div
       className={styles.cardBorder}
@@ -31,11 +45,16 @@ function RecipeCard({
       <div
         className={styles.cardImageArea}
       >
-        <img src={imageUrl} alt={name} className={styles.cardImage} />
-        <span className={`${styles.cardCategory} text-xs`}>{category}</span>
-        <button className= {`${styles.cardHeart} material-symbols-outlined`} aria-label="좋아요">favorite</button>
+        <img src={imageUrl} alt={name} className={styles.cardImage} onClick={onClick} />
+        <span className={`${styles.cardDifficulty} ${difficultyClassName} text-xs`}>{difficultyLabel}</span>
+        <button 
+        className= {`${styles.cardHeart} material-symbols-outlined`} 
+        aria-label="좋아요"
+        >
+          favorite
+        </button>
       </div>
-      <div className={styles.cardTextArea}>
+      <div className={styles.cardTextArea} onClick={onClick}>
         <h4
           className={`${styles.cardTitle} text-subtitle-s`}
         >
@@ -64,7 +83,7 @@ function RecipeCard({
               <p className="text-xs">{likes}</p>
             </div>
           </div>
-          <p className={`${styles.cardContry} text-xs`}>{contry}</p>
+
         </div>
         
         
@@ -73,5 +92,6 @@ function RecipeCard({
     </div>
   )
 }
+
 
 export default RecipeCard;
