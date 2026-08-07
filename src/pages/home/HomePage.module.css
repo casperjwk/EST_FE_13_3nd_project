@@ -9,10 +9,22 @@
   padding: 64px;
 }
 
+.home-hero__track-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.home-hero__track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
 .home-hero__slide {
   display: flex;
   align-items: center;
   gap: 60px;
+  min-width: 100%;
+  flex-shrink: 0;
 }
 
 .home-hero__text-block {
@@ -50,6 +62,8 @@
   height: 10px;
   border-radius: 50%;
   background: var(--gray-1);
+  padding: 0;
+  border: none;
 }
 .home-hero__dot--active {
   background: var(--primary);
