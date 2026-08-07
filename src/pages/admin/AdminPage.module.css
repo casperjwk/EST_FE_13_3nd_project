@@ -127,3 +127,18 @@
   overflow-y: auto;
   box-sizing: border-box;
 }
+
+/* 로고 감싸는 박스 */
+.logoArea {
+  display: flex;
+  align-items: center;
+  padding: 24px 20px 16px 24px;
+}
+
+/* 로고 이미지 */
+.logoImage {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}

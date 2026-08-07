@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// 1. 로고 이미지 import
+import logoImg from "../../assets/logo.svg";
 import DashboardSection from "./DashboardSection";
 import UserDietSection from "./UserDietSection";
 import SystemSettingsSection from "./SystemSettingsSection";
@@ -86,7 +88,8 @@ const AdminPage = () => {
       {/* 1. 좌측 사이드바 */}
       <aside className={styles.sidebar}>
         <div className={styles.logoArea}>
-          <div className={styles.logoPlaceholder}>로고</div>
+          {/* 2. 기존 텍스트 대신 로고 이미지 배치 */}
+          <img src={logoImg} alt="한끼랩 로고" className={styles.logoImage} />
         </div>
 
         <nav className={styles.navMenu}>
