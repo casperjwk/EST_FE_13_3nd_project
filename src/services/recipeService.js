@@ -50,6 +50,9 @@ async function uploadRecipeImage(file) {
 }
 
 async function findOrCreateIngredient({ name, category_id: categoryId }) {
+  if (!categoryId) {
+    throw new Error("재료 카테고리는 필수입니다.");
+  }
   let query = supabase.from("ingredients").select("id").eq("name", name).limit(1);
   query = categoryId ? query.eq("category_id", categoryId) : query.is("category_id", null);
 

@@ -500,6 +500,11 @@ function RecipeDetailPage() {
     normal: "보통",
     hard: "어려움",
   }[recipe.difficulty] ?? recipe.difficulty;
+  const difficultyColorClass = {
+    easy: "safe-badge--easy",
+    normal: "safe-badge--normal",
+    hard: "safe-badge--hard",
+  }[recipe.difficulty];
 
   return (
     <div className={cn("recipe-page")}>
@@ -623,7 +628,7 @@ function RecipeDetailPage() {
                   <Icon name="clock" size={16} />
                   {recipe.cooking_time}분
                 </span>
-                <span className={cn("safe-badge")}>{difficultyLabel}</span>
+                <span className={cn("safe-badge", difficultyColorClass)}>{difficultyLabel}</span>
                 <span className={cn("favorite-count")}>
                   <Icon name="heart" size={16} />
                   10

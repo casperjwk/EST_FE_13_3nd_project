@@ -215,9 +215,21 @@
 .recipe-summary__meta .safe-badge {
   padding: 4px 10px;
   color: var(--primary);
-  border: 1px solid var(--primary);
+  border: 1px solid currentColor;
   border-radius: 50px;
   font-size: 12px;
+}
+
+.recipe-summary__meta .safe-badge--easy {
+  color: var(--primary);
+}
+
+.recipe-summary__meta .safe-badge--normal {
+  color: var(--tag);
+}
+
+.recipe-summary__meta .safe-badge--hard {
+  color: var(--danger);
 }
 
 .favorite-button {
@@ -1314,13 +1326,14 @@
   min-width: 72px;
   color: white;
   border-radius: 25px;
-  background: var(--secondary);
+  background: var(--primary);
   text-align: center;
 }
 
 .simple-recipe-nav-button:disabled {
   cursor: default;
   background: var(--gray-1);
+  color: white;
 }
 
 /* Mobile footer */
