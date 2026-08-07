@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
+import { useNavigate, Link } from 'react-router';
 import hero1 from '../../assets/hero1.png';
 import hero2 from '../../assets/hero2.png';
 import hero3 from '../../assets/hero3.png';
+import RecipeCard from '../../components/recipe/RecipeCard';
 import styles from './HomePage.module.css';
 
 const SLIDES = [
@@ -30,8 +32,16 @@ const STEPS = [
   { icon: 'restaurant', title: '맞춤 레시피 추천', desc: '대체재료까지 함께 제안받기' },
 ];
 
+// TODO: 실제 데이터로 교체 (더미 데이터)
+const FAVORITE_RECIPES = [
+  { id: 1, imageUrl: '', difficulty: 'easy', name: '두부 김치찌개', description: '알레르기 걱정 없는 담백한 한 그릇', time: 20, serves: 2, likes: 34 },
+  { id: 2, imageUrl: '', difficulty: 'normal', name: '채소 비빔밥', description: '제철 채소로 만드는 든든한 한 끼', time: 25, serves: 1, likes: 21 },
+  { id: 3, imageUrl: '', difficulty: 'hard', name: '두유 크림 파스타', description: '유제품 없이 즐기는 크림 파스타', time: 30, serves: 2, likes: 45 },
+];
+
 function HomePage() {
   const [current, setCurrent] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <div className={styles['home-page']}>
@@ -119,7 +129,7 @@ function HomePage() {
       <section className={styles['home-process']}>
         <div className={`container ${styles['home-process__inner']}`}>
           {STEPS.map((step, index) => (
-            <div className={styles['home-process__step-wrap']} key={index}>
+            <Fragment key={index}>
               <div className={styles['home-process__step']}>
                 <div className={styles['home-process__icon-circle']}>
                   <span className={`material-symbols-outlined ${styles['home-process__icon']}`}>
@@ -136,8 +146,32 @@ function HomePage() {
                   arrow_forward
                 </span>
               )}
-            </div>
+            </Fragment>
           ))}
+        </div>
+      </section>
+
+      <section className={styles['home-favorites']}>
+        <div className={`container ${styles['home-favorites__inner']}`}>
+          <div className={styles['home-favorites__header']}>
+            <h2 className={styles['home-favorites__title']}>즐겨찾는 레시피</h2>
+            <Link to="/favorite" className={styles['home-favorites__more']}>더보기</Link>
+          </div>
+          <div className={styles['home-favorites__grid']}>
+            {FAVORITE_RECIPES.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                imageUrl={recipe.imageUrl}
+                difficulty={recipe.difficulty}
+                name={recipe.name}
+                description={recipe.description}
+                time={recipe.time}
+                serves={recipe.serves}
+                likes={recipe.likes}
+                onClick={() => navigate(`/recipes/${recipe.id}`)}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </div>
