@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DashboardChart from "./DashboardChart";
 import styles from "./DashboardSection.module.css";
 
 /* ----------------------------------------------------
@@ -86,39 +87,6 @@ const SparklesIcon = () => (
   </svg>
 );
 
-const BarChartIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="12" y1="20" x2="12" y2="10" />
-    <line x1="18" y1="20" x2="18" y2="4" />
-    <line x1="6" y1="20" x2="6" y2="16" />
-  </svg>
-);
-
-const PieChartIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
-    <path d="M22 12A10 10 0 0 0 12 2v10z" />
-  </svg>
-);
-
 /* ----------------------------------------------------
    2. DashboardSection 메인 컴포넌트
 ---------------------------------------------------- */
@@ -132,7 +100,6 @@ const DashboardSection = () => {
     monthlyAiSearches: 3420,
   });
 
-  // 추후 실제 API 연동 시 사용할 useEffect 구문 예시
   useEffect(() => {
     // async function fetchDashboardData() {
     //   const data = await getAdminDashboardStats();
@@ -195,27 +162,9 @@ const DashboardSection = () => {
         ))}
       </div>
 
-      {/* 3. 추이 차트 영역 */}
-      <div className={styles.chartCard}>
-        <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>
-            <BarChartIcon />
-            <span>일별 회원 가입 및 AI 레시피 검색 추이</span>
-          </h2>
-          <span className={styles.chartSub}>최근 6개월</span>
-        </div>
-        <div className={styles.chartBox}>[ 꺾은선 차트 영역 : 가입 회원 수 & AI 검색량 추이 ]</div>
-      </div>
-
-      {/* 4. 알레르기/비건 비율 차트 영역 */}
-      <div className={styles.chartCard}>
-        <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>
-            <PieChartIcon />
-            <span>보유 알레르기 & 비건 비율</span>
-          </h2>
-        </div>
-        <div className={styles.chartBox}>[ 도넛 차트 영역 : 우유, 계란, 견과류, 돼지고기, 갑각류 등 ]</div>
+      {/* 3 & 4. 차트 영역 (DashboardChart 컴포넌트 연결) */}
+      <div style={{ marginTop: "24px" }}>
+        <DashboardChart />
       </div>
     </div>
   );

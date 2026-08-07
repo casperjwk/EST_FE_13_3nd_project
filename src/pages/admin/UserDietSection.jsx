@@ -149,7 +149,7 @@ const UserDietSection = () => {
   const [userInfo] = useState({
     name: "관리자",
     status: "정상 회원",
-    email: "hon77lab@naver.com",
+    email: "han77ilab@naver.com",
     joinDate: "2026-00-00",
     favoritesCount: 12,
     allergies: ["우유", "돼지고기"],

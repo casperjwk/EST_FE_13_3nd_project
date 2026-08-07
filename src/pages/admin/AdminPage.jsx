@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logoImg from "../../assets/logo.svg";
 import DashboardSection from "./DashboardSection";
 import UserDietSection from "./UserDietSection";
 import SystemSettingsSection from "./SystemSettingsSection";
@@ -86,7 +87,10 @@ const AdminPage = () => {
       {/* 1. 좌측 사이드바 */}
       <aside className={styles.sidebar}>
         <div className={styles.logoArea}>
-          <div className={styles.logoPlaceholder}>로고</div>
+          {/* Link 대신 a 태그를 사용하여 메인 페이지('/')로 이동 */}
+          <a href="/" className={styles.logoLink}>
+            <img src={logoImg} alt="한끼랩 로고" className={styles.logoImage} />
+          </a>
         </div>
 
         <nav className={styles.navMenu}>
