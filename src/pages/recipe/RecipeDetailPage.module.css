@@ -1326,13 +1326,14 @@
   min-width: 72px;
   color: white;
   border-radius: 25px;
-  background: var(--secondary);
+  background: var(--primary);
   text-align: center;
 }
 
 .simple-recipe-nav-button:disabled {
   cursor: default;
   background: var(--gray-1);
+  color: white;
 }
 
 /* Mobile footer */
