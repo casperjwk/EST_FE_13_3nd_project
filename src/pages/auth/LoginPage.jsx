@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./LoginPage.module.css";
+import { supabase } from "../../lib/supabase";
 
 const IconKakao = ({ size = 18, color = "var(--black-1)" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ display: "block" }}>
@@ -19,7 +20,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // 회원가입 페이지 이동 공통 함수
   const handleSignupClick = () => {
     if (onGoToSignup) {
       onGoToSignup();
@@ -28,7 +28,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
     }
   };
 
-  // 1. 일반 로그인 핸들러
   const handleLogin = e => {
     e.preventDefault();
 
@@ -37,48 +36,57 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
       return;
     }
 
-    // 테스트용 로그인 예시 (실제 백엔드 API 연동 시 response 에러 코드/상태값에 맞춰 구현)
     if (email === "test@han77ilab.com" && password === "1234") {
       setErrorMessage("");
       if (onLoginSuccess) {
         onLoginSuccess(email);
       }
     } else {
-      // 가입되지 않은 아이디인 경우 회원가입 유도 알림 팝업(confirm) 발생
       const goToSignup = window.confirm(
         "가입되지 않은 계정이거나 비밀번호가 일치하지 않습니다.\n회원가입 페이지로 이동하시겠습니까?",
       );
 
       if (goToSignup) {
-        handleSignupClick(); // 확인 시 회원가입으로 이동
+        handleSignupClick();
       } else {
-        setErrorMessage("아이디 또는 비밀번호가 잘못되었습니다."); // 취소 시 에러 메시지 유지
+        setErrorMessage("아이디 또는 비밀번호가 잘못되었습니다.");
       }
     }
   };
 
-  // 2. 소셜 로그인 (카카오 / 네이버) 핸들러
-  const handleSocialLogin = provider => {
-    // 실제 개발자 센터 발급 후 공식 OAuth 주소 연결 예시
-    // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code`;
-    // const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code`;
+  const handleSocialLogin = async provider => {
+    setErrorMessage("");
 
-    // 현재는 키 발급 전이므로 소셜 가입 안내 후 회원가입 페이지로 인가 처리
-    const isProceed = window.confirm(
-      `${provider === "kakao" ? "카카오" : "네이버"} 계정으로 간편 가입 및 로그인을 진행하시겠습니까?`,
-    );
+    if (provider === "kakao") {
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "kakao",
+          options: {
+            redirectTo: "http://localhost:5173",
+          },
+        });
 
-    if (isProceed) {
-      // 실제 소셜 OAuth 주소가 있을 경우 아래 주석을 해제하면 공식 카카오/네이버 가입창이 뜹니다.
-      // window.location.href = provider === "kakao" ? KAKAO_AUTH_URL : NAVER_AUTH_URL;
-      handleSignupClick();
+        if (error) {
+          console.error("카카오 로그인 실패:", error.message);
+          setErrorMessage("카카오 로그인 진행 중 오류가 발생했습니다.");
+        }
+      } catch (err) {
+        console.error("카카오 로그인 예외 발생:", err);
+      }
+    } else if (provider === "naver") {
+      const NAVER_CLIENT_ID = "B3cP_MJX21Js9nHAJGrH";
+      const REDIRECT_URI = encodeURIComponent("http://localhost:5173");
+      const STATE = Math.random().toString(36).substring(3);
+
+      const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}`;
+
+      window.location.href = naverAuthUrl;
     }
   };
 
   return (
     <div className={styles.outerWrapper} translate="no" lang="ko">
       <div className={styles.splitCard}>
-        {/* PC 전용 좌측 초록 브랜드 배너 */}
         <div className={styles.leftBanner}>
           <div>
             <h2 className={`text-subtitle-l ${styles.bannerTitle}`}>
@@ -95,16 +103,13 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
           <div className={`text-xs ${styles.bannerCopyright}`}>© Han77ilab Platform. All rights reserved.</div>
         </div>
 
-        {/* 우측 로그인 폼 */}
         <div className={styles.rightForm}>
           <div>
-            {/* 1. PC 전용 헤더 */}
             <div className={styles.pcHeader}>
               <h3 className={`text-subtitle-l ${styles.formTitle}`}>로그인</h3>
               <p className={`text-s ${styles.formSubtitle}`}>한끼랩 서비스 이용을 위한 계정 정보 입력</p>
             </div>
 
-            {/* 2. 모바일 전용 헤더 */}
             <div className={styles.mobileHeader}>
               <h2 className={`text-subtitle-l ${styles.mobileTitle}`}>
                 맛있는 맞춤 식단,
@@ -115,7 +120,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
             </div>
 
             <form onSubmit={handleLogin} className={styles.formGroup}>
-              {/* 이메일 */}
               <div style={{ marginBottom: "16px" }}>
                 <label className={`text-button-s ${styles.label}`}>이메일(아이디)</label>
                 <input
@@ -130,7 +134,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                 />
               </div>
 
-              {/* 비밀번호 */}
               <div style={{ marginBottom: "16px" }}>
                 <label className={`text-button-s ${styles.label}`}>비밀번호</label>
                 <input
@@ -145,7 +148,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                 />
               </div>
 
-              {/* 로그인 에러 메시지 노출 */}
               {errorMessage && (
                 <div
                   style={{
@@ -160,7 +162,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                 </div>
               )}
 
-              {/* 옵션 행 */}
               <div className={`text-s ${styles.optionsRow}`}>
                 <label className={styles.checkboxLabel}>
                   <input
@@ -174,13 +175,11 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                 <span className={`${styles.pcHeader} ${styles.findPasswordLink}`}>비밀번호 찾기</span>
               </div>
 
-              {/* 로그인 버튼 */}
               <button type="submit" className={`text-button-m ${styles.btnPrimaryLarge}`}>
                 로그인
               </button>
             </form>
 
-            {/* 모바일 전용 하단 3개 링크 */}
             <div className={`text-s ${styles.mobileFooter}`}>
               <span>아이디 찾기</span> &nbsp;|&nbsp;
               <span>비밀번호 찾기</span> &nbsp;|&nbsp;
@@ -189,14 +188,12 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
               </span>
             </div>
 
-            {/* 소셜 구분선 */}
             <div className={styles.dividerContainer}>
               <div className={styles.dividerLine} />
               <span className={`text-xs ${styles.dividerText}`}>또는 소셜 계정으로 로그인</span>
               <div className={styles.dividerLine} />
             </div>
 
-            {/* 소셜 버튼 (카카오 / 네이버 연동) */}
             <div className={styles.socialGrid}>
               <button
                 type="button"
@@ -216,7 +213,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
               </button>
             </div>
 
-            {/* PC 전용 하단 회원가입 안내 */}
             <div className={`text-s ${styles.pcFooter}`}>
               아직 회원이 아니신가요?
               <span onClick={handleSignupClick} className={styles.linkHighlight}>
@@ -224,7 +220,6 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
               </span>
             </div>
 
-            {/* 모바일 최하단 저작권 */}
             <div className={`text-xs ${styles.mobileCopyright}`}>© Han77ilabPlatform. All rights reserved.</div>
           </div>
         </div>
