@@ -17,19 +17,61 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = e => {
-    e.preventDefault();
-    if (onLoginSuccess) {
-      onLoginSuccess(email);
-    }
-  };
-
+  // 회원가입 페이지 이동 공통 함수
   const handleSignupClick = () => {
     if (onGoToSignup) {
       onGoToSignup();
     } else {
       window.location.href = "/signup";
+    }
+  };
+
+  // 1. 일반 로그인 핸들러
+  const handleLogin = e => {
+    e.preventDefault();
+
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage("이메일과 비밀번호를 모두 입력해 주세요.");
+      return;
+    }
+
+    // 테스트용 로그인 예시 (실제 백엔드 API 연동 시 response 에러 코드/상태값에 맞춰 구현)
+    if (email === "test@han77ilab.com" && password === "1234") {
+      setErrorMessage("");
+      if (onLoginSuccess) {
+        onLoginSuccess(email);
+      }
+    } else {
+      // 가입되지 않은 아이디인 경우 회원가입 유도 알림 팝업(confirm) 발생
+      const goToSignup = window.confirm(
+        "가입되지 않은 계정이거나 비밀번호가 일치하지 않습니다.\n회원가입 페이지로 이동하시겠습니까?",
+      );
+
+      if (goToSignup) {
+        handleSignupClick(); // 확인 시 회원가입으로 이동
+      } else {
+        setErrorMessage("아이디 또는 비밀번호가 잘못되었습니다."); // 취소 시 에러 메시지 유지
+      }
+    }
+  };
+
+  // 2. 소셜 로그인 (카카오 / 네이버) 핸들러
+  const handleSocialLogin = provider => {
+    // 실제 개발자 센터 발급 후 공식 OAuth 주소 연결 예시
+    // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code`;
+    // const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code`;
+
+    // 현재는 키 발급 전이므로 소셜 가입 안내 후 회원가입 페이지로 인가 처리
+    const isProceed = window.confirm(
+      `${provider === "kakao" ? "카카오" : "네이버"} 계정으로 간편 가입 및 로그인을 진행하시겠습니까?`,
+    );
+
+    if (isProceed) {
+      // 실제 소셜 OAuth 주소가 있을 경우 아래 주석을 해제하면 공식 카카오/네이버 가입창이 뜹니다.
+      // window.location.href = provider === "kakao" ? KAKAO_AUTH_URL : NAVER_AUTH_URL;
+      handleSignupClick();
     }
   };
 
@@ -81,7 +123,10 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                   className={`text-s ${styles.input}`}
                   placeholder="example@email.com"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                    if (errorMessage) setErrorMessage("");
+                  }}
                 />
               </div>
 
@@ -93,11 +138,29 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
                   className={`text-s ${styles.input}`}
                   placeholder="영문, 숫자 포함 8자 입력"
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={e => {
+                    setPassword(e.target.value);
+                    if (errorMessage) setErrorMessage("");
+                  }}
                 />
               </div>
 
-              {/* 옵션 행 (PC: 좌/우 분리, 모바일: 로그인 상태 유지 우측 정렬) */}
+              {/* 로그인 에러 메시지 노출 */}
+              {errorMessage && (
+                <div
+                  style={{
+                    color: "var(--danger)",
+                    fontSize: "var(--xsmall)",
+                    marginTop: "-8px",
+                    marginBottom: "12px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {errorMessage}
+                </div>
+              )}
+
+              {/* 옵션 행 */}
               <div className={`text-s ${styles.optionsRow}`}>
                 <label className={styles.checkboxLabel}>
                   <input
@@ -133,13 +196,21 @@ export default function LoginPage({ onGoToSignup, onLoginSuccess }) {
               <div className={styles.dividerLine} />
             </div>
 
-            {/* 소셜 버튼 (PC: 2열 / 모바일: 1열) */}
+            {/* 소셜 버튼 (카카오 / 네이버 연동) */}
             <div className={styles.socialGrid}>
-              <button type="button" className={`text-button-s ${styles.btnKakao}`}>
+              <button
+                type="button"
+                className={`text-button-s ${styles.btnKakao}`}
+                onClick={() => handleSocialLogin("kakao")}
+              >
                 <IconKakao size={18} />
                 <span>카카오로 1초 만에 시작</span>
               </button>
-              <button type="button" className={`text-button-s ${styles.btnNaver}`}>
+              <button
+                type="button"
+                className={`text-button-s ${styles.btnNaver}`}
+                onClick={() => handleSocialLogin("naver")}
+              >
                 <IconNaver size={14} />
                 <span>네이버로 시작하기</span>
               </button>
